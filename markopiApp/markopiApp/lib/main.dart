@@ -54,7 +54,7 @@ import 'splashscreen.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'autentikasi/auth_manager_page.dart';
 import 'package:belajar_flutter/newberanda/beranda.dart';
-import 'package:belajar_flutter/Login/login.dart';
+// import 'package:belajar_flutter/Login/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,8 +67,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // home: SplashScreen(), // Set ProsesBudidayaPage sebagai halaman utama
-      home: Login(),
+      home: SplashScreen(), // Set ProsesBudidayaPage sebagai halaman utama
+      // home: Login(),
       routes: {
         '/beranda': (context) => Beranda(),
         // '/kedai_kopi': (context) => MapScreen(),\

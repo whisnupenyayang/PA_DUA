@@ -11,12 +11,12 @@ class _MyAppBarState extends State<MyAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      toolbarHeight: 88, // Sisa dari 120 - 32 agar tetap sesuai ukuran
+      toolbarHeight: 88,
       titleSpacing: 20,
       title: Row(
         children: [
           const Icon(Icons.account_circle, size: 85),
-          const SizedBox(width: 15), // Jarak antara ikon dan teks
+          const SizedBox(width: 15),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
@@ -41,13 +41,13 @@ class _MyAppBarState extends State<MyAppBar> {
             width: 80,
             height: 35,
             decoration: BoxDecoration(
-              color: Color(0xFF2696D6), // Warna biru
-              borderRadius: BorderRadius.circular(8), // Membuat sudut membulat
+              color: Color(0xFF2696D6),
+              borderRadius: BorderRadius.circular(8),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black26, // Warna bayangan
-                  blurRadius: 4, // Seberapa blur bayangannya
-                  offset: Offset(2, 2), // Posisi bayangan (kanan bawah)
+                  color: Colors.black26,
+                  blurRadius: 4,
+                  offset: Offset(2, 2),
                 ),
               ],
             ),

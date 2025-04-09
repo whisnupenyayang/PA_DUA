@@ -41,7 +41,6 @@ class _LoginPageState extends State<LoginPage> {
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData =
             jsonDecode(response.body); // Pastikan ini benar
-
         if (responseData['success']) {
           // Ambil data dari response
           final Map<String, dynamic> userData = responseData['data'];

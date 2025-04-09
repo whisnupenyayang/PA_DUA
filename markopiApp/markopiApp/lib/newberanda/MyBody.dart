@@ -22,7 +22,6 @@ class _BerandaBodyState extends State<BerandaBody> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // ----------------- SECTION HEADER -----------------
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -88,12 +87,9 @@ class _BerandaBodyState extends State<BerandaBody> {
                 ],
               ),
             ),
-
             SizedBox(height: 30),
-
             MainMenu(),
             SizedBox(height: 30),
-            // ----------------- SECTION SCROLL HORIZONTAL -----------------
             buildHorizontalListView(),
           ],
         ),
@@ -193,7 +189,7 @@ class _BerandaBodyState extends State<BerandaBody> {
   }
 
   Future<List<Artikel>> fetchArtikel() async {
-    final url = Connection.buildUrl('artikel');
+    final url = Connection.buildUrl('/artikel');
     print('Requesting: $url');
 
     final response = await http.get(Uri.parse(url));

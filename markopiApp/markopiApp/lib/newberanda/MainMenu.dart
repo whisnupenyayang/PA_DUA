@@ -19,7 +19,7 @@ class _MainMenuState extends State<MainMenu> {
     'budidaya',
     'panen',
     'pasca_panen',
-    'budidaya', // <- kamu mungkin mau ganti ini biar unik?
+    'budidaya',
   ];
 
   final List<String> labelMenu = [

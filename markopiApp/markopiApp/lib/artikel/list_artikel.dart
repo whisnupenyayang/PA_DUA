@@ -5,6 +5,9 @@ import 'package:belajar_flutter/connection.dart';
 import 'package:belajar_flutter/artikel/artikel.dart';
 import 'package:belajar_flutter/model/model_artikel.dart';
 
+
+
+// ando
 class ListArtikel extends StatefulWidget {
   @override
   _ListArtikelState createState() => _ListArtikelState();

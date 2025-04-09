@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:belajar_flutter/connection.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -27,8 +25,8 @@ class _LoginState extends State<Login> {
       'password': password,
     };
 
-    String loginUrl = Connection.buildUrl('login');
-    print('login Url :');
+    String loginUrl = Connection.buildUrl('/login');
+    print('login Url : $loginUrl');
 
     try {
       final response = await http.post(
@@ -77,6 +75,7 @@ class _LoginState extends State<Login> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
+              controller: _usernameController,
               decoration: InputDecoration(
                 labelText: "Email address",
                 hintText: "Your email address",
@@ -84,6 +83,7 @@ class _LoginState extends State<Login> {
             ),
             SizedBox(height: 16),
             TextField(
+              controller: _passwordController,
               obscureText: _obscurePassword,
               decoration: InputDecoration(
                 labelText: "Password",
@@ -103,7 +103,7 @@ class _LoginState extends State<Login> {
             ),
             SizedBox(height: 24),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: _login,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xff2696D6),
                 shape: RoundedRectangleBorder(
@@ -115,7 +115,7 @@ class _LoginState extends State<Login> {
             ),
             SizedBox(height: 12),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: _login,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xff2696D6),
                 shape: RoundedRectangleBorder(

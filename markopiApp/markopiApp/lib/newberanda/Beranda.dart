@@ -74,9 +74,9 @@ class _BerandaState extends State<Beranda> {
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.article_outlined, // ← versi garis (outline)
+                Icons.article_outlined,
                 size: 40,
-                color: Colors.black, // seluruh garis icon jadi hitam
+                color: Colors.black,
               ),
               label: 'Notifikasi',
             ),
@@ -91,9 +91,8 @@ class _BerandaState extends State<Beranda> {
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Color(0xFF297CBB),
-          showSelectedLabels: _selectedIndex !=
-              0, // Hide selected item label if it's not Beranda
-          showUnselectedLabels: false, // Hide unselected items label
+          showSelectedLabels: _selectedIndex != 0,
+          showUnselectedLabels: false,
           onTap: _onItemTapped,
         ),
       ),
