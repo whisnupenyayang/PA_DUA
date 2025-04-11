@@ -12,6 +12,7 @@ use App\Http\API\BudidayaAPIController;
 use App\Http\API\ReplyKomentarController;
 use App\Http\API\ResetPasswordController;
 use App\Http\API\ForgotPasswordController;
+use App\Http\Controllers\API\PengepulController;
 
 /*
 |--------------------------------------------------------------------------
@@ -111,3 +112,10 @@ Route::get('replies/{komentar_id}', [ReplyKomentarController::class, 'get_replie
 Route::get('getAllReplies', [ReplyKomentarController::class, 'getAllReplies']);
 Route::put('komentar/{komentar_id}/user/{user_id}/replies/{id}', [ReplyKomentarController::class, 'updateReplyByUserId']);
 Route::delete('komentar/{komentar_id}/user/{user_id}/replies/{id}', [ReplyKomentarController::class, 'deleteReplyByUserId']);
+
+// ----------------------------------------------------PENGEPUL----------------------------------------------------
+
+
+Route::get('pengepul',[PengepulController::class,'index']);
+Route::get('pengepul/{id}',[PengepulController::class,'pengepulDetail']);
+Route::post('pengepul',[PengepulController::class]);
