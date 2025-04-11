@@ -43,7 +43,7 @@
         </div>
 
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            @include('admin.layouts.navbar')
+            @include('admin.layouts.navbar');
         </nav>
 
         <!-- Main Sidebar Container -->
