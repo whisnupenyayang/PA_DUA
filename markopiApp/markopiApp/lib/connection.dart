@@ -1,10 +1,11 @@
 class Connection {
-  static const String apiUrl =
-      // 'https://www.markopi.cloud/api'; // URL API Laravel yang sudah di-hosting
-      // 'http://192.168.66.151:8000/api'; // URL API Andoroid
-      'http://10.0.2.2:8000/api'; // URL API Laravel local
+  // Ganti ini kalau kamu mau pindah device
+  static const bool isUsingPhysicalDevice = true;
 
-  // Fungsi untuk menggabungkan URL API dengan endpoint tertentu
+  static String get apiUrl => isUsingPhysicalDevice
+      ? 'http://192.168.82.244:8000/api' // IP laptop untuk HP asli
+      : 'http://10.0.2.2:8000/api';      // Untuk emulator Android
+
   static String buildUrl(String endpoint) {
     return apiUrl + endpoint;
   }
