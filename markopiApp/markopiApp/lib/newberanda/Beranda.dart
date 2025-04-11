@@ -47,7 +47,7 @@ class _BerandaState extends State<Beranda> {
       body: BerandaBody(),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-          canvasColor: Color(0xFFFFFFFF), // Background color
+          canvasColor: Color(0xFFFFFFFF),
         ),
         child: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[

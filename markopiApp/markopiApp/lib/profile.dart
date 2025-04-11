@@ -1,7 +1,7 @@
 import 'package:belajar_flutter/fasilitator/artikel_saya.dart';
 import 'package:flutter/material.dart';
 import 'package:belajar_flutter/autentikasi/auth_manager_page.dart';
-import 'package:belajar_flutter/beranda.dart'; // Import kelas Beranda
+import 'package:belajar_flutter/newberanda/Beranda.dart'; // Import kelas Beranda
 
 class profil extends StatefulWidget {
   @override

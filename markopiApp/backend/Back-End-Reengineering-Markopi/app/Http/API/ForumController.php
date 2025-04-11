@@ -7,6 +7,7 @@ use App\Models\LikeForum;
 use Illuminate\Http\Request;
 use App\Models\KomentarForum;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ForumResource;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,7 +16,12 @@ class ForumController extends Controller
     public function index()
     {
         $forums = Forum::with('images')->get();
-        return response()->json($forums);
+        // return response()->json([
+        //     'data' => $forums
+        // ]);
+        return ForumResource::collection($forums);
+
+
     }
 
     public function store(Request $request)

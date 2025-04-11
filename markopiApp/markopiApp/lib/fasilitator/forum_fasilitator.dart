@@ -29,7 +29,8 @@ class _ForumFasilitatorState extends State<ForumFasilitator> {
   Future<List<Forum>> fetchForums() async {
     final response = await http.get(Uri.parse(Connection.buildUrl('/forum')));
     if (response.statusCode == 200) {
-      List<dynamic> data = jsonDecode(response.body);
+      final body = jsonDecode(response.body);
+      List<dynamic> data = body['data']; // Ambil dari "data"
       return data.map((json) => Forum.fromJson(json)).toList();
     } else {
       throw Exception('Gagal memuat data forum');
@@ -202,10 +203,10 @@ class _ForumFasilitatorState extends State<ForumFasilitator> {
                           children: [
                             // Username
                             Text(
-                              user?.namaLengkap ?? 'Loading...',
+                              (user?.namaLengkap ?? 'Loading...').toString(),
                               style: TextStyle(
-                                color: Color(0xFF2696D6), // Warna Biru
-                                fontSize: 20, // Ukuran teks username
+                                color: Color(0xFF2696D6),
+                                fontSize: 20,
                               ),
                             ),
                             // Tanggal

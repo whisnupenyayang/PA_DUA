@@ -28,11 +28,11 @@ class Forum {
 
     return Forum(
       id: json['id_forums'],
-      judulForum: json['title'],
-      deskripsiForum: json['deskripsi'],
+      judulForum: json['title'].toString(),
+      deskripsiForum: json['deskripsi'].toString(),
       tanggal: formattedDate,
       imageUrls: imageUrls,
-      userId: int.parse(json['user_id']),
+      userId: json['user_id'],
     );
   }
 }

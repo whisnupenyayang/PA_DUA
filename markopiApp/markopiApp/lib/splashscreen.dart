@@ -4,6 +4,7 @@ import 'package:belajar_flutter/newberanda/beranda.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:belajar_flutter/autentikasi/login_page.dart';
+import 'package:belajar_flutter/fasilitator/forum_fasilitator.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -53,7 +54,10 @@ class _SplashScreenState extends State<SplashScreen>
       // Navigasi ke halaman beranda setelah animasi selesai
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Beranda()),
+        MaterialPageRoute(
+            // builder: (context) => Beranda(),
+            // )
+            builder: (context) => ForumFasilitator()),
       );
     });
   }
