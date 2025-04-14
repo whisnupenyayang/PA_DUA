@@ -1,5 +1,0 @@
-{
-    "require": {
-        "ichtrojan/laravel-otp": "^2.0"
-    }
-}
