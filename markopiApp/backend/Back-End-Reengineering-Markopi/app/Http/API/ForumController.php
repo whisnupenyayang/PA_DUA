@@ -15,13 +15,12 @@ class ForumController extends Controller
 {
     public function index()
     {
-        $forums = Forum::with('images')->get();
+        $forums = Forum::with('images','user')->get();
         // return response()->json([
         //     'data' => $forums
         // ]);
         return ForumResource::collection($forums);
-
-
+        // $forums = Forum
     }
 
     public function store(Request $request)

@@ -25,8 +25,29 @@ class PengepulController extends Controller
     }
 
     public function store(Request $request){
-        $request->validate(
+        $request->validate([
+            'nama_toko' => 'required',
+            'jenis_kopi' => 'required',
+            'harga' => 'required',
+            'nomor_telepon' => 'required',
+            'alamat' => 'required',
+        ]
+        );
 
-        )
+        $peengepul = Pengepul::create([
+            'nama_toko' => $request->nama_toko,
+            'jenis_kopi' => $request->jenis_kopi,
+            'harga' => $request->harga,
+            'nomor_telepon' => $request->nomor_telepon,
+            'alamat' => $request->alamat
+        ]
+        );
+
+
+        return response()->json( [
+            'massage' => 'sukses'
+        ]
+
+        );
     }
 }
