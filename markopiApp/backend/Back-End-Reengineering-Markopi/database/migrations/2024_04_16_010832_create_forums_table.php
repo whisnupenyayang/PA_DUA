@@ -19,7 +19,6 @@ return new class extends Migration
             $table->text('deskripsi');
             $table->unsignedInteger('user_id');
             $table->timestamps();
-
             $table->foreign('user_id')->references('id_users')->on('users')->onDelete('cascade');
         });
     }

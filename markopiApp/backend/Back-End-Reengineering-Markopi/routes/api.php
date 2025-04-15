@@ -118,4 +118,4 @@ Route::delete('komentar/{komentar_id}/user/{user_id}/replies/{id}', [ReplyKoment
 
 Route::get('pengepul',[PengepulController::class,'index']);
 Route::get('pengepul/{id}',[PengepulController::class,'pengepulDetail']);
-Route::post('pengepul',[PengepulController::class]);
+Route::post('pengepul',[PengepulController::class,'store']);

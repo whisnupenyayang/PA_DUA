@@ -186,4 +186,3 @@ class _ListArtikelState extends State<ListArtikel> {
     );
   }
 }
-<!-- -->

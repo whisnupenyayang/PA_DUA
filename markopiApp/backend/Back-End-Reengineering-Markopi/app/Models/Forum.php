@@ -28,4 +28,14 @@ class Forum extends Model
             DB::raw("CONCAT('" . asset('storage/') . "','/', gambar) as url")
         ]);
     }
+
+    public function komentar(){
+        return $this->hasMany(KomentarForum::class);
+    }
+
+    public function user(){
+        return $this->belongsTo( User::class, 'user_id', 'id_users')->select(
+            
+        );
+    }
 }

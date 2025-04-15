@@ -28,6 +28,8 @@ class _ForumFasilitatorState extends State<ForumFasilitator> {
 
   Future<List<Forum>> fetchForums() async {
     final response = await http.get(Uri.parse(Connection.buildUrl('/forum')));
+    print('Body : ${response.body}');
+
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
       List<dynamic> data = body['data']; // Ambil dari "data"

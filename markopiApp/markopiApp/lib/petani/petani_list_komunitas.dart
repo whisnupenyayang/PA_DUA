@@ -27,8 +27,11 @@ class _ListForumPetaniState extends State<ListForumPetani> {
 
   Future<List<Forum>> fetchForums() async {
     final response = await http.get(Uri.parse(Connection.buildUrl('/forum')));
+
+    print('Body : ${response.body}');
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
+      print(data);
       return data.map((json) => Forum.fromJson(json)).toList();
     } else {
       throw Exception('Gagal memuat data forum');

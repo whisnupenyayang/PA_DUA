@@ -24,6 +24,7 @@ class ForumResource extends JsonResource
             'created_at' => $this->created_at,
             'updated-at' => $this->updated_at,
             'images' => $this->images,
+            'user' => $this->user,
 
         ];
     }

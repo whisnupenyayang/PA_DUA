@@ -52,6 +52,7 @@ class _AddForumState extends State<AddForum> {
           contentType: MediaType('image', 'jpeg'),
         ));
       }
+      
 
       var streamedResponse = await request.send();
       var response = await http.Response.fromStream(streamedResponse);
