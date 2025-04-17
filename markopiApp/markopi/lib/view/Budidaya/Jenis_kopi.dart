@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:markopi/view/Budidaya/Menu.dart';
 
 class Budidaya extends StatelessWidget {
   const Budidaya({super.key});
@@ -23,14 +24,15 @@ class Budidaya extends StatelessWidget {
             SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
-                itemCount: 2,
+                itemCount: 2, // Menampilkan 2 jenis kopi
                 itemBuilder: (context, i) => Padding(
                   padding: const EdgeInsets.only(bottom: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Menampilkan nama kopi sesuai index
                       Text(
-                        'Kopi Arabika',
+                        i == 0 ? 'Kopi Arabika' : 'Kopi Robusta',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
@@ -54,11 +56,22 @@ class Budidaya extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    'Mulai',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      // Navigasi ke Menu.dart ketika tombol Mulai ditekan
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const Menu(),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      'Mulai',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
                                 ],
                               ),
