@@ -21,7 +21,7 @@ class _MainMenuState extends State<MainMenu> {
     RouteName.budidaya,
     'panen',
     'pasca_panen',
-    'budidaya',
+    'budidaya', 
   ];
 
   final List<String> labelMenu = [
