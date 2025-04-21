@@ -16,7 +16,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   final List<String> navList = [
     RouteName.beranda,
     RouteName.forum,
-    RouteName.forum,
+    RouteName.forum + '/1',
     RouteName.forum,
     RouteName.forum,
   ];
@@ -26,7 +26,9 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
       _selectedIndex = index;
 
       if (index != 0 && !isLoggedIn) {
-        Get.offAllNamed(RouteName.forum);
+        Get.offAllNamed(
+          RouteName.forum,
+        );
         return;
       }
 

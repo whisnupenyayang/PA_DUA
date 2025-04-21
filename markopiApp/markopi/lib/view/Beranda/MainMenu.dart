@@ -19,40 +19,31 @@ class _MainMenuState extends State<MainMenu> {
 
   final List<String> menuList = [
     RouteName.budidaya,
-    'panen',
-    'pasca_panen',
-    'budidaya', 
+    RouteName.panen,
+    RouteName.pascaPanen,
+    RouteName.laporan,
   ];
 
   final List<String> labelMenu = [
     'Budidaya',
     'Panen',
     'Pasca Panen',
-    'Laporan'
-  ];
-
-  List<bool> isPressed = [
-    false,
-    false,
-    false,
-    false,
+    'Laporan',
   ];
 
   void _handleTap(int index) {
-    setState(() {
-      isPressed[index] = true;
-    });
+    Get.toNamed(menuList[index]);
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(15.0),
       child: GridView.builder(
         shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
@@ -61,14 +52,10 @@ class _MainMenuState extends State<MainMenu> {
         itemCount: imageList.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () {
-              _handleTap(index); // biar efek warna ditekan jalan
-              Get.toNamed(menuList[index]);
-            },
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 100),
+            onTap: () => _handleTap(index),
+            child: Container(
               decoration: BoxDecoration(
-                color: isPressed[index] ? Colors.blue[900] : Color(0xffD4ECFF),
+                color: const Color(0xffD4ECFF),
                 border: Border.all(
                   color: Colors.black.withOpacity(0.5),
                   width: 3.0,
@@ -76,7 +63,6 @@ class _MainMenuState extends State<MainMenu> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
@@ -85,10 +71,10 @@ class _MainMenuState extends State<MainMenu> {
                     height: 50,
                     fit: BoxFit.cover,
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
-                    labelMenu[index], // tampilkan nama menu sesuai list
-                    style: TextStyle(fontSize: 20),
+                    labelMenu[index],
+                    style: const TextStyle(fontSize: 20),
                   ),
                 ],
               ),
