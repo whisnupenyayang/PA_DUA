@@ -19,9 +19,8 @@ class _MainMenuState extends State<MainMenu> {
 
   final List<String> menuList = [
     RouteName.budidaya,
-    'panen',
-    'pasca_panen',
-    'budidaya',
+    RouteName.forum,
+    RouteName.pengepul,
   ];
 
   final List<String> labelMenu = [
@@ -40,7 +39,7 @@ class _MainMenuState extends State<MainMenu> {
 
   void _handleTap(int index) {
     setState(() {
-      isPressed[index] = true;
+      Get.toNamed(menuList[index]);
     });
   }
 
@@ -63,7 +62,6 @@ class _MainMenuState extends State<MainMenu> {
           return GestureDetector(
             onTap: () {
               _handleTap(index); // biar efek warna ditekan jalan
-              Get.toNamed(menuList[index]);
             },
             child: AnimatedContainer(
               duration: Duration(milliseconds: 100),

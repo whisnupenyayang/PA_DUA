@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markopi/controllers/Forum_Controller.dart';
+import 'package:markopi/routes/route_name.dart';
 import '../component/MyBottomNavigation.dart';
 
 class ListForum extends StatelessWidget {
@@ -14,6 +15,7 @@ class ListForum extends StatelessWidget {
       appBar: AppBar(title: const Text('Forum')),
       body: Obx(() {
         if (forumController.forum.isEmpty) {
+          print('kosong');
           return const Center(child: CircularProgressIndicator());
         }
 
@@ -141,7 +143,7 @@ class ListForum extends StatelessWidget {
                             IconButton(
                               icon: Icon(Icons.comment),
                               onPressed: () {
-                                print('tertekan');
+                                Get.toNamed(RouteName.forumkomen + '/1');
                               },
                             ),
                             Text(
