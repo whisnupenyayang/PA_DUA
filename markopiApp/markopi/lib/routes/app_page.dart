@@ -31,7 +31,7 @@ class AppPages {
       binding: BudidayaBinding(),
     ),
     GetPage(
-      name: RouteName.budidaya + '/:id',
+      name: RouteName.budidaya + '/:jenis_kopi',
       page: () => TipeBudidaya(),
       binding: BudidayaBinding(),
     ),

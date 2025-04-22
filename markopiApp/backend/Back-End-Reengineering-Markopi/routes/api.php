@@ -29,6 +29,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+
+Route::get('/budidaya/{id}', [BudidayaAPIController::class, 'getTahapanBudidaya']);
 //BUDIDAYA
 // Route::get('/budidaya', [BudidayaAPIController::class, 'index']);
 Route::get('/budidaya/pemilihan_lahan', [BudidayaAPIController::class, 'getPemilihanLahanData']);
