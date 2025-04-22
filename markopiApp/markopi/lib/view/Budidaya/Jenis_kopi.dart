@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:get/get.dart';
 import 'package:markopi/routes/route_name.dart';
 
 class BudidayaView extends StatelessWidget {
   final List<String> kopiList = ['Arabika', 'Robusta'];
+=======
+import 'package:markopi/view/Budidaya/Menu.dart';
+
+class Budidaya extends StatelessWidget {
+  const Budidaya({super.key});
+>>>>>>> b7d988b14595090ff7890c8ed522634798f81a43
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +32,7 @@ class BudidayaView extends StatelessWidget {
             SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
+<<<<<<< HEAD
                 itemCount: kopiList.length,
                 itemBuilder: (context, i) {
                   final jenisKopi = kopiList[i];
@@ -70,17 +78,75 @@ class BudidayaView extends StatelessWidget {
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
                                       ),
+=======
+                itemCount: 2, // Menampilkan 2 jenis kopi
+                itemBuilder: (context, i) => Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Menampilkan nama kopi sesuai index
+                      Text(
+                        i == 0 ? 'Kopi Arabika' : 'Kopi Robusta',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Card(
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Container(
+                              height: 172,
+                              color: Colors.blue,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      // Navigasi ke Menu.dart ketika tombol Mulai ditekan
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const Menu(),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      'Mulai',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+>>>>>>> b7d988b14595090ff7890c8ed522634798f81a43
                                     ),
                                   ),
                                 ),
                               ],
                             ),
+<<<<<<< HEAD
                           ),
                         ),
                       ],
                     ),
                   );
                 },
+=======
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+>>>>>>> b7d988b14595090ff7890c8ed522634798f81a43
               ),
             ),
           ],
