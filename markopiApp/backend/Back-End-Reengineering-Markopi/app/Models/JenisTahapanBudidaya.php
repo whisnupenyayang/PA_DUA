@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class JenisTahapanBudidaya extends Model
+class   JenisTahapanBudidaya extends Model
 {
     use HasFactory;
 
@@ -14,4 +14,6 @@ class JenisTahapanBudidaya extends Model
         'deskripsi',
         'tahapan_budidaya_id',
     ];
+
+
 }

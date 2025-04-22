@@ -31,21 +31,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 
-Route::get('/budidaya/{id}', [BudidayaAPIController::class, 'getTahapanBudidaya']);
+Route::get('/budidaya/{jenisKOpi}', [BudidayaAPIController::class, 'getTahapanBudidaya']);
+Route::get('/budidaya/jenistahapanbudidaya/{id}', [BudidayaAPIController::class,'getJenisTahapanBudidaya']);
+
 //BUDIDAYA
 // Route::get('/budidaya', [BudidayaAPIController::class, 'index']);
-Route::get('/budidaya/pemilihan_lahan', [BudidayaAPIController::class, 'getPemilihanLahanData']);
-Route::get('/budidaya/kesesuaian_lahan', [BudidayaAPIController::class, 'getKesesuaianLahanData']);
-Route::get('/budidaya/persiapan_lahan', [BudidayaAPIController::class, 'getPersiapanLahanData']);
-Route::get('/budidaya/penanaman_penaung', [BudidayaAPIController::class, 'getPenanamanPenaungData']);
-Route::get('/budidaya/bahan_tanam_unggul+', [BudidayaAPIController::class, 'getBahanTanamUnggulData']);
-Route::get('/budidaya/pembibitan', [BudidayaAPIController::class, 'getPembibitanData']);
-Route::get('/budidaya/penanaman', [BudidayaAPIController::class, 'getPenanamanData']);
-Route::get('/budidaya/pemupukan', [BudidayaAPIController::class, 'getPemupukanData']);
-Route::get('/budidaya/pemangkasan', [BudidayaAPIController::class, 'getPemangkasanData']);
-Route::get('/budidaya/pengelolaan_penaung', [BudidayaAPIController::class, 'getPengelolaanPenaungData']);
-Route::get('/budidaya/pengendalian_hama', [BudidayaAPIController::class, 'getPengendalianHamaData']);
-Route::get('/budidaya/tahapan', [BudidayaAPIController::class, 'select_tahapan']);
+
 
 //PANEN
 Route::get('/panen', [PanenController::class, 'panen']);

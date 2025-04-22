@@ -11,4 +11,8 @@ class BudidayaProvider extends GetConnect {
   Future<Response> getTipeBudidaya(String jenis_kopi) {
     return get(Connection.buildUrl('/budidaya/$jenis_kopi'));
   }
+
+  Future<Response> getJenisTahapBudidaya(int id) {
+    return get(Connection.buildUrl('/budidaya/jenistahapanbudidaya/$id'));
+  }
 }
