@@ -109,7 +109,6 @@ class AdminWebViewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Admin")),
       body: SafeArea(
         child: WebView(
           initialUrl: 'http://192.168.52.244:8000/',

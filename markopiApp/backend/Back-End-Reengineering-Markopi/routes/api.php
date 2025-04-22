@@ -31,13 +31,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //BUDIDAYA
 // Route::get('/budidaya', [BudidayaAPIController::class, 'index']);
-
-
-Route::get('/budidaya/{jenis_kopi}',[BudidayaAPIController::class,'getTahapanBudidaya'] );
-Route::get('/budidaya/{jeniskopi}/{id}',[BudidayaApiController::class,'getJenisTahapanBudidaya']);
-    //
-
-
 Route::get('/budidaya/pemilihan_lahan', [BudidayaAPIController::class, 'getPemilihanLahanData']);
 Route::get('/budidaya/kesesuaian_lahan', [BudidayaAPIController::class, 'getKesesuaianLahanData']);
 Route::get('/budidaya/persiapan_lahan', [BudidayaAPIController::class, 'getPersiapanLahanData']);
