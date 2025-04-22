@@ -63,6 +63,8 @@
                 </a>
             </li>
 
+            
+
             <li class="nav-item">
                 <a href="/panen" class="nav-link {{ \Route::is('panen.index') ? 'active' : '' }}">
                     <i class="">
@@ -91,7 +93,7 @@
                 </a>
             </li>
             <!-- menu sebelumnya -->
-             <!--
+            <!--
              <li class="nav-item">
                 <a href="/minuman" class="nav-link {{ \Route::is('minuman.index') ? 'active' : '' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -107,34 +109,32 @@
             </li>
             
              -->
-            
+
             <!-- menu sebelumnya -->
 
             <li class="nav-item">
-                <a href="/minuman" class="nav-link {{ \Route::is('minuman.index') ? 'active' : '' }}">
+                <a href="{{ route('pengepul.index') }}" class="nav-link {{ \Route::is('pengepul.index') ? 'active' : '' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                        viewBox="0 0 640 512">
                         <path fill="white"
                             d="M96 64c0-17.7 14.3-32 32-32H448h64c70.7 0 128 57.3 128 128s-57.3 128-128 128H480c0 53-43 96-96 96H192c-53 0-96-43-96-96V64zM480 224h32c35.3 0 64-28.7 64-64s-28.7-64-64-64H480V224zM32 416H544c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32z" />
                     </svg>
-                    <p>
-                        Data Pengepul
-                    </p>
+                    <p>Data Pengepul</p>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a href="/minuman" class="nav-link {{ \Route::is('minuman.index') ? 'active' : '' }}">
+                <a href="{{ route('iklan.index') }}" class="nav-link {{ \Route::is('iklan.index') ? 'active' : '' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                        viewBox="0 0 640 512">
                         <path fill="white"
                             d="M96 64c0-17.7 14.3-32 32-32H448h64c70.7 0 128 57.3 128 128s-57.3 128-128 128H480c0 53-43 96-96 96H192c-53 0-96-43-96-96V64zM480 224h32c35.3 0 64-28.7 64-64s-28.7-64-64-64H480V224zM32 416H544c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32z" />
                     </svg>
-                    <p>
-                        Iklan
-                    </p>
+                    <p>Iklan</p>
                 </a>
             </li>
+
+
 
             <li i class="nav-item">
                 <a href="/pengajuan" class="nav-link {{ \Route::is('pengajuan') ? 'active' : '' }}">
@@ -180,19 +180,12 @@
             </li>
 
             <li i class="nav-item">
-                <a href="/data_user" class="nav-link {{ \Route::is('getDataUser') ? 'active' : '' }}">
+            <a href="{{ route('artikel.admin') }}" class="nav-link {{ \Route::is('artikel.admin') ? 'active' : '' }}">
                     <i class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-                            <g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd">
-                                <path d="M4 8.25a1 1 0 1 0 0-2a1 1 0 0 0 0 2m0 2a3 3 0 1 0 0-6a3 3 0 0 0 0 6" />
-                                <path
-                                    d="M4.05 11a1.5 1.5 0 0 0-1.5 1.5V14a1 1 0 0 1-2 0v-1.5a3.5 3.5 0 0 1 7 0V14a1 1 0 1 1-2 0v-1.5a1.5 1.5 0 0 0-1.5-1.5M16 8.25a1 1 0 1 1 0-2a1 1 0 0 1 0 2m0 2a3 3 0 1 1 0-6a3 3 0 0 1 0 6" />
-                                <path
-                                    d="M15.95 11a1.5 1.5 0 0 1 1.5 1.5V14a1 1 0 1 0 2 0v-1.5a3.5 3.5 0 0 0-7 0V14a1 1 0 1 0 2 0v-1.5a1.5 1.5 0 0 1 1.5-1.5" />
-                                <path
-                                    d="M10.05 13.75a2.5 2.5 0 0 0-2.5 2.5v1.5a1 1 0 0 1-2 0v-1.5a4.5 4.5 0 0 1 9 0v1.5a1 1 0 1 1-2 0v-1.5a2.5 2.5 0 0 0-2.5-2.5" />
-                                <path d="M10 11a1 1 0 1 0 0-2a1 1 0 0 0 0 2m0 2a3 3 0 1 0 0-6a3 3 0 0 0 0 6" />
-                            </g>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M7 15h10v4a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-4zm5-6a6 6 0 0 0-6-6H3v2a6 6 0 0 0 6 6h3m0 0a6 6 0 0 1 6-6h3v1a6 6 0 0 1-6 6h-3m0 3V9" />
                         </svg>
                     </i>
                     <p>
@@ -200,10 +193,11 @@
                     </p>
                 </a>
             </li>
+
         </ul>
     </nav>
 
-   
+
     <!-- /.sidebar-menu -->
 </div>
 <!-- /.sidebar -->
