@@ -11,6 +11,31 @@ class ListPengepul extends StatefulWidget {
 }
 
 class _ListPengepulState extends State<ListPengepul> {
+  // final api = Get.put(PengepulProviders());
+
+  // var data = [].obs; // RxList, reactive
+  // var isLoading = true.obs;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   fetchData(); // ambil data saat widget dibuat
+  // }
+
+  // void fetchData() async {
+  //   try {
+  //     isLoading.value = true;
+  //     final response = await api.getPengepul();
+  //     if (response.statusCode == 200) {
+  //       data.value = response.body;
+  //     }
+  //   } catch (e) {
+  //     print("Gagal ambil data: $e");
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
