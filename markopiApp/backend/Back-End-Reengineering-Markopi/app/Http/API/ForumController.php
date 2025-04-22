@@ -31,7 +31,7 @@ class ForumController extends Controller
                 'deskripsi' => 'required|string',
                 'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'user_id' => 'required',
-            ]);
+        ]);
 
             $forum = Forum::create([
                 'title' => $request->title,
