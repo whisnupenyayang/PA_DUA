@@ -22,10 +22,12 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Beranda(), // Menampilkan halaman utama
       getPages: AppPages.pages,
       // home: ListPengepul(),
