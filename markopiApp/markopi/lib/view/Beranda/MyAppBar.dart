@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:markopi/view/Login/login.dart'; // pastikan path benar
 
 class MyAppBar extends StatefulWidget {
   const MyAppBar({super.key});
@@ -37,27 +38,35 @@ class _MyAppBarState extends State<MyAppBar> {
             ],
           ),
           const Spacer(),
-          Container(
-            width: 80,
-            height: 35,
-            decoration: BoxDecoration(
-              color: Color(0xFF2696D6),
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 4,
-                  offset: Offset(2, 2),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Login()), // <- ini penting
+              );
+            },
+            child: Container(
+              width: 80,
+              height: 35,
+              decoration: BoxDecoration(
+                color: Color(0xFF2696D6),
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 4,
+                    offset: Offset(2, 2),
+                  ),
+                ],
+              ),
+              alignment: Alignment.center,
+              child: const Text(
+                'masuk',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
                 ),
-              ],
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              'masuk',
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
               ),
             ),
           ),
