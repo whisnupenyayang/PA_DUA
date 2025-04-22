@@ -28,22 +28,18 @@ class BudidayaController extends GetxController {
 
       jenisKopi.value = json.map((item) => JenisKopi.fromJson(item)).toList();
     } else {
-  
+      Get.snackbar('Error', 'Gagal Mengambil data');
     }
   }
 
-  Future<void> fetchBudidaya(String jenis_kopi) async {
-    print(jenis_kopi);
-
-    final response = await budidayaProvider.getTipeBudidaya(jenis_kopi);
+  Future<void> fetchBudidaya(int id) async {
+    final response = await budidayaProvider.getTipeBudidaya(id);
     if (response.statusCode == 200) {
       final List<dynamic> json = response.body;
       print(response.body);
       budidayaList.value = json.map((item) => Budidaya.fromJson(item)).toList();
     } else {
-    print('ajdosjodkaldksldjakdsos');
-
-      
+      Get.snackbar('Error', 'Gagal Mengambil data');
     }
   }
 }

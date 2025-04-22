@@ -1,9 +1,14 @@
 import 'package:get/get.dart';
+import 'package:markopi/providers/Connection.dart';
 
 class ForumProvider extends GetConnect {
-  final String url = 'http://10.0.2.2:8000/api';
+  final String url = '/forum';
 
   Future<Response> getForum() {
-    return get('$url/forum');
+    return get(Connection.buildUrl(url));
+  }
+
+  Future<Response> getKomentar(int id) {
+    return get(Connection.buildUrl('/forumKomen/$id'));
   }
 }

@@ -10,23 +10,23 @@ class TipeBudidaya extends StatefulWidget {
 
 class _TipeBudidayaState extends State<TipeBudidaya> {
   final BudidayaController budidayaC = Get.put(BudidayaController());
-  String? jenis_kopi;
 
-  @override
+  int? id;
+
   void initState() {
     super.initState();
-    jenis_kopi = Get.parameters['jenis_kopi'];
+    final idParam = Get.parameters['id'];
+    id = int.tryParse(idParam ?? '');
 
-    if (jenis_kopi != null) {
-      budidayaC.budidayaList.clear();
-      print(jenis_kopi);
-      budidayaC.fetchBudidaya(jenis_kopi!);
+    if (id != null) {
+      budidayaC.budidayaList.clear(); // <--- Tambahkan ini
+      budidayaC.fetchBudidaya(id!);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (jenis_kopi == null) {
+    if (id == null) {
       return Scaffold(
         appBar: AppBar(title: Text("Error")),
         body: Center(child: Text("ID tidak valid")),
@@ -42,7 +42,7 @@ class _TipeBudidayaState extends State<TipeBudidaya> {
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.back(),
         ),
-        title: Text(jenis_kopi!, style: TextStyle(color: Colors.white)),
+        title: Text('Kopi Arabika', style: TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
       body: Container(
@@ -76,8 +76,8 @@ class _TipeBudidayaState extends State<TipeBudidaya> {
 
                     return GestureDetector(
                       onTap: () {
-                        Get.to(() => JenisTahapBudidayaView(),
-                            arguments: {"tahapan": budidaya});
+                        Get.to(() =>
+                            JenisTahapBudidayaView()); // arahkan ke halaman tujuan
                       },
                       child: Container(
                         margin: EdgeInsets.only(bottom: 16),
@@ -111,9 +111,7 @@ class _TipeBudidayaState extends State<TipeBudidaya> {
                               child: Text(
                                 budidaya.nama_tahapan,
                                 style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                    fontSize: 16, fontWeight: FontWeight.w600),
                               ),
                             ),
                             Container(

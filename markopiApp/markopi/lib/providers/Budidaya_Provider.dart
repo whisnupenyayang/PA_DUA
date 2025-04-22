@@ -8,7 +8,7 @@ class BudidayaProvider extends GetConnect {
     return get('$url/ujicoba');
   }
 
-  Future<Response> getTipeBudidaya(String jenis_kopi) {
-    return get(Connection.buildUrl('/budidaya/$jenis_kopi'));
+  Future<Response> getTipeBudidaya(int id) {
+    return get(Connection.buildUrl('/ujicoba/$id'));
   }
 }
