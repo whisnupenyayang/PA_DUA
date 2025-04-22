@@ -17,6 +17,17 @@ class ArtikelController extends Controller
         ]);
     }
 
+    //artikel admin
+    public function artikel_admin()
+    {
+        $artikels = Artikel::get(); // Atau sesuai kebutuhan
+        return view('admin.artikel.artikel', compact('artikels'), [
+            'title' => 'Artikel'
+        ]);
+    }
+    
+
+
     public function artikel()
     {
         $artikels = Artikel::get();

@@ -8,6 +8,8 @@ use App\Http\Controllers\MinumanController;
 use App\Http\Controllers\BudidayaController;
 use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\PascaPanenController;
+use App\Http\Controllers\IklanController;
+use App\Http\Controllers\PengepulController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,8 +57,17 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Pasca Panen
     Route::resource('pasca', PascaPanenController::class)->names(['index' => 'pasca.index']);
 
+    // Iklan
+    Route::resource('iklan', IklanController::class)->names(['index' => 'iklan.index']);
+
     // Minuman
     Route::resource('minuman', MinumanController::class)->names(['index' => 'minuman.index']);
+
+    // Arttikel
+    Route::get('admin/artikel', [ArtikelController::class, 'artikel_admin'])->name('artikel.admin');
+
+    // Pengepul
+    Route::resource('pengepul', PengepulController::class)->names(['index' => 'pengepul.index']);
 
     // Penjualan
     Route::get('penjualan', [BudidayaController::class, 'penjualan_index'])->name('penjualan.index');
