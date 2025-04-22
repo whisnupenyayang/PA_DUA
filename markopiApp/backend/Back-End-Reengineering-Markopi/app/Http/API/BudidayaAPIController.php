@@ -7,6 +7,8 @@ use App\Models\Budidaya;
 use App\Models\Pengajuan;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\JenisTahapanBudidaya;
+use App\Models\TahapanBudidaya;
 use Illuminate\Support\Facades\Http;
 
 class BudidayaAPIController extends Controller
@@ -25,6 +27,20 @@ class BudidayaAPIController extends Controller
         $budidayas = Budidaya::with('images')->get();
         return response()->json($budidayas);
     }
+
+
+    public function getTahapanBudidaya($jenisKopi){
+        $tahapanbudidaya = TahapanBudidaya::where('jenis_kopi', $jenisKopi)->get();
+        return response()->json($tahapanbudidaya);
+
+    }
+
+    public function getJenisTahapanBudidaya($jeniskopi,$id){
+        $jenisTB = JenisTahapanBudidaya::where('tahapan_budidaya_id', $id);
+
+        return response()->json($jenisTB);
+    }
+
 
     public function getPemilihanLahanData()
     {
