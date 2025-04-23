@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markopi/controllers/Budidaya_Controller.dart';
+import 'package:markopi/routes/route_name.dart';
 import './Jenis_Tahap_Budidaya.dart';
 
 class TipeBudidaya extends StatefulWidget {
@@ -76,8 +77,8 @@ class _TipeBudidayaState extends State<TipeBudidaya> {
 
                     return GestureDetector(
                       onTap: () {
-                        Get.to(() => JenisTahapBudidayaView(),
-                            arguments: {"tahapan": budidaya});
+                        Get.toNamed(RouteName.budidaya +
+                            '/jenistahapanbudidaya/${budidaya.id}');
                       },
                       child: Container(
                         margin: EdgeInsets.only(bottom: 16),

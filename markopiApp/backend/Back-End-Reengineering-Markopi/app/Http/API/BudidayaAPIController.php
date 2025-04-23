@@ -35,9 +35,17 @@ class BudidayaAPIController extends Controller
     }
 
     public function getJenisTahapanBudidaya($id){
-        $jenisTB = JenisTahapanBudidaya::where('tahapan_budidaya_id', $id)->get();
+        $jenisTB = JenisTahapanBudidaya::where('tahapan_budidaya_id', $id)->select('id', 'judul','tahapan_budidaya_id','created_at', 'updated_at' )->get();
+
+
 
         return response()->json($jenisTB);
+    }
+
+    public function getJenisTahapBudidayaById($id){
+        $jenisTBById = JenisTahapanBudidaya::find($id);
+
+        return response()->json($jenisTBById);
     }
 
 

@@ -33,6 +33,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/budidaya/{jenisKOpi}', [BudidayaAPIController::class, 'getTahapanBudidaya']);
 Route::get('/budidaya/jenistahapanbudidaya/{id}', [BudidayaAPIController::class,'getJenisTahapanBudidaya']);
+Route::get('budidaya/jenistahapanbudidaya/detail/{id}', [BudidayaAPIController::class, 'getJenisTahapBudidayaById']);
 
 //BUDIDAYA
 // Route::get('/budidaya', [BudidayaAPIController::class, 'index']);

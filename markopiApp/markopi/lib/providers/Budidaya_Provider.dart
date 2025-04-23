@@ -15,4 +15,9 @@ class BudidayaProvider extends GetConnect {
   Future<Response> getJenisTahapBudidaya(int id) {
     return get(Connection.buildUrl('/budidaya/jenistahapanbudidaya/$id'));
   }
+
+  Future<Response> getJenisTahapBudidayaDetail(int id) {
+    return get(
+        Connection.buildUrl('/budidaya/jenistahapanbudidaya/detail/$id'));
+  }
 }

@@ -1,6 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:markopi/controllers/Budidaya_Controller.dart';
+import 'package:markopi/models/JenisTahapBudidaya_Model.dart';
 
 class JenisTahapBudidayDetailView extends StatefulWidget {
   const JenisTahapBudidayDetailView({super.key});
@@ -12,48 +13,84 @@ class JenisTahapBudidayDetailView extends StatefulWidget {
 
 class _JenisTahapBudidayDetailViewState
     extends State<JenisTahapBudidayDetailView> {
+  final BudidayaController budidayaC = Get.put(BudidayaController());
+
+  int? id;
+
+  @override
+  void initState() {
+    super.initState();
+    try {
+      print('owkw');
+      id = int.tryParse(Get.parameters['id'] ?? '');
+    } catch (e) {
+      print('owkw');
+      id = null;
+    }
+
+    if (id != null) {
+      budidayaC.jenisTahapBudidayaDetail.value =
+          budidayaC.jenisTahapBudidayaDetail.value = JenisTahapBudidaya.empty();
+      budidayaC.fetchJenisTahapBudidayaDetail(id!);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (id == null) {
+      return Scaffold(
+        appBar: AppBar(title: Text("Error")),
+        body: Center(child: Text("ID tidak valid")),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("makanan"),
+        title: Text("Jenis Tahap Budidaya"),
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
-        child: Container(
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Text(
-                "Pembukaan Lahan",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(height: 21),
-              Container(
-                height: 181,
-                color: Colors.grey,
-              ),
-              SizedBox(height: 14),
-              Text(
-                "Pembongkaran pohon-pohon, tunggul beserta perakarannya.Pembongkaran tanaman perdu dan pembersihan gulma.  Pembukaan lahan tanpa pembakaran dan penggunaan herbisida secara  bijaksana. Sebagian tanaman kayu-kayuan yang diameternya < 30 cm  dapat ditinggalkan sebagai penaung tetap dengan populasi 200-500  pohon/ha diusahakan dalam arah Utara-Selatan. Jika memungkinkan  tanaman kayu-kayuan yang ditinggalkan sebagai penaung tetap  memiliki nilai ekonomi tinggi.Pembersihan lahan, kayu-kayu ditumpuk di satu tempat di pinggir  kebun. Gulma dapat dibersihkan secara manual maupun secara kimiawi  menggunakan herbisida sistemik maupun kontak tergantung jenis  gulmanya secara bijaksana. Pembuatan jalan-jalan produksi (jalan setapak) dan saluran drainase. Pembuatan teras-teras pada lahan yang memiliki kemiringan lebih dari  30%.",
-                // (Isi teks panjang kamu di sini)
+      body: Obx(() {
+        final item = budidayaC.jenisTahapBudidayaDetail.value;
 
-                style: TextStyle(fontSize: 14),
-              ),
-              SizedBox(height: 14),
-              Container(
-                height: 186,
-                color: Colors.blue,
-              ),
-            ],
+        // loading state
+        if (item.id == 0) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        return SingleChildScrollView(
+          padding: EdgeInsets.all(16),
+          child: Container(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Text(
+                  item.judul,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(height: 21),
+                Container(
+                  height: 181,
+                  color: Colors.grey,
+                ),
+                SizedBox(height: 14),
+                Text(
+                  item.deskripsi ?? '-',
+                  style: TextStyle(fontSize: 14),
+                ),
+                SizedBox(height: 14),
+                Container(
+                  height: 186,
+                  color: Colors.blue,
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

@@ -1,10 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:markopi/controllers/Budidaya_Controller.dart';
-
 class Budidaya {
   int id;
   String nama_tahapan;
-  String  jenis_kopi;
+  String jenis_kopi;
 
   Budidaya({
     required this.id,
