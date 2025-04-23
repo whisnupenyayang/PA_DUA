@@ -3,6 +3,8 @@ import 'package:markopi/controllers/Artikel_Controller.dart';
 import './MainMenu.dart';
 import 'package:markopi/models/Artikel_Model.dart';
 import 'package:get/get.dart';
+import 'weather_service.dart';
+import 'package:geolocator/geolocator.dart';
 
 class BerandaBody extends StatefulWidget {
   const BerandaBody({super.key});
@@ -13,6 +15,50 @@ class BerandaBody extends StatefulWidget {
 
 class _BerandaBodyState extends State<BerandaBody> {
   final ArtikelController artikelC = Get.put(ArtikelController());
+  final WeatherService weatherService = WeatherService();
+  Map<String, dynamic> weatherData = {};
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  void _getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      print('Layanan lokasi tidak aktif');
+      return;
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission != LocationPermission.whileInUse && permission != LocationPermission.always) {
+        print('Izin lokasi ditolak');
+        return;
+      }
+    }
+
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    _fetchWeatherData(position.latitude, position.longitude);
+  }
+
+  void _fetchWeatherData(double latitude, double longitude) async {
+    try {
+      var data = await weatherService.getWeatherDataByCoordinates(latitude, longitude);
+      setState(() {
+        weatherData = data;
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +67,7 @@ class _BerandaBodyState extends State<BerandaBody> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            buildWeatherCard(),
+            isLoading ? Center(child: CircularProgressIndicator()) : buildWeatherCard(weatherData),
             SizedBox(height: 30),
             MainMenu(),
             SizedBox(height: 30),
@@ -32,18 +78,11 @@ class _BerandaBodyState extends State<BerandaBody> {
     );
   }
 
-  // === KARTU CUACA DENGAN DESAIN GOOGLE CUACA ===
-  Widget buildWeatherCard() {
-    List<Map<String, dynamic>> forecast = [
-      {"day": "Kam", "icon": Icons.beach_access, "temp": "24° 21°"},
-      {"day": "Jum", "icon": Icons.flash_on, "temp": "26° 21°"},
-      {"day": "Sab", "icon": Icons.beach_access, "temp": "26° 21°"},
-      {"day": "Min", "icon": Icons.wb_sunny, "temp": "27° 21°"},
-      {"day": "Sen", "icon": Icons.wb_cloudy, "temp": "28° 21°"},
-      {"day": "Sel", "icon": Icons.wb_sunny, "temp": "29° 21°"},
-      {"day": "Rab", "icon": Icons.cloud, "temp": "28° 21°"},
-      {"day": "Kam", "icon": Icons.beach_access, "temp": "28° 21°"},
-    ];
+  Widget buildWeatherCard(Map<String, dynamic> weatherData) {
+    var mainWeather = weatherData['main'];
+    var weatherDesc = weatherData['weather'][0]['description'];
+    var temperature = mainWeather['temp'];
+    var cityName = weatherData['name'];
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -62,7 +101,6 @@ class _BerandaBodyState extends State<BerandaBody> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Bagian atas
           Row(
             children: [
               Icon(Icons.flash_on, size: 64, color: Colors.orange),
@@ -70,49 +108,22 @@ class _BerandaBodyState extends State<BerandaBody> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('26°C', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+                  Text('$temperature°C', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
                   SizedBox(height: 4),
-                  Text('Gerimis berpetir', style: TextStyle(fontSize: 16)),
-                  Text('Presipitasi: 45%  Kelembapan: 79%  Angin: 6 km/h', style: TextStyle(fontSize: 12)),
+                  Text(weatherDesc, style: TextStyle(fontSize: 16)),
                   SizedBox(height: 4),
-                  Text('Jumat', style: TextStyle(fontSize: 14, color: Colors.grey[700])),
+                  Text('Cuaca di $cityName', style: TextStyle(fontSize: 14, color: Colors.grey[700])),
                 ],
               )
             ],
           ),
           SizedBox(height: 20),
           Divider(),
-
-          // Forecast 7 hari
-          SizedBox(
-            height: 100,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: forecast.length,
-              itemBuilder: (context, index) {
-                var item = forecast[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(item["day"], style: TextStyle(fontWeight: FontWeight.bold)),
-                      SizedBox(height: 8),
-                      Icon(item["icon"], size: 32, color: Colors.blue[700]),
-                      SizedBox(height: 8),
-                      Text(item["temp"], style: TextStyle(fontSize: 12)),
-                    ],
-                  ),
-                );
-              },
-            ),
-          )
         ],
       ),
     );
   }
 
-  // === ARTIKEL LIST ===
   Widget buildHorizontalListView() {
     return Obx(() {
       if (artikelC.artikel.isEmpty) {
