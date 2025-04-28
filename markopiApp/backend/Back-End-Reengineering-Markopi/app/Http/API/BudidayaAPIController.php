@@ -9,7 +9,12 @@ use App\Models\JenisTahapanBudidaya;
 use App\Models\TahapanBudidaya;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\TestImage;
+use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Http;
+
+use Illuminate\Support\Facades\Storage;
 
 class BudidayaAPIController extends Controller
 {
@@ -35,7 +40,7 @@ class BudidayaAPIController extends Controller
     }
 
     public function getJenisTahapanBudidaya($id){
-        $jenisTB = JenisTahapanBudidaya::where('tahapan_budidaya_id', $id)->select('id', 'judul','tahapan_budidaya_id','created_at', 'updated_at' )->get();
+        $jenisTB = JenisTahapanBudidaya::where('tahapan_budidaya_id', $id)->get();
 
 
 
@@ -48,5 +53,63 @@ class BudidayaAPIController extends Controller
         return response()->json($jenisTBById);
     }
 
+    public function storeTahapanBudidaya(Request $request){
+        $request->validate([
+            'nama_tahapan' => 'required',
+            'jenis_kopi'=> 'required',
+        ]);
+
+        $jenisKopi = TahapanBudidaya::create(
+            [
+                'nama_tahapan' => $request->nama_tahapan,
+                'jenis_kopi' => $request->jenis_kopi,
+            ]
+        );
+
+        if($jenisKopi){
+            return response()->json('berhasil');
+        }
+
+        return response()->json('gagal');
+
+
+    }
+
+    public function storeJenisTahapanBudidaya(Request $request)
+    {
+        $request->validate([
+            'judul' => 'required|string',
+            'deskripsi' => 'required',
+            'nama_file' => 'nullable|image|mimes:jpeg,png,jpg|max:1028',
+            'tahapan_budidaya_id' => 'required',
+        ]);
+
+        $namaFile = null;
+        $path = null;
+
+        if ($request->hasFile('nama_file')) {
+            $file = $request->file('nama_file');
+            $namaFile = $file->getClientOriginalName();
+            $path = $file->store('budidayaimage', 'public'); // hasil: 'budidayaimage/namafile.jpg'
+        }
+
+        $budidaya = JenisTahapanBudidaya::create([
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+            'nama_file' => $namaFile,
+            'url_gambar' => $path ? '/storage/' . $path : null, // pakai /storage/ kalau dari public disk
+            'tahapan_budidaya_id' => $request->tahapan_budidaya_id,
+        ]);
+
+        if ($budidaya) {
+            return response()->json('berhasil');
+        }
+
+        return response()->json('gagal');
+    }
+
+
+
 
 }
+

@@ -13,14 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('jenis_tahapan_budidayas', function (Blueprint $table) {
+        Schema::create('rata_rata_herga_kopis', function (Blueprint $table) {
             $table->id();
-            $table->string('judul');
-            $table->text('deskripsi');
-            $table->string('nama_file')->nullable();
-            $table->string('url_gambar');
-            $table->unsignedBigInteger('tahapan_budidaya_id');
-            $table->foreign('tahapan_budidaya_id')->references('id')->on('tahapan_budidayas');
+            $table->string('jenis_kopi');
+            $table->integer('rata_rata_harga');
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jenis_tahapan_budidayas');
+        Schema::dropIfExists('rata_rata_herga_kopis');
     }
 };

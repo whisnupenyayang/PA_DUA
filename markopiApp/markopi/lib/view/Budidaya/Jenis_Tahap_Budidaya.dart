@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:markopi/controllers/Budidaya_Controller.dart';
 import 'package:markopi/routes/route_name.dart';
 import './Jenis_Tahap_Budidaya_Detail.dart';
+import 'package:markopi/providers/Connection.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class JenisTahapBudidayaView extends StatefulWidget {
   @override
@@ -69,10 +71,16 @@ class _JenisTahapBudidayaViewState extends State<JenisTahapBudidayaView> {
                   child: Row(
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * 3 / 8,
-                        height: 100,
-                        color: Colors.black,
-                      ),
+                          width: MediaQuery.of(context).size.width * 3 / 8,
+                          height: 100,
+                          color: Colors.black,
+                          child: CachedNetworkImage(
+                            imageUrl: 'http://10.0.2.2:8000${item.url_gambar}',
+                            placeholder: (context, url) => Center(
+                                child: CircularProgressIndicator()), // loading
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error), // error
+                          )),
                       SizedBox(width: 15),
                       Expanded(
                         child: Container(

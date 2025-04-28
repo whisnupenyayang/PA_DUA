@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:markopi/models/JenisKopi_Model.dart';
+
 import 'package:markopi/models/JenisTahapBudidaya_Model.dart';
 import 'package:markopi/providers/Budidaya_Provider.dart';
 import 'package:markopi/models/Budidaya_Model.dart';

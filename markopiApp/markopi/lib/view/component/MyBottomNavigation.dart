@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markopi/routes/route_name.dart';
+import 'package:markopi/service/token_storage.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   const MyBottomNavigationBar({super.key});
@@ -10,6 +11,17 @@ class MyBottomNavigationBar extends StatefulWidget {
 }
 
 class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
+  String? token;
+  @override
+  void initState() {
+    _loadToken();
+  }
+
+  Future<void> _loadToken() async {
+    token = await TokenStorage.getToken();
+    print('Token yang tersimpan: $token');
+  }
+
   int _selectedIndex = 0;
   bool isLoggedIn = false;
 
@@ -18,16 +30,16 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
     RouteName.forum,
     RouteName.forum + '/1',
     RouteName.forum,
-    RouteName.forum,
+    RouteName.login,
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
 
-      if (index != 0 && !isLoggedIn) {
-        Get.offAllNamed(
-          RouteName.forum,
+      if (token == null) {
+        Get.toNamed(
+          RouteName.login,
         );
         return;
       }
@@ -64,8 +76,8 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
       ],
       currentIndex: _selectedIndex,
       selectedItemColor: const Color(0xFF297CBB),
-      showSelectedLabels: true, // label selalu tampil saat item dipilih
-      showUnselectedLabels: false, // label tampil untuk item yang tidak dipilih
+      showSelectedLabels: true,
+      showUnselectedLabels: false,
       onTap: _onItemTapped,
     );
   }

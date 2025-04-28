@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markopi/controllers/Budidaya_Controller.dart';
 import 'package:markopi/models/JenisTahapBudidaya_Model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class JenisTahapBudidayDetailView extends StatefulWidget {
   const JenisTahapBudidayDetailView({super.key});
@@ -73,8 +74,14 @@ class _JenisTahapBudidayDetailViewState
                 ),
                 SizedBox(height: 21),
                 Container(
-                  height: 181,
                   color: Colors.grey,
+                  child: CachedNetworkImage(
+                    imageUrl: 'http://10.0.2.2:8000${item.url_gambar}',
+                    placeholder: (context, url) =>
+                        Center(child: CircularProgressIndicator()), // loading
+                    errorWidget: (context, url, error) =>
+                        Icon(Icons.error), // error
+                  ),
                 ),
                 SizedBox(height: 14),
                 Text(
