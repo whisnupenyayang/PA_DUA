@@ -13,6 +13,7 @@ use App\Http\API\ReplyKomentarController;
 use App\Http\API\ResetPasswordController;
 use App\Http\API\ForgotPasswordController;
 use App\Http\Controllers\API\PengepulController;
+use App\Http\Controllers\BudidayaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,9 +32,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 
-Route::get('/budidaya/{jenisKOpi}', [BudidayaAPIController::class, 'getTahapanBudidaya']);
+Route::get('/budidaya/{jenisKopi}', [BudidayaAPIController::class, 'getTahapanBudidaya']);
 Route::get('/budidaya/jenistahapanbudidaya/{id}', [BudidayaAPIController::class,'getJenisTahapanBudidaya']);
-Route::get('budidaya/jenistahapanbudidaya/detail/{id}', [BudidayaAPIController::class, 'getJenisTahapBudidayaById']);
+Route::get('/budidaya/jenistahapanbudidaya/detail/{id}', [BudidayaAPIController::class, 'getJenisTahapBudidayaById']);
+Route::post('/budidaya/storejenistahapanbudidaya', [BudidayaApiController::class, 'storeJenisTahapanBudidaya']);
+Route::post('/upload', [BudidayaApiController::class, 'storeTahapanBudidaya']);
+
+
 
 //BUDIDAYA
 // Route::get('/budidaya', [BudidayaAPIController::class, 'index']);
@@ -62,7 +67,9 @@ Route::post('/pengajuantambah', [PengajuanController::class, 'tambahData']);
 Route::get('/komunitas', [BudidayaAPIController::class, 'getKomunitasData']);
 
 Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
+
+
+Route::post('/login', [AuthController::class, 'login']);
 Route::post('password/forgot',[ForgotPasswordController::class,'forgotPassword']);
 Route::post('password/reset',[ResetPasswordController::class,'resetPassword']);
 // Route::middleware('auth:sanctum')->group(function () {
@@ -73,17 +80,20 @@ Route::get('getUserById/{id}', [AuthController::class, 'getUserById']);
 Route::get('getAllUser', [AuthController::class, 'getAllUser']);
 Route::put('userUpdate/{id}', [AuthController::class, 'updateUserProfile']);
 
+
+
+
 Route::get('artikel', [ArtikelController::class, 'index']);
 Route::get('artikel/{id}', [ArtikelController::class, 'show']);
 Route::post('artikel', [ArtikelController::class, 'store']);
 Route::post('artikel/{id}', [ArtikelController::class, 'update']);
 Route::delete('artikel/{id}', [ArtikelController::class, 'destroy']);
-Route::post('artikel_comment/{id}', [ArtikelController::class, 'comment_artikel']);
-Route::post('artikel_like/{id}', [ArtikelController::class, 'like_artikel']);
-Route::post('artikel_dislike/{id}', [ArtikelController::class, 'dislike_artikel']);
+
 Route::get('artikelByUser/{user_id}', [ArtikelController::class, 'articlesByUser']);
 
-Route::get('forum', [ForumController::class, 'index']);
+// Route::get('forum', [ForumController::class, 'index']);
+Route::get('/forum',[ForumController::class,'getLimaForum']);
+// Route::get('/forum',[ForumController::class,'getLimaForum'])->middleware(['auth:sanctum']);
 Route::get('forum/{id}', [ForumController::class, 'show']);
 Route::get('user/forum/{user_id}', [ForumController::class, 'getForumByUserId']);
 Route::post('forum', [ForumController::class, 'store']);
@@ -111,6 +121,4 @@ Route::delete('komentar/{komentar_id}/user/{user_id}/replies/{id}', [ReplyKoment
 // ----------------------------------------------------PENGEPUL----------------------------------------------------
 
 
-Route::get('pengepul',[PengepulController::class,'index']);
-Route::get('pengepul/{id}',[PengepulController::class,'pengepulDetail']);
-Route::post('pengepul',[PengepulController::class,'store']);
+

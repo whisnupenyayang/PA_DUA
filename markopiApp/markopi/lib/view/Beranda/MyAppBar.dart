@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:markopi/routes/route_name.dart';
 import 'package:markopi/view/Login/login.dart'; // pastikan path benar
 
 class MyAppBar extends StatefulWidget {
@@ -40,10 +42,7 @@ class _MyAppBarState extends State<MyAppBar> {
           const Spacer(),
           InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Login()), // <- ini penting
-              );
+              Get.toNamed(RouteName.login);
             },
             child: Container(
               width: 80,

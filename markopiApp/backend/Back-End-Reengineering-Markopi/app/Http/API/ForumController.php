@@ -23,6 +23,13 @@ class ForumController extends Controller
         // $forums = Forum
     }
 
+    public function getLimaForum(Request $request){
+        $limit = $request->get('limit',5);
+        $forum = Forum::paginate($limit);
+
+        return ForumResource::collection($forum);
+    }
+
     public function store(Request $request)
     {
         try {
@@ -51,17 +58,17 @@ class ForumController extends Controller
                     }
                 }
 
-                // Generate URL for the image
+                // ngambil url
                 $gambarUrl = $gambarPath ? asset('storage/' . $gambarPath) : null;
 
-                // Data added successfully, include image URL in the response
+                //jika data berhasil
                 return response()->json([
                     'message' => 'Forum berhasil ditambahkan',
                     'status' => 'success',
                     'gambar' => $gambarUrl,
                 ], 200);
             } else {
-                // Failed to add data
+               //jika gagal ngambil data
                 return response()->json(['message' => 'Gagal menambahkan data', 'status' => 'error', 'error' => 'Failed to save data to the database'], 500);
             }
         } catch (\Exception $e) {

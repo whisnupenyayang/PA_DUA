@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:markopi/controllers/Artikel_Controller.dart';
+import 'package:markopi/service/token_storage.dart';
 import './MainMenu.dart';
 import 'package:markopi/models/Artikel_Model.dart';
 import 'package:get/get.dart';
@@ -18,6 +19,7 @@ class _BerandaBodyState extends State<BerandaBody> {
   final WeatherService weatherService = WeatherService();
   Map<String, dynamic> weatherData = {};
   bool isLoading = true;
+  String? token;
 
   @override
   void initState() {
@@ -38,19 +40,22 @@ class _BerandaBodyState extends State<BerandaBody> {
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse && permission != LocationPermission.always) {
+      if (permission != LocationPermission.whileInUse &&
+          permission != LocationPermission.always) {
         print('Izin lokasi ditolak');
         return;
       }
     }
 
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
     _fetchWeatherData(position.latitude, position.longitude);
   }
 
   void _fetchWeatherData(double latitude, double longitude) async {
     try {
-      var data = await weatherService.getWeatherDataByCoordinates(latitude, longitude);
+      var data =
+          await weatherService.getWeatherDataByCoordinates(latitude, longitude);
       setState(() {
         weatherData = data;
         isLoading = false;
@@ -67,7 +72,9 @@ class _BerandaBodyState extends State<BerandaBody> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            isLoading ? Center(child: CircularProgressIndicator()) : buildWeatherCard(weatherData),
+            isLoading
+                ? Center(child: CircularProgressIndicator())
+                : buildWeatherCard(weatherData),
             SizedBox(height: 30),
             MainMenu(),
             SizedBox(height: 30),
@@ -108,11 +115,14 @@ class _BerandaBodyState extends State<BerandaBody> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('$temperature°C', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+                  Text('$temperature°C',
+                      style:
+                          TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
                   SizedBox(height: 4),
                   Text(weatherDesc, style: TextStyle(fontSize: 16)),
                   SizedBox(height: 4),
-                  Text('Cuaca di $cityName', style: TextStyle(fontSize: 14, color: Colors.grey[700])),
+                  Text('Cuaca di $cityName',
+                      style: TextStyle(fontSize: 14, color: Colors.grey[700])),
                 ],
               )
             ],

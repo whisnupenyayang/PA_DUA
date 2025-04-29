@@ -4,160 +4,173 @@ import 'package:markopi/controllers/Forum_Controller.dart';
 import 'package:markopi/routes/route_name.dart';
 import '../component/MyBottomNavigation.dart';
 
-class ListForum extends StatelessWidget {
-  ListForum({super.key});
+class ListForum extends StatefulWidget {
+  const ListForum({super.key});
 
+  @override
+  _ListForumState createState() => _ListForumState();
+}
+
+class _ListForumState extends State<ListForum> {
   final forumController = Get.put(ForumController());
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    forumController.fetchForum(); // panggil fetch pertama kali
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        forumController.fetchForum();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Forum')),
       body: Obx(() {
-        if (forumController.forum.isEmpty) {
-          print('kosong');
+        if (forumController.forum.isEmpty && forumController.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
 
         return ListView.builder(
-          itemCount: forumController.forum.length,
+          controller: _scrollController, // pasang controller di ListView
+          itemCount:
+              forumController.forum.length + (forumController.hasMore ? 1 : 0),
           itemBuilder: (context, index) {
-            final forum = forumController.forum[index];
+            if (index < forumController.forum.length) {
+              final forum = forumController.forum[index];
 
-            return GestureDetector(
-              onTap: () {
-                print('tertekan');
-              },
-              child: Card(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    if (forum.imageUrls.isNotEmpty)
-                      Image.network(
-                        forum.imageUrls.first,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 200,
-                      ),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Icon User
-                          Icon(
-                            Icons.account_circle,
-                            color: Color(0xFF2696D6), // Warna Biru
-                            size: 40, // Ukuran ikon
-                          ),
-                          SizedBox(width: 8.0), // Spacer
-                          // Informasi Tanggal dan Username
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Username
-                                Text(
-                                  (forum.user.namaLengkap ?? 'Loading...')
-                                      .toString(),
-                                  style: TextStyle(
-                                    color: Color(0xFF2696D6),
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                // Tanggal
-                                Text(
-                                  forum.tanggal,
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ],
+              return GestureDetector(
+                onTap: () {
+                  print('tertekan');
+                },
+                child: Card(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      if (forum.imageUrls.isNotEmpty)
+                        Image.network(
+                          forum.imageUrls.first,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: 200,
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.account_circle,
+                              color: Color(0xFF2696D6),
+                              size: 40,
                             ),
+                            SizedBox(width: 8.0),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    (forum.user.namaLengkap ?? 'Loading...')
+                                        .toString(),
+                                    style: TextStyle(
+                                      color: Color(0xFF2696D6),
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  Text(
+                                    forum.tanggal,
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 8.0),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(
+                          forum.judulForum,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(
+                          forum.deskripsiForum,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ),
+                      Divider(thickness: 1),
+                      ButtonBar(
+                        alignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.thumb_up),
+                                onPressed: () {},
+                              ),
+                              Text('Suka',
+                                  style: TextStyle(color: Colors.grey)),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.thumb_down),
+                                onPressed: () {},
+                              ),
+                              Text('Tidak Suka',
+                                  style: TextStyle(color: Colors.grey)),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.comment),
+                                onPressed: () {
+                                  Get.toNamed(
+                                      RouteName.forumkomen + '/${forum.id}');
+                                },
+                              ),
+                              Text('Komentar',
+                                  style: TextStyle(color: Colors.grey)),
+                            ],
                           ),
                         ],
                       ),
-                    ),
-
-                    SizedBox(height: 8.0), // Spacer
-// Padding di sekitar judul forum
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        forum.judulForum,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                        ),
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        forum.deskripsiForum,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
-                    ),
-                    Divider(thickness: 1),
-                    ButtonBar(
-                      alignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        // Like Button
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.thumb_up),
-                              onPressed: () {
-                                // Handle like action
-                              },
-                            ),
-                            Text(
-                              'Suka',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                        // Dislike Button
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.thumb_down),
-                              onPressed: () {
-                                // Handle dislike action
-                              },
-                            ),
-                            Text(
-                              'Tidak Suka',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                        // Comment Button
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.comment),
-                              onPressed: () {
-                                Get.toNamed(RouteName.forumkomen + '/1');
-                              },
-                            ),
-                            Text(
-                              'Komentar',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            );
+              );
+            } else {
+              // Ini loader untuk halaman berikutnya
+              return const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
           },
         );
       }),

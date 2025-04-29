@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:markopi/controllers/Autentikasi_Controller.dart';
+import 'package:markopi/service/token_storage.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
 
   @override
-  _LoginState createState() => _LoginState();
+  _LoginViewState createState() => _LoginViewState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginViewState extends State<LoginView> {
+  final TextEditingController _username = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final autentikasiController = Get.put(AutentikasiController());
   bool _obscurePassword = true;
+  String? token;
 
   @override
   void initState() {
@@ -32,7 +39,8 @@ class _LoginState extends State<Login> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const TextField(
+            TextField(
+              controller: _username,
               decoration: InputDecoration(
                 labelText: "Email address",
                 hintText: "Your email address",
@@ -40,6 +48,7 @@ class _LoginState extends State<Login> {
             ),
             const SizedBox(height: 16),
             TextField(
+              controller: _password,
               obscureText: _obscurePassword,
               decoration: InputDecoration(
                 labelText: "Password",
@@ -62,11 +71,13 @@ class _LoginState extends State<Login> {
             ),
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const AdminWebViewPage()),
-                );
+              onPressed: () async {
+                String username = _username.text;
+                String password = _password.text;
+                print('username : $username \npassword : $password');
+                await autentikasiController.login(username, password);
+                token = await TokenStorage.getToken();
+                print(token);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xff2696D6),
@@ -89,7 +100,8 @@ class _LoginState extends State<Login> {
                 ),
                 minimumSize: const Size(double.infinity, 48),
               ),
-              child: const Text("Daftar", style: TextStyle(color: Colors.white)),
+              child:
+                  const Text("Daftar", style: TextStyle(color: Colors.white)),
             ),
             const SizedBox(height: 16),
             const Text(

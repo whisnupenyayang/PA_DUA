@@ -12,6 +12,8 @@ class   JenisTahapanBudidaya extends Model
     protected $fillable =[
         'judul',
         'deskripsi',
+        'nama_file',
+        'url_gambar',
         'tahapan_budidaya_id',
     ];
 
