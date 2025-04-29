@@ -26,7 +26,7 @@ class _MainMenuState extends State<MainMenu> {
   final List<String> labelMenu = [
     'Budidaya',
     'Panen',
-    'Pasca Panen',
+    'Pengepul',
     'Laporan'
   ];
 
