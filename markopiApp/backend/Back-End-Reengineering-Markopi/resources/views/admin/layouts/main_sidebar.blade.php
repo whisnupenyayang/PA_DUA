@@ -165,6 +165,27 @@
                 </a>
             </li>
 
+            <li i class="nav-item">
+                <a href="{{ route('artikel.admin') }}" class="nav-link {{ \Route::is('artikel.admin') ? 'active' : '' }}">
+                <i class="">
+                        <img src="{{ asset('Icon/news_white.png') }}" alt="Budidaya" width="24" height="24">
+                    </i>
+                    <p>Toko kopi
+                    </p>
+                </a>
+            </li>
+
+            <li i class="nav-item">
+                <a href="{{ route('artikel.admin') }}" class="nav-link {{ \Route::is('artikel.admin') ? 'active' : '' }}">
+                <i class="">
+                        <img src="{{ asset('Icon/news_white.png') }}" alt="Budidaya" width="24" height="24">
+                    </i>
+                    <p>Resep minuman
+                    </p>
+                </a>
+            </li>
+
+
         </ul>
     </nav>
 
