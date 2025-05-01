@@ -13,6 +13,8 @@ class ForumKomentar extends StatefulWidget {
 
 class _ForumKomentarState extends State<ForumKomentar> {
   final ForumController forumC = Get.put(ForumController());
+  final TextEditingController _komentar = TextEditingController();
+
   int? id;
 
   void initState() {
@@ -192,6 +194,7 @@ class _ForumKomentarState extends State<ForumKomentar> {
                   children: [
                     Expanded(
                       child: TextField(
+                        controller: _komentar,
                         decoration: InputDecoration(
                           hintText: "Tulis komentar...",
                           border: OutlineInputBorder(
@@ -203,7 +206,13 @@ class _ForumKomentarState extends State<ForumKomentar> {
                     ),
                     SizedBox(width: 10),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        String komentar = _komentar.text;
+                        if (komentar.isNotEmpty && id != null) {
+                          await forumC.buatKomentar(komentar, id!);
+                          _komentar.clear();
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         shape: CircleBorder(),
                         padding: EdgeInsets.all(14),

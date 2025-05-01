@@ -2,14 +2,16 @@
 
 namespace App\Http\API;
 
-use App\Models\Forum;
-use App\Models\LikeForum;
-use Illuminate\Http\Request;
-use App\Models\KomentarForum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ForumResource;
+use App\Models\Forum;
+use App\Models\KomentarForum;
+use App\Models\LikeForum;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+
 
 class ForumController extends Controller
 {
@@ -24,11 +26,12 @@ class ForumController extends Controller
     }
 
     public function getLimaForum(Request $request){
-        $limit = $request->get('limit',5);
-        $forum = Forum::paginate($limit);
+        $limit = $request->get('limit', 5);
+        $forum = Forum::orderBy('created_at', 'desc')->paginate($limit);
 
         return ForumResource::collection($forum);
     }
+
 
     public function store(Request $request)
     {
@@ -177,39 +180,40 @@ class ForumController extends Controller
         }
     }
 
-    public function comment_forum(Request $request, $forum_id)
-    {
-        try {
-            $forumId = Forum::find($forum_id);
+    public function test(Request $request, $forum_id){
 
-            if (!$forumId) {
-                return response()->json(['message' => 'Forum not found', 'status' => 'error'], 404);
-            }
+        $request ->validate([
+            'komentar'=> 'required'
+        ]);
 
-            $request->validate([
-                'komentar' => 'required|string',
-                'forum_id' => 'required',
-                'user_id' => 'required',
-            ]);
-
-            $forumKomen = KomentarForum::create([
-                'komentar' => $request->komentar,
-                'forum_id' => $forum_id,
-                'user_id' => $request->user_id,
-            ]);
-
-            if ($forumKomen) {
-                return response()->json([
-                    'message' => 'Forum berhasil ditambahkan',
-                    'status' => 'success',
-                ], 200);
-            } else {
-                return response()->json(['message' => 'Gagal menambahkan data', 'status' => 'error', 'error' => 'Failed to save data to the database'], 500);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to comment forum', 'status' => 'error', 'error' => $e->getMessage()], 500);
+        $user = $request->user();
+        $userid = $user->id_users;
+        $forum = Forum::find($forum_id);
+        if (!$forum) {
+            return response()->json([
+                'message' => 'Forum tidak ditemukan',
+                'status' => 'error'
+            ], 404);
         }
+        $komentar = KomentarForum::create([
+            'komentar' => $request->komentar,
+            'forum_id' => $forum_id,
+            'user_id' => $userid,
+        ]);
+
+        if ($komentar) {
+            return response()->json('berhasil');
+        }
+        return response()->json('gagal');
+
+
+
+
     }
+
+
+
+
 
     public function update_comment_forum(Request $request, $id)
     {

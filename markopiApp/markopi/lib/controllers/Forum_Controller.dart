@@ -76,4 +76,24 @@ class ForumController extends GetxController {
       Get.snackbar('Error', 'gagal mengambil data');
     }
   }
+
+  Future<void> buatKomentar(String komentar, int forum_id) async {
+    final String? token = await TokenStorage.getToken();
+
+    if (token == null) {
+      Get.snackbar('Error', 'anda belum login');
+      return;
+    }
+
+    final response =
+        await forumProvider.postKomentar(komentar, token, forum_id);
+    if (response.statusCode == 200) {
+      Get.snackbar('Berhasil', "Berhasil menambahkan komentar");
+
+      // Tambahkan baris ini untuk memperbarui komentar setelah menambahkan
+      await fetchKomentar(forum_id);
+    } else {
+      Get.snackbar('Gagal', "Gagal menambahkan komentar");
+    }
+  }
 }

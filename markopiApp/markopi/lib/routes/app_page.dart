@@ -6,6 +6,7 @@ import 'package:markopi/view/Budidaya/Jenis_Tahap_Budidaya_Detail.dart';
 import 'package:markopi/view/Budidaya/Jenis_kopi.dart';
 import 'package:markopi/view/Budidaya/Tahap_Budidaya.dart';
 import 'package:markopi/view/Login/login.dart';
+import 'package:markopi/view/Profile/Profile.dart';
 import 'package:markopi/view/forum/ForumKomentar.dart';
 import 'package:markopi/view/forum/ListForum.dart';
 import 'package:markopi/view/pengepul/ListPengepul.dart';
@@ -61,6 +62,12 @@ class AppPages {
     GetPage(
       name: RouteName.login,
       page: () => LoginView(),
+    ),
+
+    /*================Profile=================== */
+  GetPage(
+      name: RouteName.profile,
+      page: () => ProfileView(),
     ),
   ];
 }

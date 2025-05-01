@@ -61,7 +61,7 @@ class User extends Authenticatable
      * Get the key for cache "minutes" value.
      *
      * @return string
-    //  */
+      */
     // public function getKeyName()
     // {
     //     return 'username';
@@ -71,6 +71,10 @@ class User extends Authenticatable
     {
         return $this->createToken('token', ['*'])->plainTextToken;
     }
+    public function getAuthIdentifierName()
+{
+    return 'id_users';
+}
 
     // public function createCustomToken($username)
     // {

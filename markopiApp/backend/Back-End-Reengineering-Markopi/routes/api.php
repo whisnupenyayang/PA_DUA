@@ -26,9 +26,7 @@ use App\Http\Controllers\BudidayaController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
 
 
 
@@ -91,6 +89,8 @@ Route::delete('artikel/{id}', [ArtikelController::class, 'destroy']);
 
 Route::get('artikelByUser/{user_id}', [ArtikelController::class, 'articlesByUser']);
 
+
+//=============================================Forum====================================================================
 // Route::get('forum', [ForumController::class, 'index']);
 Route::get('/forum',[ForumController::class,'getLimaForum']);
 // Route::get('/forum',[ForumController::class,'getLimaForum'])->middleware(['auth:sanctum']);
@@ -100,7 +100,16 @@ Route::post('forum', [ForumController::class, 'store']);
 Route::post('forum/{id}', [ForumController::class, 'update']);
 Route::delete('forum/{id}', [ForumController::class, 'destroy']);
 Route::get('forumKomen/{forum_id}', [ForumController::class, 'get_comment_forum']);
-Route::post('forum_comment/{forum_id}', [ForumController::class, 'comment_forum']);
+
+// ======================testing===================
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+Route::post('/user/{forum_id}', [ForumController::class, 'test'])->middleware('auth:sanctum');
+//======================
+
+Route::post('/forum_comment/{forum_id}', [ForumController::class, 'comment_forum'])->middleware('auth:sanctum');
+
 Route::put('forum_comment_update/{id}', [ForumController::class, 'update_comment_forum']);
 Route::delete('forum_comment_delete/{id}', [ForumController::class, 'delete_comment_forum']);
 Route::post('forum_comment/{forum_id}', [ForumController::class, 'comment_forum']);
@@ -110,7 +119,6 @@ Route::post('forum/{forum_id}/dislike/{user_id}', [ForumController::class, 'disl
 
 Route::get('forum/{forum_id}/likes', [ForumController::class, 'getForumLikes']);
 Route::get('forum/{forum_id}/dislikes', [ForumController::class, 'getForumDislikes']);
-
 Route::get('/komentar/{komentar_id}/user/{user_id}/replies', [ReplyKomentarController::class, 'getRepliesByUserId']);
 Route::post('/replies', [ReplyKomentarController::class, 'reply']);
 Route::get('replies/{komentar_id}', [ReplyKomentarController::class, 'get_replies']);

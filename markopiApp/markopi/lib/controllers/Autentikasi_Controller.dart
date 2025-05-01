@@ -3,8 +3,7 @@ import 'package:markopi/providers/Autentikasi_Providers.dart';
 import 'package:markopi/service/token_storage.dart';
 
 class AutentikasiController extends GetxController {
-  var token =
-      RxnString(); // Ini harus di luar function supaya bisa dipakai di mana-mana
+  var token = RxnString(); 
   var namaLengkap = ''.obs;
   var idUser = 0.obs;
   var role = ''.obs;

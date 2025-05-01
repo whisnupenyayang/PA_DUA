@@ -9,4 +9,5 @@ abstract class RouteName {
   static const forumkomen = "/forumKomen";
   static const budidaya = "/budidaya";
   static const login = "/login";
+  static const profile = "/profile";
 }

@@ -30,7 +30,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
     RouteName.forum,
     RouteName.forum + '/1',
     RouteName.forum,
-    RouteName.login,
+    RouteName.profile,
   ];
 
   void _onItemTapped(int index) {
