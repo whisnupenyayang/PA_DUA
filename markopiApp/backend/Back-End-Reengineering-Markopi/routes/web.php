@@ -67,8 +67,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/artikel', [ArtikelController::class, 'artikel_admin'])->name('artikel.admin');
 
     // Pengepul
-    Route::resource('pengepul', PengepulController::class)->names(['index' => 'pengepul.index']);
-
+    Route::get('/pengepuls', [PengepulController::class, 'index'])->name('admin.pengepul');
+    Route::get('/pengepul/{id}', [PengepulController::class, 'show'])->name('admin.pengepul.detail');
+    Route::get('/pengepul/{id}/edit', [PengepulController::class, 'edit'])->name('admin.pengepul.edit');
+    Route::put('/pengepul/{id}/update', [PengepulController::class, 'update'])->name('admin.pengepul.update');
+    Route::post('/admin/pengepul/updateField', [PengepulController::class, 'updateField'])->name('admin.pengepul.updateField');
+    
     // Penjualan
     Route::get('penjualan', [BudidayaController::class, 'penjualan_index'])->name('penjualan.index');
 

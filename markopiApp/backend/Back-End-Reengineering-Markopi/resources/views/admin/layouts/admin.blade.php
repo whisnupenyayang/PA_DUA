@@ -55,9 +55,12 @@
                 height="300" width="300">
         </div>
 
+        <!-- agar bisa mengatur halaman yang tidak ingin menampilkan navbar -->
+        @if(!View::hasSection('no-navbar'))
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            @include('admin.layouts.navbar');
+            @include('admin.layouts.navbar')
         </nav>
+        @endif
 
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -66,12 +69,15 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
+
+             <!-- agar bisa mengatur halaman yang tidak ingin menampilkan header -->
             <!-- Content Header (Page header) -->
+            @if(!View::hasSection('no-header'))
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">{{ $title }} </h1>
+                            <h1 class="m-0">{{ $title }}</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -82,7 +88,7 @@
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
             </div>
-            <!-- /.content-header -->
+            @endif
 
             <!-- Main content -->
             <section class="content">
