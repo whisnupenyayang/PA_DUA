@@ -58,7 +58,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('pasca', PascaPanenController::class)->names(['index' => 'pasca.index']);
 
     // Iklan
-    Route::resource('iklan', IklanController::class)->names(['index' => 'iklan.index']);
+    Route::resource('iklan', IklanController::class)->names(['index' => 'admin.iklan']);
+    Route::get('/admin/iklan/{id}', [IklanController::class, 'show'])->name('iklan.show');
+    Route::put('/admin/iklan/{id}', [IklanController::class, 'update'])->name('iklan.update');
+    Route::get('/iklan/create', [IklanController::class, 'create'])->name('iklan.create');
+    Route::post('/iklan', [IklanController::class, 'store'])->name('iklan.store');
 
     // Minuman
     Route::resource('minuman', MinumanController::class)->names(['index' => 'minuman.index']);
