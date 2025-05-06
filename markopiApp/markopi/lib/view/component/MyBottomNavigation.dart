@@ -28,7 +28,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   final List<String> navList = [
     RouteName.beranda,
     RouteName.forum,
-    RouteName.forum + '/1',
+    RouteName.pengepul,
     RouteName.forum,
     RouteName.profile,
   ];

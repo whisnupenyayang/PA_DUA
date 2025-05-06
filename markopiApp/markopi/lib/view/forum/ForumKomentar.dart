@@ -12,6 +12,8 @@ class ForumKomentar extends StatefulWidget {
 }
 
 class _ForumKomentarState extends State<ForumKomentar> {
+  bool isSending = false;
+
   final ForumController forumC = Get.put(ForumController());
   final TextEditingController _komentar = TextEditingController();
 
@@ -206,18 +208,32 @@ class _ForumKomentarState extends State<ForumKomentar> {
                     ),
                     SizedBox(width: 10),
                     ElevatedButton(
-                      onPressed: () async {
-                        String komentar = _komentar.text;
-                        if (komentar.isNotEmpty && id != null) {
-                          await forumC.buatKomentar(komentar, id!);
-                          _komentar.clear();
-                        }
-                      },
+                      onPressed: isSending
+                          ? null
+                          : () async {
+                              String komentar = _komentar.text;
+                              if (komentar.isNotEmpty && id != null) {
+                                setState(() {
+                                  isSending = true;
+                                });
+                                await forumC.buatKomentar(komentar, id!);
+                                _komentar.clear();
+                                setState(() {
+                                  isSending = false;
+                                });
+                              }
+                            },
                       style: ElevatedButton.styleFrom(
                         shape: CircleBorder(),
                         padding: EdgeInsets.all(14),
                       ),
-                      child: Icon(Icons.send),
+                      child: isSending
+                          ? SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : Icon(Icons.send),
                     ),
                   ],
                 ),

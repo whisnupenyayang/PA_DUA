@@ -63,11 +63,15 @@ class AppPages {
       name: RouteName.login,
       page: () => LoginView(),
     ),
-
-    /*================Profile=================== */
-  GetPage(
+    GetPage(
       name: RouteName.profile,
       page: () => ProfileView(),
+    ),
+
+    /*================Pengepul=================== */
+    GetPage(
+      name: RouteName.pengepul,
+      page: () => ListPengepul(),
     ),
   ];
 }

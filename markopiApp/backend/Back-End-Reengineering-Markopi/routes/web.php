@@ -67,7 +67,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/artikel', [ArtikelController::class, 'artikel_admin'])->name('artikel.admin');
 
     // Pengepul
-    Route::resource('pengepul', PengepulController::class)->names(['index' => 'pengepul.index']);
+    // Route::resource('pengepul', PengepulController::class)->names(['index' => 'pengepul.index']);
 
     // Penjualan
     Route::get('penjualan', [BudidayaController::class, 'penjualan_index'])->name('penjualan.index');

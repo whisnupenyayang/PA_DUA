@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('jenis_kopi');
             $table->integer('rata_rata_harga');
+            $table->integer('bulan');
+            $table->String('tahun');
             $table->timestamps();
         });
     }

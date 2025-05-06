@@ -18,12 +18,12 @@ class _ListForumState extends State<ListForum> {
   @override
   void initState() {
     super.initState();
-    forumController.fetchForum(); // panggil fetch pertama kali
-
+    forumController.fetchForum(); // fetch awal
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        forumController.fetchForum();
+        forumController
+            .fetchForum(); // fetch berikutnya saat scroll sampai bawah
       }
     });
   }
@@ -44,54 +44,97 @@ class _ListForumState extends State<ListForum> {
         }
 
         return ListView.builder(
-          controller: _scrollController, // pasang controller di ListView
+          controller: _scrollController,
           itemCount:
               forumController.forum.length + (forumController.hasMore ? 1 : 0),
           itemBuilder: (context, index) {
             if (index < forumController.forum.length) {
               final forum = forumController.forum[index];
 
-              return GestureDetector(
-                onTap: () {
-                  print('tertekan');
-                },
-                child: Card(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      if (forum.imageUrls.isNotEmpty)
-                        Image.network(
-                          forum.imageUrls.first,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: 200,
-                        ),
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blueGrey,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.account_circle,
-                              color: Color(0xFF2696D6),
-                              size: 40,
+                            Row(
+                              children: [
+                                Container(
+                                  width: 39,
+                                  height: 39,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  forum.user.namaLengkap ?? 'Loading...',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(width: 8.0),
-                            Expanded(
+                            SizedBox(height: 16),
+                            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                              ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    (forum.user.namaLengkap ?? 'Loading...')
-                                        .toString(),
-                                    style: TextStyle(
-                                      color: Color(0xFF2696D6),
-                                      fontSize: 20,
+                                  if (forum.imageUrls.isNotEmpty)
+                                    Container(
+                                      height: 165,
+                                      width: double.infinity,
+                                      child: Image.network(
+                                        forum.imageUrls.first,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )
+                                  else
+                                    Container(
+                                      height: 165,
+                                      width: double.infinity,
+                                      color: Colors.black12,
                                     ),
-                                  ),
-                                  Text(
-                                    forum.tanggal,
-                                    style: TextStyle(color: Colors.grey),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          forum.judulForum,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8),
+                                        Text(
+                                          forum.deskripsiForum,
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -99,73 +142,43 @@ class _ListForumState extends State<ListForum> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 8.0),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(
-                          forum.judulForum,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0,
+                    ),
+                    // Tombol Like, Dislike, Komentar
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.thumb_up),
+                            onPressed: () {},
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          forum.deskripsiForum,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.grey.shade600,
+                          Text('Suka', style: TextStyle(color: Colors.grey)),
+                          SizedBox(width: 16),
+                          IconButton(
+                            icon: Icon(Icons.thumb_down),
+                            onPressed: () {},
                           ),
-                        ),
-                      ),
-                      Divider(thickness: 1),
-                      ButtonBar(
-                        alignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.thumb_up),
-                                onPressed: () {},
-                              ),
-                              Text('Suka',
-                                  style: TextStyle(color: Colors.grey)),
-                            ],
+                          Text('Tidak Suka',
+                              style: TextStyle(color: Colors.grey)),
+                          SizedBox(width: 16),
+                          IconButton(
+                            icon: Icon(Icons.comment),
+                            onPressed: () {
+                              Get.toNamed(
+                                  RouteName.forumkomen + '/${forum.id}');
+                            },
                           ),
-                          Row(
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.thumb_down),
-                                onPressed: () {},
-                              ),
-                              Text('Tidak Suka',
-                                  style: TextStyle(color: Colors.grey)),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.comment),
-                                onPressed: () {
-                                  Get.toNamed(
-                                      RouteName.forumkomen + '/${forum.id}');
-                                },
-                              ),
-                              Text('Komentar',
-                                  style: TextStyle(color: Colors.grey)),
-                            ],
-                          ),
+                          Text('Komentar',
+                              style: TextStyle(color: Colors.grey)),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Divider(thickness: 1),
+                  ],
                 ),
               );
             } else {
-              // Ini loader untuk halaman berikutnya
               return const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Center(child: CircularProgressIndicator()),

@@ -12,8 +12,9 @@ use App\Http\API\BudidayaAPIController;
 use App\Http\API\ReplyKomentarController;
 use App\Http\API\ResetPasswordController;
 use App\Http\API\ForgotPasswordController;
-use App\Http\Controllers\API\PengepulController;
+use App\Http\API\PengepulApiController;
 use App\Http\Controllers\BudidayaController;
+use App\Models\Pengepul;
 
 /*
 |--------------------------------------------------------------------------
@@ -127,6 +128,12 @@ Route::put('komentar/{komentar_id}/user/{user_id}/replies/{id}', [ReplyKomentarC
 Route::delete('komentar/{komentar_id}/user/{user_id}/replies/{id}', [ReplyKomentarController::class, 'deleteReplyByUserId']);
 
 // ----------------------------------------------------PENGEPUL----------------------------------------------------
+
+Route::get('/pengepul',[PengepulApiController::class, 'getPengepul']);
+Route::post('/pengepul',[PengepulApiController::class, 'storePengepul']);
+Route::put('/pengepul/{id}', [PengepulApiController::class, 'updatePengepul']);
+
+Route::get('/hargaratarata/{jenis_kopi}/{tahun}', [PengepulApiController::class, 'getHargaRataRata']);
 
 
 

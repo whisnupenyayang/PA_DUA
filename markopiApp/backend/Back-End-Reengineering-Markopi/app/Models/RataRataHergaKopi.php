@@ -9,5 +9,10 @@ class RataRataHergaKopi extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = [
+        'jenis_kopi',
+        'rata_rata_harga',
+        'bulan',
+        'tahun'
+    ];
 }

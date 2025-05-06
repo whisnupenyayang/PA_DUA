@@ -299,5 +299,5 @@ class _ProfileViewState extends State<ProfileView> {
         child: const MyBottomNavigationBar(),
       ),
     );
-  }
+  } 
 }

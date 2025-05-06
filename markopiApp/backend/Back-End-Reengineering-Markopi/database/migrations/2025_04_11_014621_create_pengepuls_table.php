@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('nama_toko');
             $table->string('jenis_kopi');
             $table->integer('harga');
+            $table->string('nama_gambar');
+            $table->string('url_gambar');
             $table->string('nomor_telepon');
             $table->string('alamat');
             $table->timestamps();

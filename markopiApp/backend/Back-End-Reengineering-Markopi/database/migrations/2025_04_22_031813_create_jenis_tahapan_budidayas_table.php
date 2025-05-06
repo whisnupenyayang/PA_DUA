@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('judul');
             $table->text('deskripsi');
             $table->string('nama_file')->nullable();
-            $table->string('url_gambar');
+            $table->string('url_gambar')->nullable();
             $table->unsignedBigInteger('tahapan_budidaya_id');
             $table->foreign('tahapan_budidaya_id')->references('id')->on('tahapan_budidayas');
             $table->timestamps();

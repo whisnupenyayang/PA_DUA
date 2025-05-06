@@ -14,6 +14,8 @@ class Pengepul extends Model
         'jenis_kopi',
         'harga',
         'nomor_telepon',
-        'alamat'
+        'alamat',
+        'nama_gambar',
+        'url_gambar'
     ];
 }

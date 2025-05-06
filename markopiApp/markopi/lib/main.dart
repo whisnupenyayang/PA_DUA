@@ -11,6 +11,7 @@ import 'package:markopi/view/Login/login.dart';
 import 'package:markopi/view/Profile/Profile.dart';
 import 'package:markopi/view/forum/ForumKomentar.dart';
 import 'package:markopi/view/pengepul/ListPengepul.dart';
+import 'package:markopi/view/pengepul/PengepulDetail.dart';
 import 'package:markopi/view/pengepul/listPengepul2.dart';
 import './view/Beranda/Beranda.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Beranda(), // Menampilkan halaman utama
+      home: PengepulDetailView(), // Menampilkan halaman utama
       getPages: AppPages.pages,
       // home: ListPengepul(),
     );
