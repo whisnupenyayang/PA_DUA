@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markopi/controllers/Budidaya_Controller.dart';
+import 'package:markopi/controllers/Kegiatan_Controller.dart';
 import 'package:markopi/routes/route_name.dart';
 import './Jenis_Tahap_Budidaya_Detail.dart';
 import 'package:markopi/providers/Connection.dart';
@@ -12,6 +13,7 @@ class JenisTahapBudidayaView extends StatefulWidget {
 }
 
 class _JenisTahapBudidayaViewState extends State<JenisTahapBudidayaView> {
+  final KegiatanController kegiatanC = Get.put(KegiatanController());
   final BudidayaController budidayaC = Get.put(BudidayaController());
   int? id;
 

@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: PengepulDetailView(), // Menampilkan halaman utama
+      home: Beranda(), // Menampilkan halaman utama
       getPages: AppPages.pages,
       // home: ListPengepul(),
     );

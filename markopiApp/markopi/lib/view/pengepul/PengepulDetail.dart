@@ -14,7 +14,6 @@ class _PengepulDetailViewState extends State<PengepulDetailView> {
       appBar: AppBar(
         title: Text('PengepulDetail'),
       ),
-      body: 
     );
   }
 }

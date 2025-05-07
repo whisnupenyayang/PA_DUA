@@ -3,6 +3,7 @@ import 'package:markopi/view/Budidaya/Tahap_Budidaya.dart';
 
 abstract class RouteName {
   static const beranda = "/";
+  static const kegiatan = "/kegiatan";
   static const pengepul = "/pengepul";
   static const tokoKoppi = "/tokokopi";
   static const forum = "/forum";

@@ -39,17 +39,17 @@ class AppPages {
 
     /*================Budidaya=================== */
     GetPage(
-      name: RouteName.budidaya + '/:jenis_kopi',
+      name: RouteName.kegiatan + '/:kegiatan/:jenis_kopi',
       page: () => TipeBudidaya(),
       binding: BudidayaBinding(),
     ),
     GetPage(
-      name: RouteName.budidaya,
+      name: RouteName.kegiatan + '/:kegiatan',
       page: () => BudidayaView(),
-      binding: BudidayaBinding(),
     ),
     GetPage(
-      name: RouteName.budidaya + '/jenistahapanbudidaya/:id',
+      name: RouteName.kegiatan +
+          '/:kegiatan/:jenis_kopi/jenistahapankegiatan/:id',
       page: () => JenisTahapBudidayaView(),
     ),
     GetPage(

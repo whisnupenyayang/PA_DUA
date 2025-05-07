@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\API\TransaksiApiController;
 use Illuminate\Http\Request;
 use App\Http\API\AuthController;
 use App\Http\API\ForumController;
@@ -31,27 +32,25 @@ use App\Models\Pengepul;
 
 
 
+Route::get('/kegiatan/{kegiatan}/{jenisKopi}', [BudidayaAPIController::class, 'getKegiatan']);
+
+Route::get('/jenistahapankegiatan/{id}', [BudidayaAPIController::class, 'getJenisTahapanKegiatan']);
+
+Route::get('/jenistahapankegiatan/detail/{id}', [BudidayaAPIController::class,'getJenisTahapanKegiatanDetail']);
+
+
+
 Route::get('/budidaya/{jenisKopi}', [BudidayaAPIController::class, 'getTahapanBudidaya']);
 Route::get('/budidaya/jenistahapanbudidaya/{id}', [BudidayaAPIController::class,'getJenisTahapanBudidaya']);
 Route::get('/budidaya/jenistahapanbudidaya/detail/{id}', [BudidayaAPIController::class, 'getJenisTahapBudidayaById']);
 Route::post('/budidaya/storejenistahapanbudidaya', [BudidayaApiController::class, 'storeJenisTahapanBudidaya']);
 Route::post('/upload', [BudidayaApiController::class, 'storeTahapanBudidaya']);
 
-
-
 //BUDIDAYA
 // Route::get('/budidaya', [BudidayaAPIController::class, 'index']);
 
 
-//PANEN
-Route::get('/panen', [PanenController::class, 'panen']);
-Route::get('/panen/ciri_buah_kopi', [PanenController::class, 'getCiriBuahKopiData']);
-Route::get('/panen/pemetikan', [PanenController::class, 'getPemetikanData']);
-Route::get('/panen/sortasi_buah', [PanenController::class, 'getSortasiBuahData']);
 
-//PASCA PANEN
-Route::get('/pasca/fermentasi_kering', [PascaPanenController::class, 'getFermentasiKeringData']);
-Route::get('/pasca/fermentasi_mekanis', [PascaPanenController::class, 'getFermentasiMekanisData']);
 
 //KEDAI
 Route::get('/minuman', [BudidayaAPIController::class, 'getMinumanData']);
@@ -134,6 +133,11 @@ Route::post('/pengepul',[PengepulApiController::class, 'storePengepul']);
 Route::put('/pengepul/{id}', [PengepulApiController::class, 'updatePengepul']);
 
 Route::get('/hargaratarata/{jenis_kopi}/{tahun}', [PengepulApiController::class, 'getHargaRataRata']);
+
+//=======================================PengajuanTransaksi============================
+Route::get('/buatpengajuan/{id}',[TransaksiApiController::class, 'createPengajuanTransaksi']);
+
+Route::put('/updateKeterangan/{id}',[TransaksiApiController::class, 'updateKeterangan'])->middleware(['auth:sanctum']);
 
 
 

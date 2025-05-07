@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markopi/controllers/Budidaya_Controller.dart';
+import 'package:markopi/controllers/Kegiatan_Controller.dart';
 import 'package:markopi/routes/route_name.dart';
 import './Jenis_Tahap_Budidaya.dart';
+import '';
 
 class TipeBudidaya extends StatefulWidget {
   @override
@@ -10,18 +12,20 @@ class TipeBudidaya extends StatefulWidget {
 }
 
 class _TipeBudidayaState extends State<TipeBudidaya> {
-  final BudidayaController budidayaC = Get.put(BudidayaController());
+  final KegiatanController kegiatanC = Get.put(KegiatanController());
   String? jenis_kopi;
+  String? kegiatan;
 
   @override
   void initState() {
     super.initState();
-    jenis_kopi = Get.parameters['jenis_kopi'];
 
-    if (jenis_kopi != null) {
-      budidayaC.budidayaList.clear();
+    jenis_kopi = Get.parameters['jenis_kopi'];
+    kegiatan = Get.parameters['kegiatan'];
+
+    if (jenis_kopi != null && kegiatan != null) {
       print(jenis_kopi);
-      budidayaC.fetchBudidaya(jenis_kopi!);
+      kegiatanC.fetchKegiatan(kegiatan!, jenis_kopi!);
     }
   }
 
@@ -61,7 +65,7 @@ class _TipeBudidayaState extends State<TipeBudidaya> {
             child: Padding(
               padding: EdgeInsets.all(16),
               child: Obx(() {
-                if (budidayaC.budidayaList.isEmpty) {
+                if (kegiatanC.tahapanKegiatanList.isEmpty) {
                   return Center(
                     child: Text(
                       "Data tidak tersedia.",
@@ -71,14 +75,14 @@ class _TipeBudidayaState extends State<TipeBudidaya> {
                 }
 
                 return ListView.builder(
-                  itemCount: budidayaC.budidayaList.length,
+                  itemCount: kegiatanC.tahapanKegiatanList.length,
                   itemBuilder: (context, i) {
-                    final budidaya = budidayaC.budidayaList[i];
+                    final tahapKegiatan = kegiatanC.tahapanKegiatanList[i];
 
                     return GestureDetector(
                       onTap: () {
-                        Get.toNamed(RouteName.budidaya +
-                            '/jenistahapanbudidaya/${budidaya.id}');
+                        Get.toNamed(RouteName.kegiatan +
+                            '/$kegiatan/$jenis_kopi/jenistahapankegiatan/${tahapKegiatan.id}');
                       },
                       child: Container(
                         margin: EdgeInsets.only(bottom: 16),
@@ -110,7 +114,7 @@ class _TipeBudidayaState extends State<TipeBudidaya> {
                             SizedBox(width: 16),
                             Expanded(
                               child: Text(
-                                budidaya.nama_tahapan,
+                                tahapKegiatan.nama_tahapan,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,

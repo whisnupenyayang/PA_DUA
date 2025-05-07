@@ -7,9 +7,11 @@ class BudidayaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final kegiatan = Get.parameters['kegiatan'];
+    print(kegiatan);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Budidaya'),
+        title: Text('$kegiatan'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -43,7 +45,8 @@ class BudidayaView extends StatelessWidget {
                         ),
                         SizedBox(height: 8),
                         InkWell(
-                          onTap: () => Get.toNamed('${RouteName.budidaya}/$jenisKopi'),
+                          onTap: () => Get.toNamed(
+                              '${RouteName.kegiatan}/$kegiatan/$jenisKopi'),
                           borderRadius: BorderRadius.circular(10),
                           child: Card(
                             elevation: 4,
@@ -56,7 +59,8 @@ class BudidayaView extends StatelessWidget {
                                 Container(
                                   height: 172,
                                   width: double.infinity,
-                                  color: Colors.blue, // bisa diganti Image.asset
+                                  color:
+                                      Colors.blue, // bisa diganti Image.asset
                                 ),
                                 Container(
                                   width: double.infinity,

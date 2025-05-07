@@ -9,6 +9,8 @@ use App\Models\JenisTahapanBudidaya;
 use App\Models\TahapanBudidaya;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\JenisTahapanKegiatan;
+use App\Models\TahapanKegiatan;
 use App\Models\TestImage;
 use Illuminate\Http\Request;
 
@@ -33,10 +35,15 @@ class BudidayaAPIController extends Controller
         return response()->json($budidayas);
     }
 
-    public function getTahapanBudidaya($jenisKopi){
+    public function getTahapanBudidaya($jenisKopi, $kegiatan){
         $tahapanbudidaya = TahapanBudidaya::where('jenis_kopi', $jenisKopi)->get();
         return response()->json($tahapanbudidaya);
+    }
 
+    public function getKegiatan($kegiatan, $jenisKopi){
+        $tahapanKegiatan = TahapanKegiatan::where('kegiatan', $kegiatan)->where('jenis_kopi', $jenisKopi)->get();
+
+        return response()->json($tahapanKegiatan);
     }
 
     public function getJenisTahapanBudidaya($id){
@@ -45,6 +52,19 @@ class BudidayaAPIController extends Controller
 
 
         return response()->json($jenisTB);
+    }
+
+    public function getJenisTahapanKegiatan($id){
+        $jenisTahapanKegiatan = JenisTahapanKegiatan::where('tahapan_kegiatan_id',$id)->get();
+
+        return response()->json($jenisTahapanKegiatan);
+
+    }
+
+    public function getJenisTahapanKegiatanDetail($id){
+        $jenisTahapanKegiatanDetail = JenisTahapanKegiatan::findOrFail($id);
+
+        return response()->json($jenisTahapanKegiatanDetail);
     }
 
     public function getJenisTahapBudidayaById($id){
