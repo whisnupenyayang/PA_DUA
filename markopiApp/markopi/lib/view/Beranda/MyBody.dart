@@ -5,7 +5,6 @@ import './MainMenu.dart';
 import 'package:markopi/models/Artikel_Model.dart';
 import 'package:get/get.dart';
 import 'weather_service.dart';
-import 'package:geolocator/geolocator.dart';
 
 class BerandaBody extends StatefulWidget {
   const BerandaBody({super.key});
@@ -20,50 +19,6 @@ class _BerandaBodyState extends State<BerandaBody> {
   Map<String, dynamic> weatherData = {};
   bool isLoading = true;
   String? token;
-
-  @override
-  void initState() {
-    super.initState();
-    _getCurrentLocation();
-  }
-
-  void _getCurrentLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      print('Layanan lokasi tidak aktif');
-      return;
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse &&
-          permission != LocationPermission.always) {
-        print('Izin lokasi ditolak');
-        return;
-      }
-    }
-
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    _fetchWeatherData(position.latitude, position.longitude);
-  }
-
-  void _fetchWeatherData(double latitude, double longitude) async {
-    try {
-      var data =
-          await weatherService.getWeatherDataByCoordinates(latitude, longitude);
-      setState(() {
-        weatherData = data;
-        isLoading = false;
-      });
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
