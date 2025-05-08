@@ -20,9 +20,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('email');
             // $table->string('confirm_password');
-            $table->date('tanggal_lahir');
+            $table->date('tanggal_lahir')->nullable();
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
-            $table->enum('role', ['admin', 'fasilitator', 'petani'])->default('petani');
             $table->string('provinsi');
             $table->string('kabupaten');
             $table->string('no_telp', 13);

@@ -25,20 +25,9 @@ class BudidayaAPIController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        // $budidayas = DB::table('budidayas')
-        //     ->join('image_budidayas', 'budidayas.id', '=', 'image_budidayas.budidaya_id')
-        //     ->select('budidayas.*', 'image_budidayas.gambar')
-        //     ->get();
-        $budidayas = Budidaya::with('images')->get();
-        return response()->json($budidayas);
-    }
 
-    public function getTahapanBudidaya($jenisKopi, $kegiatan){
-        $tahapanbudidaya = TahapanBudidaya::where('jenis_kopi', $jenisKopi)->get();
-        return response()->json($tahapanbudidaya);
-    }
+
+
 
     public function getKegiatan($kegiatan, $jenisKopi){
         $tahapanKegiatan = TahapanKegiatan::where('kegiatan', $kegiatan)->where('jenis_kopi', $jenisKopi)->get();
@@ -46,13 +35,7 @@ class BudidayaAPIController extends Controller
         return response()->json($tahapanKegiatan);
     }
 
-    public function getJenisTahapanBudidaya($id){
-        $jenisTB = JenisTahapanBudidaya::where('tahapan_budidaya_id', $id)->get();
 
-
-
-        return response()->json($jenisTB);
-    }
 
     public function getJenisTahapanKegiatan($id){
         $jenisTahapanKegiatan = JenisTahapanKegiatan::where('tahapan_kegiatan_id',$id)->get();
@@ -65,6 +48,42 @@ class BudidayaAPIController extends Controller
         $jenisTahapanKegiatanDetail = JenisTahapanKegiatan::findOrFail($id);
 
         return response()->json($jenisTahapanKegiatanDetail);
+    }
+
+
+
+
+    public function storeJenisTahapanKegiatanDetail(Request $request){
+        $request->validate([
+            'judul' => 'required|string',
+            'deskripsi' => 'required',
+            'nama_file' => 'nullable|image|mimes:jpeg,png,jpg|max:1028',
+            'tahapan_kegiatan_id' => 'required',
+        ]);
+
+
+        $namaFile = null;
+        $path = null;
+
+        if ($request->hasFile('nama_file')) {
+            $file = $request->file('nama_file');
+            $namaFile = $file->getClientOriginalName();
+            $path = $file->store('budidayaimage', 'public'); // hasil: 'budidayaimage/namafile.jpg'
+        }
+
+        $budidaya = JenisTahapanKegiatan::create([
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+            'nama_file' => $namaFile,
+            'url_gambar' => $path ? '/storage/' . $path : null, // pakai /storage/ kalau dari public disk
+            'tahapan_kegiatan_id' => $request->tahapan_kegiatan_id,
+        ]);
+
+        if ($budidaya) {
+            return response()->json('berhasil');
+        }
+
+        return response()->json('gagal');
     }
 
     public function getJenisTahapBudidayaById($id){
@@ -89,10 +108,7 @@ class BudidayaAPIController extends Controller
         if($jenisKopi){
             return response()->json('berhasil');
         }
-
         return response()->json('gagal');
-
-
     }
 
     public function storeJenisTahapanBudidaya(Request $request)

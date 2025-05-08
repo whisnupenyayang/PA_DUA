@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             'nama_lengkap' => 'ahmad',
             'username' => 'ahmad',
             'email' => 'ahmad@gmail.com',
-            'role' => 'fasilitator',
+
             'tanggal_lahir' => '2000-01-01',
             'jenis_kelamin' => 'Laki-laki',
             'provinsi' => '-',
@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->insert([
             'nama_lengkap' => 'Admin',
             'username' => 'admin',
-            'role' => 'admin',
+
             'email' => 'admin@gmail.com',
             'tanggal_lahir' => '2000-01-01',
             'jenis_kelamin' => 'Laki-laki',
@@ -46,7 +46,7 @@ class DatabaseSeeder extends Seeder
             'nama_lengkap' => 'alex',
             'username' => 'alex',
             'email' => 'fmax10469@gmail.com',
-            'role' => 'petani',
+
             'tanggal_lahir' => '2000-11-01',
             'jenis_kelamin' => 'Laki-laki',
             'provinsi' => '-',

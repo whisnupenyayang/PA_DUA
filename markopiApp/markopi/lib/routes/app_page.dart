@@ -53,7 +53,7 @@ class AppPages {
       page: () => JenisTahapBudidayaView(),
     ),
     GetPage(
-      name: RouteName.budidaya + '/jenistahapanbudidaya/detail/:id',
+      name: RouteName.kegiatan + '/jenistahapanbudidaya/detail/:id',
       page: () => JenisTahapBudidayDetailView(),
     ),
 

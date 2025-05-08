@@ -7,6 +7,12 @@ class KegiatanProvider extends GetConnect {
   }
 
   Future<Response> getJenisTahapKegiatan(int id) {
-    return get(Connection.buildUrl());
+    return get(Connection.buildUrl('/jenistahapankegiatan/$id'));
   }
+
+  Future<Response> getJenisTahapKegiatanDetail(int id) {
+    return get(Connection.buildUrl('/jenistahapankegiatan/detail/$id'));
+  }
+
+  
 }
