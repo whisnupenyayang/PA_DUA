@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markopi/controllers/Forum_Controller.dart';
@@ -95,21 +96,32 @@ class _ListForumState extends State<ListForum> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  if (forum.imageUrls.isNotEmpty)
-                                    Container(
-                                      height: 165,
-                                      width: double.infinity,
-                                      child: Image.network(
-                                        forum.imageUrls.first,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    )
-                                  else
-                                    Container(
-                                      height: 165,
-                                      width: double.infinity,
-                                      color: Colors.black12,
-                                    ),
+                                  forum.imageUrls.isNotEmpty
+                                      ? () {
+                                          // debug print
+                                          return Container(
+                                            height: 300,
+                                            width: double.infinity,
+                                            child: CachedNetworkImage(
+                                              imageUrl:
+                                                  'http://10.0.2.2:8000/storage/forumimage/qSWXMWQegthvtIHodsziVpj8zApx8w2uuDWxj8sF.png',
+                                              placeholder: (context, url) =>
+                                                  Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Icon(Icons.error),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          );
+                                        }()
+                                      : Container(
+                                          height: 165,
+                                          width: double.infinity,
+                                          color: Colors.black12,
+                                        ),
                                   Padding(
                                     padding: const EdgeInsets.all(10),
                                     child: Column(

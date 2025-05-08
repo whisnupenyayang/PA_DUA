@@ -34,7 +34,6 @@ class User {
       provinsi: json['provinsi'],
       kabupaten: json['kabupaten'],
       noTelp: json['no_telp'],
-      role: json['role'],
     );
   }
 }
