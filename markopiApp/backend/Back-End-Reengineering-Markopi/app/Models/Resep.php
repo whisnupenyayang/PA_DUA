@@ -11,10 +11,11 @@ class Resep extends Model
 
     protected $table = 'Resep';
 
+    protected $primaryKey = 'resep_id';
+
     protected $fillable = [
         'nama_resep',
-        'deskripsi',
+        'deskripsi_resep',
         'gambar_resep',
     ];
 }
-
