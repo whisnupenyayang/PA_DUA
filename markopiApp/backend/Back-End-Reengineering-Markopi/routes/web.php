@@ -76,9 +76,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/resep/{id}/update', [ResepController::class, 'update'])->name('resep.update');
 
     //toko
-    Route::get('/toko', [TokoController::class, 'index'])->name('toko.index');
+    Route::get('/toko', [TokoController::class, 'index'])->name('admin.toko');
     Route::get('/toko/create', [TokoController::class, 'create'])->name('toko.create');
     Route::post('/toko', [TokoController::class, 'store'])->name('toko.store');
+    Route::get('/toko/{id}', [TokoController::class, 'detailToko'])->name('toko.detail');
+    Route::delete('/toko/{id}', [TokoController::class, 'destroy'])->name('toko.destroy');
+    Route::post('/toko/store', [TokoController::class, 'store'])->name('toko.store');
 
     // Arttikel
     Route::get('admin/artikel', [ArtikelController::class, 'artikel_admin'])->name('artikel.admin');
