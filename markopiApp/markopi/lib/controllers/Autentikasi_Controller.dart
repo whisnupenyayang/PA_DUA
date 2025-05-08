@@ -1,17 +1,12 @@
 import 'package:get/get.dart';
 import 'package:markopi/providers/Autentikasi_Providers.dart';
-import 'package:markopi/service/User_Storage.dart';
-import 'package:markopi/service/User_Storage_Service.dart';
 import 'package:markopi/service/token_storage.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class AutentikasiController extends GetxController {
   var token = RxnString();
   var namaLengkap = ''.obs;
   var idUser = 0.obs;
   var role = ''.obs;
-
-  final userService = UserStorage();
 
   Future<void> login(String username, String password) async {
     final autentikasiProvider = AutentikasiProvider();
@@ -23,12 +18,6 @@ class AutentikasiController extends GetxController {
 
       if (body['success'] == true) {
         await TokenStorage.saveToken(body['token']);
-
-        // print(body['user']);
-
-        final UserModel user = UserModel.fromJson(body['user']);
-        await userService.openBox();
-        await userService.saveUser(user);
       } else {
         Get.snackbar('Error', body['message'] ?? 'Login gagal');
       }

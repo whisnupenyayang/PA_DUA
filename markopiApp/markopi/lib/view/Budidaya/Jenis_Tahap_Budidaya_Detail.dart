@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markopi/controllers/Budidaya_Controller.dart';
-import 'package:markopi/controllers/Kegiatan_Controller.dart';
 import 'package:markopi/models/JenisTahapBudidaya_Model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:markopi/models/JenisTahapKegiatan_Model.dart';
 
 class JenisTahapBudidayDetailView extends StatefulWidget {
   const JenisTahapBudidayDetailView({super.key});
@@ -17,7 +15,6 @@ class JenisTahapBudidayDetailView extends StatefulWidget {
 class _JenisTahapBudidayDetailViewState
     extends State<JenisTahapBudidayDetailView> {
   final BudidayaController budidayaC = Get.put(BudidayaController());
-  final KegiatanController kegiatanC = Get.put(KegiatanController());
 
   int? id;
 
@@ -33,11 +30,9 @@ class _JenisTahapBudidayDetailViewState
     }
 
     if (id != null) {
-      // budidayaC.jenisTahapBudidayaDetail.value =
-      //     budidayaC.jenisTahapBudidayaDetail.value = JenisTahapBudidaya.empty();
-      kegiatanC.jenisTahapKegiatanDetail.value = JenisTahapKegiatan.empty();
-      kegiatanC.fetchjenisTahapanKegiatanDetail(id!);
-      // budidayaC.fetchJenisTahapBudidayaDetail(id!);
+      budidayaC.jenisTahapBudidayaDetail.value =
+          budidayaC.jenisTahapBudidayaDetail.value = JenisTahapBudidaya.empty();
+      budidayaC.fetchJenisTahapBudidayaDetail(id!);
     }
   }
 
@@ -55,7 +50,7 @@ class _JenisTahapBudidayDetailViewState
         title: Text("Jenis Tahap Budidaya"),
       ),
       body: Obx(() {
-        final item = kegiatanC.jenisTahapKegiatanDetail.value;
+        final item = budidayaC.jenisTahapBudidayaDetail.value;
 
         // loading state
         if (item.id == 0) {

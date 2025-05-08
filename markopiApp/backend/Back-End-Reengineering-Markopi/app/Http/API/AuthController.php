@@ -18,7 +18,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'nama_lengkap' => 'required',
             'username' => 'required|unique:users',
-            'email' => 'required|email',
+            // 'email' => 'required|email|unique:users',
             'password' => 'required',
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
@@ -37,17 +37,7 @@ class AuthController extends Controller
 
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
-        $user = User::create([
-            'nama_lengkap'   => $input['nama_lengkap'],
-            'username'       => $input['username'],
-            'email'          => $input['email'],
-            'password'       => $input['password'], //
-            'tanggal_lahir'  => $input['tanggal_lahir'],
-            'jenis_kelamin'  => $input['jenis_kelamin'],
-            'provinsi'       => $input['provinsi'],
-            'kabupaten'      => $input['kabupaten'],
-            'no_telp'        => $input['no_telp'],
-        ]);
+        $user = User::create($input);
 
         // $token = $user->createToken('auth_token')->plainTextToken;
         // $success['token'] = $token;
@@ -69,20 +59,19 @@ class AuthController extends Controller
             'username' => 'required',
             'password' => 'required'
         ]);
-        // return response()->json('maksdjka');
         // return response()->json('Auth::user()');
         $user = User::where('username', $request->username)->first();
-        $userData = $user->toArray();
-        unset($userData['username'], $userData['id_users']);
 
         if ($user->status === null) {
             if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
                 $auth = Auth::user();
-                $user->nama_lengkap;
+                $success['nama_lengkap'] = $user->nama_lengkap;
+                $success['id_users'] = $user->id_users;
+                $success['role'] = $user->role;
                 return response()->json([
                     'success' => true,
                     'message' => 'Login sukses',
-                    'user' => $userData,
+                    'data' => $success,
                     'token' => $user->generateToken(),
                 ]);
 

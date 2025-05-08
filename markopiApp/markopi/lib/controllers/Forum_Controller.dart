@@ -96,6 +96,4 @@ class ForumController extends GetxController {
       Get.snackbar('Gagal', "Gagal menambahkan komentar");
     }
   }
-
-  
 }

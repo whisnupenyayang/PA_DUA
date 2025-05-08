@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:markopi/service/User_Storage.dart';
-import 'package:markopi/service/User_Storage_Service.dart';
 import 'package:markopi/view/component/MyBottomNavigation.dart';
 
 class ProfileView extends StatefulWidget {
@@ -11,34 +9,12 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  final userStorage = UserStorage();
-  UserModel? _user;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUser();
-  }
-
-  Future<void> _loadUser() async {
-    await userStorage.openBox();
-    final user = userStorage.getUser();
-    setState(() {
-      _user = user;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Show a loading indicator if user data is not loaded yet
-    if (_user == null) {
-      return Scaffold(
-        appBar: AppBar(),
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+
+      ),
       body: Container(
         width: double.infinity,
         child: Column(
@@ -96,7 +72,7 @@ class _ProfileViewState extends State<ProfileView> {
                             child: Padding(
                               padding: EdgeInsets.all(5),
                               child: Text(
-                                '${_user!.namaLengkap}',
+                                'ahmad',
                                 style: TextStyle(
                                   fontSize: 16,
                                 ),
@@ -116,7 +92,7 @@ class _ProfileViewState extends State<ProfileView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'email',
+                            'Nama',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -135,7 +111,7 @@ class _ProfileViewState extends State<ProfileView> {
                             child: Padding(
                               padding: EdgeInsets.all(5),
                               child: Text(
-                                '${_user!.email}',
+                                'ahmad',
                                 style: TextStyle(
                                   fontSize: 16,
                                 ),
@@ -155,7 +131,7 @@ class _ProfileViewState extends State<ProfileView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'alamat',
+                            'Nama',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -174,7 +150,7 @@ class _ProfileViewState extends State<ProfileView> {
                             child: Padding(
                               padding: EdgeInsets.all(5),
                               child: Text(
-                                '${_user!.provinsi},${_user!.kabupaten}',
+                                'ahmad',
                                 style: TextStyle(
                                   fontSize: 16,
                                 ),
@@ -193,6 +169,13 @@ class _ProfileViewState extends State<ProfileView> {
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Text(
+                            'Nama',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                           Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
@@ -206,10 +189,9 @@ class _ProfileViewState extends State<ProfileView> {
                             child: Padding(
                               padding: EdgeInsets.all(5),
                               child: Text(
-                                'Pengajuan Fasilitator',
+                                'ahmad',
                                 style: TextStyle(
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),
@@ -236,7 +218,7 @@ class _ProfileViewState extends State<ProfileView> {
                                   child: Padding(
                                     padding: EdgeInsets.all(5),
                                     child: Text(
-                                      'Pengajuan Pengepul',
+                                      'Pengajuan Fasilitator',
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
@@ -247,6 +229,41 @@ class _ProfileViewState extends State<ProfileView> {
                                 SizedBox(
                                   height: 15,
                                 ),
+                                Container(
+                                  width: double.infinity,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              color:
+                                                  Colors.black, // warna border
+                                              width: 2.0, // ketebalan border
+                                            ),
+                                          ),
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.all(5),
+                                          child: Text(
+                                            'Pengajuan Pengepul',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
                           )
@@ -262,7 +279,8 @@ class _ProfileViewState extends State<ProfileView> {
               height: 40,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.blue,
+              color: Colors.blue,
+
               ),
               child: Center(
                   child: Text(
@@ -281,5 +299,5 @@ class _ProfileViewState extends State<ProfileView> {
         child: const MyBottomNavigationBar(),
       ),
     );
-  }
+  } 
 }

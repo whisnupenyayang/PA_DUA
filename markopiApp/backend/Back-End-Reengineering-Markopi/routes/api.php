@@ -31,17 +31,17 @@ use App\Models\Pengepul;
 
 
 
-//=============================Budiday, Panen, dan pasca Panen ==============================================
+
 Route::get('/kegiatan/{kegiatan}/{jenisKopi}', [BudidayaAPIController::class, 'getKegiatan']);
 
 Route::get('/jenistahapankegiatan/{id}', [BudidayaAPIController::class, 'getJenisTahapanKegiatan']);
 
 Route::get('/jenistahapankegiatan/detail/{id}', [BudidayaAPIController::class,'getJenisTahapanKegiatanDetail']);
-Route::post('/jenistahapkegiatandetail', [BudidayaAPIController::class, 'storeJenisTahapanKegiatanDetail']);
 
 
 
-
+Route::get('/budidaya/{jenisKopi}', [BudidayaAPIController::class, 'getTahapanBudidaya']);
+Route::get('/budidaya/jenistahapanbudidaya/{id}', [BudidayaAPIController::class,'getJenisTahapanBudidaya']);
 Route::get('/budidaya/jenistahapanbudidaya/detail/{id}', [BudidayaAPIController::class, 'getJenisTahapBudidayaById']);
 Route::post('/budidaya/storejenistahapanbudidaya', [BudidayaApiController::class, 'storeJenisTahapanBudidaya']);
 Route::post('/upload', [BudidayaApiController::class, 'storeTahapanBudidaya']);
@@ -52,7 +52,7 @@ Route::post('/upload', [BudidayaApiController::class, 'storeTahapanBudidaya']);
 
 
 
-//======================KEDAI================================
+//KEDAI
 Route::get('/minuman', [BudidayaAPIController::class, 'getMinumanData']);
 
 //PENGAJUAN
@@ -64,11 +64,7 @@ Route::post('/pengajuantambah', [PengajuanController::class, 'tambahData']);
 //KOMUNITAS
 Route::get('/komunitas', [BudidayaAPIController::class, 'getKomunitasData']);
 
-
-
-
-// ============================== Autentikasi ====================
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('register', [AuthController::class, 'register']);
 
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -100,8 +96,8 @@ Route::get('/forum',[ForumController::class,'getLimaForum']);
 // Route::get('/forum',[ForumController::class,'getLimaForum'])->middleware(['auth:sanctum']);
 Route::get('forum/{id}', [ForumController::class, 'show']);
 Route::get('user/forum/{user_id}', [ForumController::class, 'getForumByUserId']);
-Route::post('/forum', [ForumController::class, 'storeForum']);
-// Route::post('forum/{id}', [ForumController::class, 'update']);
+Route::post('forum', [ForumController::class, 'store']);
+Route::post('forum/{id}', [ForumController::class, 'update']);
 Route::delete('forum/{id}', [ForumController::class, 'destroy']);
 Route::get('forumKomen/{forum_id}', [ForumController::class, 'get_comment_forum']);
 
