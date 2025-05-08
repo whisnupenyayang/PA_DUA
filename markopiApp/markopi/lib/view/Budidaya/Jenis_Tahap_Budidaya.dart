@@ -28,7 +28,8 @@ class _JenisTahapBudidayaViewState extends State<JenisTahapBudidayaView> {
 
     if (id != null) {
       budidayaC.jenisTahapBudidayaList.clear();
-      budidayaC.fetchJenisTahapBudidaya(id!);
+      kegiatanC.fetchJenisTahapanKegiatan(id!);
+      // budidayaC.fetchJenisTahapBudidaya(id!);
     }
   }
 
@@ -46,17 +47,17 @@ class _JenisTahapBudidayaViewState extends State<JenisTahapBudidayaView> {
         title: Text("Jenis Tahap Budidaya"),
       ),
       body: Obx(() {
-        if (budidayaC.jenisTahapBudidayaList.isEmpty) {
+        if (kegiatanC.jenisTahapKegiatanList.isEmpty) {
           return Center(child: CircularProgressIndicator());
         }
 
         return ListView.builder(
-          itemCount: budidayaC.jenisTahapBudidayaList.length,
+          itemCount: kegiatanC.jenisTahapKegiatanList.length,
           itemBuilder: (context, index) {
-            final item = budidayaC.jenisTahapBudidayaList[index];
+            final item = kegiatanC.jenisTahapKegiatanList[index];
             return GestureDetector(
               onTap: () {
-                Get.toNamed(RouteName.budidaya +
+                Get.toNamed(RouteName.kegiatan +
                     '/jenistahapanbudidaya/detail/${item.id}');
               },
               child: Container(
@@ -77,7 +78,9 @@ class _JenisTahapBudidayaViewState extends State<JenisTahapBudidayaView> {
                           height: 100,
                           color: Colors.black,
                           child: CachedNetworkImage(
-                            imageUrl: 'http://10.0.2.2:8000${item.url_gambar}',
+                            // imageUrl: 'http://10.0.2.2:8000${item.url_gambar}',
+                            imageUrl:
+                                'http://10.0.2.2:8000/storage/budidayaimage/OjPcIQh71iVEIq6A2wk3Z1AuZh73KgFTX9JQOWtP.png',
                             placeholder: (context, url) => Center(
                                 child: CircularProgressIndicator()), // loading
                             errorWidget: (context, url, error) =>

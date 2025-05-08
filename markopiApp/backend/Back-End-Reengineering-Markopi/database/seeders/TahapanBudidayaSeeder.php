@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Pengepul;
 use App\Models\TahapanBudidaya;
+use App\Models\TahapanKegiatan;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -30,11 +31,25 @@ class TahapanBudidayaSeeder extends Seeder
         ];
 
 
-        foreach($nama_tahapan as $n ){}
-
-         $tahapan = TahapanBudidaya::create([
+        foreach($nama_tahapan as $n ){ $tahapan = TahapanKegiatan::create([
             'nama_tahapan' => $n,
-            'jenis_kopi' => 'Arabika'
-         ]);
+            'jenis_kopi' => 'Arabika',
+            'kegiatan' => 'Budidaya'
+
+         ]);}
+         foreach($nama_tahapan as $n ){ $tahapan = TahapanKegiatan::create([
+            'nama_tahapan' => $n,
+            'jenis_kopi' => 'Arabika',
+            'kegiatan' => 'Panen'
+
+         ]);}
+         foreach($nama_tahapan as $n ){ $tahapan = TahapanKegiatan::create([
+            'nama_tahapan' => $n,
+            'jenis_kopi' => 'Arabika',
+            'kegiatan' => 'Pasca_Panen'
+
+         ]);}
+
+
     }
 }

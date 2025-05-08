@@ -181,7 +181,7 @@
                 <img src="{{ asset('images/' . $t->gambar_resep) }}" alt="Foto resep">
                 <div class="card-content">
                     <h3>{{ $t->nama_resep }}</h3>
-                        
+
                     <a href="{{ route('resep.detail', $t->resep_id) }}" class="read-more">Selengkapnya</a>
                 </div>
             </div>

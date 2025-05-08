@@ -25,7 +25,7 @@ class Forum extends Model
             'id_image_forums',
             'forum_id',
             'gambar',
-            DB::raw("CONCAT('" . asset('storage/') . "','/', gambar) as url")
+                DB::raw("CONCAT('" . asset('storage/') . "','/', gambar) as url")
         ]);
     }
 
@@ -35,7 +35,7 @@ class Forum extends Model
 
     public function user(){
         return $this->belongsTo( User::class, 'user_id', 'id_users')->select(
-            
+
         );
     }
 }

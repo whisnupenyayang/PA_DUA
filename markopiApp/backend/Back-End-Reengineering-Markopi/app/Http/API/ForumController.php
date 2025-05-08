@@ -5,6 +5,7 @@ namespace App\Http\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ForumResource;
 use App\Models\Forum;
+use App\Models\ImageForum;
 use App\Models\KomentarForum;
 use App\Models\LikeForum;
 use Illuminate\Http\Request;
@@ -33,13 +34,49 @@ class ForumController extends Controller
     }
 
 
+
+    public function storeForum(Request $request){
+            $request->validate([
+                'title' => 'required|string',
+                'deskripsi' => 'required|string',
+                'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+                'user_id' => 'required',
+        ]);
+
+        $forum = Forum::create([
+            'title' => $request->title,
+                'deskripsi' => $request->deskripsi,
+                'user_id' => $request->user_id,
+        ]);
+
+        if($forum) {
+            $path =null;
+            if($request->hasFile('gambar')){
+                $file = $request->file('gambar');
+                $path= $file->store('budidayaimage','public');
+
+                $imageforum = ImageForum::create([
+                    'forum_id'=> $forum->id_forums,
+                    'gambar' => '/storage/'.$path,
+
+                ]);
+                return response()->json('selesai');
+
+            }
+
+
+
+        }
+    }
+
+
     public function store(Request $request)
     {
         try {
             $request->validate([
                 'title' => 'required|string',
                 'deskripsi' => 'required|string',
-                'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
                 'user_id' => 'required',
         ]);
 
@@ -49,16 +86,16 @@ class ForumController extends Controller
                 'user_id' => $request->user_id,
             ]);
 
+            $gambarpath =null;
+
             if ($forum) {
                 $gambarPath = null;
                 if ($request->hasFile('gambar')) {
                     $uploadedFile = $request->file('gambar');
-                    if ($uploadedFile->isValid()) {
+
                         $gambarPath = $uploadedFile->store('forumimage', 'public');
                         $forum->images()->create(['gambar' => $gambarPath]);
-                    } else {
-                        return response()->json(['message' => 'Gagal mengunggah Gambar', 'status' => 'error', 'error' => 'Invalid file'], 400);
-                    }
+
                 }
 
                 // ngambil url
@@ -205,10 +242,6 @@ class ForumController extends Controller
             return response()->json('berhasil');
         }
         return response()->json('gagal');
-
-
-
-
     }
 
 
