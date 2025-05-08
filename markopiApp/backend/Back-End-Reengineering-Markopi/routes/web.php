@@ -10,6 +10,8 @@ use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\PascaPanenController;
 use App\Http\Controllers\IklanController;
 use App\Http\Controllers\PengepulController;
+use App\Http\Controllers\ResepController;
+use App\Http\Controllers\TokoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,8 +66,22 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/iklan/create', [IklanController::class, 'create'])->name('iklan.create');
     Route::post('/iklan', [IklanController::class, 'store'])->name('iklan.store');
 
-    // Minuman
-    Route::resource('minuman', MinumanController::class)->names(['index' => 'minuman.index']);
+    //resep
+    Route::get('/resep', [ResepController::class, 'index'])->name('admin.resep');  // <-- Correct route name
+    Route::get('/resep/create', [ResepController::class, 'create'])->name('resep.create');
+    Route::post('/resep', [ResepController::class, 'store'])->name('resep.store');
+    Route::get('/resep/{id}', [ResepController::class, 'detailResep'])->name('resep.detail');
+    Route::get('/resep/{id}/edit', [ResepController::class, 'edit'])->name('resep.edit');
+    Route::delete('/resep/{id}', [ResepController::class, 'destroy'])->name('resep.destroy');
+    Route::post('/resep/{id}/update', [ResepController::class, 'update'])->name('resep.update');
+
+    //toko
+    Route::get('/toko', [TokoController::class, 'index'])->name('admin.toko');
+    Route::get('/toko/create', [TokoController::class, 'create'])->name('toko.create');
+    Route::post('/toko', [TokoController::class, 'store'])->name('toko.store');
+    Route::get('/toko/{id}', [TokoController::class, 'detailToko'])->name('toko.detail');
+    Route::delete('/toko/{id}', [TokoController::class, 'destroy'])->name('toko.destroy');
+    Route::post('/toko/store', [TokoController::class, 'store'])->name('toko.store');
 
     // Arttikel
     Route::get('admin/artikel', [ArtikelController::class, 'artikel_admin'])->name('artikel.admin');
@@ -76,7 +92,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/pengepul/{id}/edit', [PengepulController::class, 'edit'])->name('admin.pengepul.edit');
     Route::put('/pengepul/{id}/update', [PengepulController::class, 'update'])->name('admin.pengepul.update');
     Route::post('/admin/pengepul/updateField', [PengepulController::class, 'updateField'])->name('admin.pengepul.updateField');
-    
+
     // Penjualan
     Route::get('penjualan', [BudidayaController::class, 'penjualan_index'])->name('penjualan.index');
 
