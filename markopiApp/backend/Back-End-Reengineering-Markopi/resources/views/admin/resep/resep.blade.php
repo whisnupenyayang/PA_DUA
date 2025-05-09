@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,7 +53,7 @@
 
         .card-content {
             flex-grow: 1;
-            padding-left: 10px;
+            padding-left: 25px;
             text-align: center;
         }
 
@@ -67,20 +68,18 @@
             color: #777;
         }
 
-        .btn-add {
-            display: flex;
-            justify-content: center;
+        .add-btn {
+            display: inline-flex;
             align-items: center;
-            background-color: black;
+            gap: 8px;
+            padding: 10px 15px;
+            background-color: #1e2e49;
             color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 30px;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
+            border-radius: 16px;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         .btn-add:hover {
@@ -95,7 +94,6 @@
         .card-content .read-more {
             color: #007bff;
             text-decoration: none;
-            font-weight: bold;
         }
 
         .card-content .read-more:hover {
@@ -109,14 +107,14 @@
             }
 
             .card {
-                flex-direction: column;
+                flex-direction: row;
                 align-items: center;
-                padding: 15px;
+                padding: 20px;
             }
 
             .card img {
-                width: 100%;
-                height: 200px;
+                width: 40%;
+                height: 80px;
                 object-fit: cover;
                 border-radius: 8px;
             }
@@ -133,25 +131,33 @@
         }
 
         /* Desktop Adjustments */
-        @media (min-width: 768px) {
+        @media (min-width: 1320px) {
             .container {
-                max-width: 800px;
-                padding: 40px;
+                padding: 60px calc((100% - 1200px) / 2);
+            }
+
+            .container {
+                width: 100%;
+                max-width: 1700px;
+                padding: 60px;
+                margin: 0 auto;
+                box-sizing: border-box;
             }
 
             h1 {
-                font-size: 2em;
+                font-size: 3em;
             }
 
             .card {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
+                font-size: 20px;
             }
 
             .card img {
-                width: 80px;
-                height: 80px;
+                width: 20%;
+                height: 20%;
                 object-fit: cover;
                 margin-right: 20px;
             }
@@ -160,19 +166,28 @@
                 text-align: left;
             }
 
-            .btn-add {
-                font-size: 30px;
-                width: 50px;
-                height: 50px;
+            .add-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 15px;
+                background-color: #1e2e49;
+                color: white;
+                border-radius: 16px;
+                text-decoration: none;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s;
+                font-family: 'Segoe UI', sans-serif;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <h1>Daftar resep</h1>
+        <h1>Daftar Resep</h1>
 
-        @if(session('success'))
+        @if (session('success'))
             <p>{{ session('success') }}</p>
         @endif
 
@@ -181,17 +196,17 @@
                 <img src="{{ asset('images/' . $t->gambar_resep) }}" alt="Foto resep">
                 <div class="card-content">
                     <h3>{{ $t->nama_resep }}</h3>
-
+                    <p>Komposisi dan Cara</p>
                     <a href="{{ route('resep.detail', $t->resep_id) }}" class="read-more">Selengkapnya</a>
                 </div>
             </div>
         @endforeach
-    </div>
-
-    <div class="btn-add">
-        <a href="{{ route('resep.create') }}">
-            <span class="material-icons">add</span>
-        </a>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 20px;">
+            <a href="{{ route('resep.create') }}" class="add-btn">
+                <span class="material-icons">add</span>
+            </a>
+        </div>
     </div>
 </body>
+
 </html>

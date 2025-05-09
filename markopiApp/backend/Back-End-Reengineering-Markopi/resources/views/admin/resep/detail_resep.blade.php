@@ -44,6 +44,7 @@
                 display: flex;
                 justify-content: space-between;
                 margin-top: 20px;
+                justify-content: flex-end
             }
 
             .btn-trash {
@@ -124,10 +125,10 @@
 
                 <!-- Deskripsi Resep -->
                 <div class="field-container">
-                    <p id="resep-desc"><strong>Deskripsi:</strong> {{ $resep->deskripsi_resep }}</p>
+                    <p id="resep-desc" style="white-space: pre-line;"><strong>Deskripsi:</strong> <br>{{ $resep->deskripsi_resep }}</p>
                     <a href="javascript:void(0);" id="edit-desc" class="edit-icon"><i class="bi bi-pencil"></i></a>
                     <button id="save-desc" class="edit-icon save-btn" style="display: none;">Simpan</button>
-                </div>
+                </div><br>
 
                 <!-- Foto Resep -->
                 <div class="field-container">
