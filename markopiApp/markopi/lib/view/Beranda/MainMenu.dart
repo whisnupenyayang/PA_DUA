@@ -15,8 +15,8 @@ class _MainMenuState extends State<MainMenu> {
     'assets/images/panen_baru.jpg',
     'assets/images/pascapanen_baru.jpg',
     'assets/images/laporan_baru.jpg',
-    'assets/images/tokokopi.png',
-    'assets/images/budidaya.png',
+    'assets/images/toko_kopi.jpg',
+    'assets/images/resepkopi.jpg',
   ];
 
   final List<String> menuList = [

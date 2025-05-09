@@ -6,22 +6,19 @@ class IklanBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, String>> iklanList = [
-      {
-        'image':
-            'https://via.placeholder.com/300x150.png?text=Pupuk+Organik+1',
-        'title': 'Pupuk organik terbaik untuk tanaman kopi',
-      },
-      {
-        'image':
-            'https://via.placeholder.com/300x150.png?text=Pupuk+Organik+2',
-        'title': 'Hemat biaya, hasil maksimal',
-      },
-      {
-        'image':
-            'https://via.placeholder.com/300x150.png?text=Pupuk+Organik+3',
-        'title': 'Rekomendasi ahli pertanian kopi',
-      },
-    ];
+  {
+    'image': 'assets/images/iklan1.png',
+    'title': 'Pupuk organik terbaik untuk tanaman kopi',
+  },
+  {
+    'image': 'assets/images/iklan2.jpg',
+    'title': 'Pupuk alami ramah lingkungan',
+  },
+  {
+    'image': 'assets/images/iklan2.jpg',
+    'title': 'Pupuk alami ramah lingkungan2',
+  },
+];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,7 +54,7 @@ class IklanBanner extends StatelessWidget {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Image.network(
+                      Image.asset(
                         iklan['image']!,
                         fit: BoxFit.cover,
                       ),
