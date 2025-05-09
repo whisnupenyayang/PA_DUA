@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markopi/controllers/Autentikasi_Controller.dart';
 import 'package:markopi/service/token_storage.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -21,8 +20,6 @@ class _LoginViewState extends State<LoginView> {
   @override
   void initState() {
     super.initState();
-    // Untuk Android WebView modern
-    // WebViewPlatform.instance = SurfaceAndroidWebView(); // uncomment kalau butuh
   }
 
   @override
@@ -109,22 +106,6 @@ class _LoginViewState extends State<LoginView> {
               style: TextStyle(color: Colors.grey),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class AdminWebViewPage extends StatelessWidget {
-  const AdminWebViewPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: WebView(
-          initialUrl: 'http://192.168.52.244:8000/',
-          javascriptMode: JavascriptMode.unrestricted,
         ),
       ),
     );
