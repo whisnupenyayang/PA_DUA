@@ -15,21 +15,35 @@ class _MainMenuState extends State<MainMenu> {
     'assets/images/panen.png',
     'assets/images/pascapanen.png',
     'assets/images/laporan.png',
+    'assets/images/tokokopi.png', // Gambar Toko Kopi
+    'assets/images/resepkopi.png', // Gambar Resep Kopi
   ];
 
   final List<String> menuList = [
     'Budidaya',
     'Panen',
     'Pasca_Panen',
+    'Laporan',
+    'Toko_Kopi', // Menambahkan Toko Kopi
+    'Resep_Kopi', // Menambahkan Resep Kopi
   ];
 
-  final List<String> labelMenu = ['Budidaya', 'Panen', 'PascaPanen', 'Laporan'];
+  final List<String> labelMenu = [
+    'Budidaya',
+    'Panen',
+    'PascaPanen',
+    'Laporan',
+    'Toko Kopi', // Menambahkan label Toko Kopi
+    'Resep Kopi', // Menambahkan label Resep Kopi
+  ];
 
   List<bool> isPressed = [
     false,
     false,
     false,
     false,
+    false, // Status untuk Toko Kopi
+    false, // Status untuk Resep Kopi
   ];
 
   void _handleTap(int index) {
