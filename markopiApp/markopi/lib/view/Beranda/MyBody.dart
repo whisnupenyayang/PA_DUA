@@ -4,6 +4,8 @@ import 'package:markopi/service/token_storage.dart';
 import './MainMenu.dart';
 import 'package:markopi/models/Artikel_Model.dart';
 import 'package:get/get.dart';
+import 'package:markopi/view/iklan/iklan_banner.dart';
+
 
 class BerandaBody extends StatefulWidget {
   const BerandaBody({super.key});
@@ -22,14 +24,18 @@ class _BerandaBodyState extends State<BerandaBody> {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            SizedBox(height: 30),
-            MainMenu(),
-            SizedBox(height: 30),
-            buildHorizontalListView(),
-          ],
-        ),
+       child: Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    SizedBox(height: 30),
+    MainMenu(),
+    SizedBox(height: 30),
+    buildHorizontalListView(),
+    SizedBox(height: 30),
+    IklanBanner(), // Tambahkan ini
+  ],
+),
+
       ),
     );
   }
