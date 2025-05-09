@@ -11,6 +11,8 @@ import 'package:markopi/view/forum/ForumKomentar.dart';
 import 'package:markopi/view/forum/ListForum.dart';
 import 'package:markopi/view/pengepul/ListPengepul.dart';
 import 'package:markopi/view/pengepul/listPengepul2.dart';
+import 'package:markopi/view/toko/toko_kopi_page.dart';  // Import halaman Toko Kopi
+import 'package:markopi/view/resep/resep_kopi_page.dart';  // Import halaman Resep Kopi
 import 'package:markopi/binding/Budidaya_Binding.dart';
 
 import './route_name.dart';
@@ -72,6 +74,18 @@ class AppPages {
     GetPage(
       name: RouteName.pengepul,
       page: () => ListPengepul(),
+    ),
+
+    /*================Toko Kopi=================== */
+    GetPage(
+      name: RouteName.tokoKopi,
+      page: () => TokoKopiPage(),  // Menambahkan halaman Toko Kopi
+    ),
+
+    /*================Resep Kopi=================== */
+    GetPage(
+      name: RouteName.resepKopi,
+      page: () => ResepKopiPage(),  // Menambahkan halaman Resep Kopi
     ),
   ];
 }

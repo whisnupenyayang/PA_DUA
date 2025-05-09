@@ -4,7 +4,6 @@ import 'package:markopi/service/token_storage.dart';
 import './MainMenu.dart';
 import 'package:markopi/models/Artikel_Model.dart';
 import 'package:get/get.dart';
-import 'weather_service.dart';
 
 class BerandaBody extends StatefulWidget {
   const BerandaBody({super.key});
@@ -15,8 +14,6 @@ class BerandaBody extends StatefulWidget {
 
 class _BerandaBodyState extends State<BerandaBody> {
   final ArtikelController artikelC = Get.put(ArtikelController());
-  final WeatherService weatherService = WeatherService();
-  Map<String, dynamic> weatherData = {};
   bool isLoading = true;
   String? token;
 
@@ -27,64 +24,12 @@ class _BerandaBodyState extends State<BerandaBody> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            isLoading
-                ? Center(child: CircularProgressIndicator())
-                : buildWeatherCard(weatherData),
             SizedBox(height: 30),
             MainMenu(),
             SizedBox(height: 30),
             buildHorizontalListView(),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget buildWeatherCard(Map<String, dynamic> weatherData) {
-    var mainWeather = weatherData['main'];
-    var weatherDesc = weatherData['weather'][0]['description'];
-    var temperature = mainWeather['temp'];
-    var cityName = weatherData['name'];
-
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 3,
-            blurRadius: 10,
-            offset: Offset(2, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.flash_on, size: 64, color: Colors.orange),
-              SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('$temperature°C',
-                      style:
-                          TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 4),
-                  Text(weatherDesc, style: TextStyle(fontSize: 16)),
-                  SizedBox(height: 4),
-                  Text('Cuaca di $cityName',
-                      style: TextStyle(fontSize: 14, color: Colors.grey[700])),
-                ],
-              )
-            ],
-          ),
-          SizedBox(height: 20),
-          Divider(),
-        ],
       ),
     );
   }

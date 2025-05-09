@@ -47,11 +47,23 @@ class _MainMenuState extends State<MainMenu> {
   ];
 
   void _handleTap(int index) {
-    setState(() {
-      print('${RouteName.kegiatan}/${menuList[index]}');
-      Get.toNamed('${RouteName.kegiatan}/${menuList[index]}');
-    });
-  }
+  setState(() {
+    print('Menu yang dipilih: ${menuList[index]}');
+    
+    // Menambahkan logika untuk menavigasi ke halaman Toko Kopi dan Resep Kopi
+    if (menuList[index] == 'Toko_Kopi') {
+      print('Navigasi ke Toko Kopi');
+      Get.toNamed(RouteName.tokoKopi);  // Navigasi ke Toko Kopi
+    } else if (menuList[index] == 'Resep_Kopi') {
+      print('Navigasi ke Resep Kopi');
+      Get.toNamed(RouteName.resepKopi);  // Navigasi ke Resep Kopi
+    } else {
+      print('Navigasi ke kegiatan: ${RouteName.kegiatan}/${menuList[index]}');
+      Get.toNamed('${RouteName.kegiatan}/${menuList[index]}');  // Untuk menu lainnya
+    }
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +83,7 @@ class _MainMenuState extends State<MainMenu> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              _handleTap(index); // biar efek warna ditekan jalan
+              _handleTap(index); // Memanggil fungsi navigasi saat menu ditekan
             },
             child: AnimatedContainer(
               duration: Duration(milliseconds: 100),
@@ -95,7 +107,7 @@ class _MainMenuState extends State<MainMenu> {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    labelMenu[index], // tampilkan nama menu sesuai list
+                    labelMenu[index], // Menampilkan nama menu sesuai list
                     style: TextStyle(fontSize: 20),
                   ),
                 ],

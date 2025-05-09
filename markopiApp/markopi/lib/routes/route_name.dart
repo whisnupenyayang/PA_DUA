@@ -11,4 +11,7 @@ abstract class RouteName {
   static const budidaya = "/budidaya";
   static const login = "/login";
   static const profile = "/profile";
+  static const tokoKopi = '/toko_kopi';  
+  static const resepKopi = '/resep_kopi';  
+
 }
