@@ -102,7 +102,7 @@ class _LoginViewState extends State<LoginView> {
             ),
             const SizedBox(height: 16),
             const Text(
-              "Forgot Password?",
+              "Lupa Password?",
               style: TextStyle(color: Colors.grey),
             ),
           ],
