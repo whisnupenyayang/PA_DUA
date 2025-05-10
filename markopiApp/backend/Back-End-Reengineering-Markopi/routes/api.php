@@ -16,6 +16,9 @@ use App\Http\API\ForgotPasswordController;
 use App\Http\API\PengepulApiController;
 use App\Http\Controllers\BudidayaController;
 use App\Models\Pengepul;
+use App\Http\Controllers\Api\TokoController;
+use App\Http\Controllers\Api\ResepController;
+use App\Http\Controllers\Api\IklanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -145,3 +148,12 @@ Route::put('/updateKeterangan/{id}',[TransaksiApiController::class, 'updateKeter
 
 
 
+//toko
+Route::get('tokos', [TokoController::class, 'index']);  // Mengambil semua toko
+Route::get('tokos/{id}', [TokoController::class, 'show']);  // Mengambil toko berdasarkan ID
+
+//resep
+Route::get('/reseps', [ResepController::class, 'index']);
+
+//iklan
+Route::get('/iklans', [IklanController::class, 'index']);
