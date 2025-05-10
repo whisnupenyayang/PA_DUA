@@ -9,14 +9,15 @@ class Iklan extends Model
 {
     use HasFactory;
 
-    protected $table = 'iklans';
+    protected $table = 'iklan';
+
+    protected $primaryKey = 'id_iklan';
 
     protected $fillable = [
-        'judul',
-        'deskripsi',
+        'judul_iklan',
+        'deskripsi_iklan',
         'gambar',
-        'harga',
-        'kontak',
+        'link',
     ];
 }
 

@@ -8,12 +8,32 @@ use Illuminate\Http\Request;
 
 class IklanController extends Controller
 {
+    // Fetch semua iklan
     public function index()
     {
-        // Ambil semua Iklan dari database
-        $Iklans = Iklan::all();
-        return response()->json($Iklans);
+        $iklans = Iklan::all();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $iklans
+        ], 200);
     }
 
-    // Tambahkan fungsi lain sesuai kebutuhan
+    // Fetch iklan by ID
+    public function show($id)
+    {
+        $iklan = Iklan::find($id);
+
+        if ($iklan) {
+            return response()->json([
+                'status' => 'success',
+                'data' => $iklan
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Iklan not found'
+            ], 404);
+        }
+    }
 }

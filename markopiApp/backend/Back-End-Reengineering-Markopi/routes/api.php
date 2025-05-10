@@ -157,3 +157,5 @@ Route::get('/reseps', [ResepController::class, 'index']);
 
 //iklan
 Route::get('/iklans', [IklanController::class, 'index']);
+Route::get('/iklans/{id}', [IklanController::class, 'show']);
+
