@@ -31,9 +31,6 @@ use App\Http\Controllers\Api\IklanController;
 |
 */
 
-
-
-
 //=============================Budiday, Panen, dan pasca Panen ==============================================
 Route::get('/kegiatan/{kegiatan}/{jenisKopi}', [BudidayaAPIController::class, 'getKegiatan']);
 
@@ -41,8 +38,6 @@ Route::get('/jenistahapankegiatan/{id}', [BudidayaAPIController::class, 'getJeni
 
 Route::get('/jenistahapankegiatan/detail/{id}', [BudidayaAPIController::class,'getJenisTahapanKegiatanDetail']);
 Route::post('/jenistahapkegiatandetail', [BudidayaAPIController::class, 'storeJenisTahapanKegiatanDetail']);
-
-
 
 
 Route::get('/budidaya/jenistahapanbudidaya/detail/{id}', [BudidayaAPIController::class, 'getJenisTahapBudidayaById']);
@@ -66,8 +61,6 @@ Route::post('/pengajuantambah', [PengajuanController::class, 'tambahData']);
 
 //KOMUNITAS
 Route::get('/komunitas', [BudidayaAPIController::class, 'getKomunitasData']);
-
-
 
 
 // ============================== Autentikasi ====================
@@ -148,6 +141,8 @@ Route::put('/updateKeterangan/{id}',[TransaksiApiController::class, 'updateKeter
 
 
 
+
+
 //toko
 Route::get('tokos', [TokoController::class, 'index']);  // Mengambil semua toko
 Route::get('tokos/{id}', [TokoController::class, 'show']);  // Mengambil toko berdasarkan ID
@@ -158,4 +153,3 @@ Route::get('/reseps', [ResepController::class, 'index']);
 //iklan
 Route::get('/iklans', [IklanController::class, 'index']);
 Route::get('/iklans/{id}', [IklanController::class, 'show']);
-

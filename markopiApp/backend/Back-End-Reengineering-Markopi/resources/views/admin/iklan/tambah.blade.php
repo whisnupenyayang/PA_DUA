@@ -6,61 +6,47 @@
 
 @section('content')
 <div class="container mt-4">
-    <!-- Tombol Kembali -->
-    <a href="{{ route('admin.iklan') }}" class="btn btn-secondary mb-3">
-        ← Kembali
-    </a>
-    
     <h2>Tambah Iklan Baru</h2>
     <form action="{{ route('iklan.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
-        <!-- Judul -->
+        <!-- Judul Iklan -->
         <div class="mb-3">
-            <label for="judul" class="form-label">Judul</label>
-            <input type="text" class="form-control @error('judul') is-invalid @enderror" id="judul" name="judul" value="{{ old('judul') }}" required>
-            @error('judul')
+            <label for="judul_iklan" class="form-label">Judul Iklan</label>
+            <input type="text" class="form-control @error('judul_iklan') is-invalid @enderror" id="judul_iklan" name="judul_iklan" value="{{ old('judul_iklan') }}" required>
+            @error('judul_iklan')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
 
-        <!-- Deskripsi -->
+        <!-- Deskripsi Iklan -->
         <div class="mb-3">
-            <label for="deskripsi" class="form-label">Deskripsi</label>
-            <textarea class="form-control @error('deskripsi') is-invalid @enderror" id="deskripsi" name="deskripsi" rows="3" required>{{ old('deskripsi') }}</textarea>
-            @error('deskripsi')
+            <label for="deskripsi_iklan" class="form-label">Deskripsi</label>
+            <textarea class="form-control @error('deskripsi_iklan') is-invalid @enderror" id="deskripsi_iklan" name="deskripsi_iklan" rows="3" required>{{ old('deskripsi_iklan') }}</textarea>
+            @error('deskripsi_iklan')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
 
-        <!-- Harga -->
+        <!-- Link/Kontak -->
         <div class="mb-3">
-            <label for="harga" class="form-label">Harga</label>
-            <input type="number" class="form-control @error('harga') is-invalid @enderror" id="harga" name="harga" value="{{ old('harga') }}" required>
-            @error('harga')
+            <label for="link" class="form-label">Kontak / Link</label>
+            <input type="text" class="form-control @error('link') is-invalid @enderror" id="link" name="link" value="{{ old('link') }}" required>
+            @error('link')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
 
-        <!-- Kontak -->
+        <!-- Gambar -->
         <div class="mb-3">
-            <label for="kontak" class="form-label">Kontak</label>
-            <input type="text" class="form-control @error('kontak') is-invalid @enderror" id="kontak" name="kontak" value="{{ old('kontak') }}" required>
-            @error('kontak')
+            <label for="gambar" class="form-label">Gambar</label>
+            <input type="file" class="form-control @error('gambar') is-invalid @enderror" id="gambar" name="gambar" accept="image/*" required>
+            @error('gambar')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
 
-        <!-- Gambar Produk -->
-        <div class="mb-3">
-            <label for="gambar_produk" class="form-label">Gambar Produk</label>
-            <input type="file" class="form-control @error('gambar_produk') is-invalid @enderror" id="gambar_produk" name="gambar_produk" accept="image/*" required>
-            @error('gambar_produk')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <!-- Submit Button -->
+        <!-- Tombol Submit -->
         <button type="submit" class="btn btn-primary">Tambah Iklan</button>
     </form>
 </div>

@@ -59,12 +59,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Pasca Panen
     Route::resource('pasca', PascaPanenController::class)->names(['index' => 'pasca.index']);
 
-    // Iklan
-    Route::resource('iklan', IklanController::class)->names(['index' => 'admin.iklan']);
-    Route::get('/admin/iklan/{id}', [IklanController::class, 'show'])->name('iklan.show');
-    Route::put('/admin/iklan/{id}', [IklanController::class, 'update'])->name('iklan.update');
-    Route::get('/iklan/create', [IklanController::class, 'create'])->name('iklan.create');
-    Route::post('/iklan', [IklanController::class, 'store'])->name('iklan.store');
+
+
+
+    
 
     //resep
     Route::get('/resep', [ResepController::class, 'index'])->name('admin.resep');  // <-- Correct route name
@@ -82,6 +80,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/toko/{id}', [TokoController::class, 'detailToko'])->name('toko.detail');
     Route::delete('/toko/{id}', [TokoController::class, 'destroy'])->name('toko.destroy');
     Route::post('/toko/store', [TokoController::class, 'store'])->name('toko.store');
+
+    // Iklan
+    Route::get('/admin/iklan', [IklanController::class, 'index'])->name('iklan.index');
+    Route::get('/admin/iklan/create', [IklanController::class, 'create'])->name('iklan.create');
+    Route::post('/admin/iklan', [IklanController::class, 'store'])->name('iklan.store');
+    Route::get('/admin/iklan/{id}', [IklanController::class, 'show'])->name('iklan.show');
+    Route::put('/admin/iklan/{id}', [IklanController::class, 'update'])->name('iklan.update');
+
 
     // Arttikel
     Route::get('admin/artikel', [ArtikelController::class, 'artikel_admin'])->name('artikel.admin');

@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Models\Iklan;
+use Illuminate\Http\Request;
+
+class IklanController extends Controller
+{
+    // Fetch semua iklan
+    public function index()
+    {
+        $iklans = Iklan::all();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $iklans
+        ], 200);
+    }
+
+    // Fetch iklan by ID
+    public function show($id)
+    {
+        $iklan = Iklan::find($id);
+
+        if ($iklan) {
+            return response()->json([
+                'status' => 'success',
+                'data' => $iklan
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Iklan not found'
+            ], 404);
+        }
+    }
+}

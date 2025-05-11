@@ -27,10 +27,10 @@ class IklanController extends Controller
     {
         $iklan = Iklan::findOrFail($id);
 
-        $data = $request->only(['judul', 'deskripsi', 'harga', 'kontak']);
-        $iklan->update(array_filter($data)); // hanya update yang dikirim
+        $data = $request->only(['judul_iklan', 'deskripsi_iklan', 'link']);
+        $iklan->update(array_filter($data)); // hanya update field yang dikirim
 
-        return redirect()->route('iklan.show', $iklan->id)->with('success', 'Berhasil diperbarui.');
+        return redirect()->route('iklan.show', $iklan->id_iklan)->with('success', 'Berhasil diperbarui.');
     }
 
     public function create()
@@ -43,24 +43,21 @@ class IklanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'judul' => 'required|string|max:255',
-            'deskripsi' => 'required|string',
-            'harga' => 'required|numeric',
-            'kontak' => 'required|string|max:100',
-            'gambar_produk' => 'required|image|mimes:jpg,jpeg,png|max:2048'
+            'judul_iklan' => 'required|string|max:255',
+            'deskripsi_iklan' => 'required|string',
+            'link' => 'required|string|max:100',
+            'gambar' => 'required|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        // Simpan file gambar ke folder public/foto
-        $gambar = $request->file('gambar_produk');
-        $namaFile = time() . '_' . $gambar->getClientOriginalName();
-        $gambar->move(public_path('foto'), $namaFile);
+        $file = $request->file('gambar');
+        $namaFile = time() . '_' . $file->getClientOriginalName();
+        $file->move(public_path('foto'), $namaFile);
 
         Iklan::create([
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
-            'harga' => $request->harga,
-            'kontak' => $request->kontak,
-            'gambar_produk' => $namaFile
+            'judul_iklan' => $request->judul_iklan,
+            'deskripsi_iklan' => $request->deskripsi_iklan,
+            'link' => $request->link,
+            'gambar' => $namaFile
         ]);
 
         return redirect()->route('iklan.index')->with('success', 'Iklan berhasil ditambahkan.');

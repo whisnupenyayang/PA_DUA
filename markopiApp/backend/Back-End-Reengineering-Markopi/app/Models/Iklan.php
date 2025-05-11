@@ -13,6 +13,8 @@ class Iklan extends Model
 
     protected $primaryKey = 'id_iklan';
 
+    public $timestamps = false; 
+
     protected $fillable = [
         'judul_iklan',
         'deskripsi_iklan',
