@@ -5,15 +5,21 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Resep;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 
 class ResepController extends Controller
 {
     public function index()
     {
-        // Ambil semua resep dari database
-        $reseps = Resep::all();
+        $reseps = Resep::all()->map(function ($resep) {
+            $resep->gambar_resep = $resep->gambar_resep 
+                ? URL::to('/images/' . $resep->gambar_resep) 
+                : null;
+            return $resep;
+        });
+
         return response()->json($reseps);
     }
 
-    // Tambahkan fungsi lain sesuai kebutuhan
+    // Fungsi tambahan lain bisa ditambahkan di sini sesuai kebutuhan
 }
