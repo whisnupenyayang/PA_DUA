@@ -13,11 +13,10 @@ class Toko {
     required this.fotoToko,
   });
 
-  // Membuat factory method untuk konversi JSON ke objek Toko
   factory Toko.fromJson(Map<String, dynamic> json) {
     return Toko(
-      id: json['id'] ?? 0, // Kasih default 0 kalau null
-      namaToko: json['nama_toko'] ?? '', // Kasih default empty string
+      id: json['toko_id'] ?? 0,
+      namaToko: json['nama_toko'] ?? '',
       lokasi: json['lokasi'] ?? '',
       jamOperasional: json['jam_operasional'] ?? '',
       fotoToko: json['foto_toko'] ?? '',

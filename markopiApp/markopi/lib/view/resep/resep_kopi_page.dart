@@ -39,8 +39,8 @@ class ResepKopiPage extends StatelessWidget {
                   child: ListTile(
                     leading: resep.gambarResep.isNotEmpty
                         ? Image.network(
-                            // Sesuaikan path gambar sesuai backend kamu
-                            'http://127.0.0.1:8000/storage/${resep.gambarResep}',
+                            // Pastikan URL sesuai dengan backend
+                            resep.gambarResep,
                             width: 60,
                             height: 60,
                             fit: BoxFit.cover,
@@ -48,7 +48,7 @@ class ResepKopiPage extends StatelessWidget {
                               return Icon(Icons.broken_image, size: 40);
                             },
                           )
-                        : Icon(Icons.image_not_supported, size: 40),
+                        : Icon(Icons.image_not_supported, size: 40), // fallback icon
                     title: Text(resep.namaResep),
                     subtitle: Text(
                       resep.deskripsiResep.length > 100
@@ -56,7 +56,7 @@ class ResepKopiPage extends StatelessWidget {
                           : resep.deskripsiResep,
                     ),
                     onTap: () {
-                      // Bisa diarahkan ke halaman detail kalau ada
+                      // Bisa diarahkan ke halaman detail
                     },
                   ),
                 );

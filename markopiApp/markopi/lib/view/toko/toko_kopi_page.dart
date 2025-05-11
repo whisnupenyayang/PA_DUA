@@ -12,7 +12,8 @@ class TokoKopiPage extends StatelessWidget {
         title: const Text('Lokasi Toko Kopi'),
       ),
       body: FutureBuilder<List<Toko>?>(
-        future: TokoService.getAllTokos(), // Memanggil service untuk mendapatkan data toko
+        future: TokoService
+            .getAllTokos(), // Memanggil service untuk mendapatkan data toko
         builder: (context, snapshot) {
           // Jika data sedang dimuat
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -22,7 +23,7 @@ class TokoKopiPage extends StatelessWidget {
           else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
-          // Jika data kosong atau tidak ada  
+          // Jika data kosong atau tidak ada
           else if (snapshot.data == null || snapshot.data!.isEmpty) {
             return const Center(child: Text('Tidak ada data toko'));
           }
@@ -35,9 +36,18 @@ class TokoKopiPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Card(
                   child: ListTile(
-                    title: Text(tokos[index].namaToko), // Menampilkan nama toko
-                    subtitle: Text(tokos[index].lokasi), // Menampilkan alamat toko
-                    trailing: const Icon(Icons.location_on), // Icon lokasi
+                    leading: tokos[index].fotoToko.isNotEmpty
+                        ? Image.network(
+                            tokos[index].fotoToko,
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                          )
+                        : const Icon(
+                            Icons.store), // default icon jika tidak ada foto
+                    title: Text(tokos[index].namaToko),
+                    subtitle: Text(tokos[index].lokasi),
+                    trailing: const Icon(Icons.location_on),
                   ),
                 );
               },
