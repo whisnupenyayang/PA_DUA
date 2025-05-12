@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markopi/controllers/Forum_Controller.dart';
 import 'package:markopi/routes/route_name.dart';
-import '../component/MyBottomNavigation.dart';
 
 class ListForum extends StatefulWidget {
   const ListForum({super.key});
@@ -199,10 +198,6 @@ class _ListForumState extends State<ListForum> {
           },
         );
       }),
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(canvasColor: const Color(0xFFFFFFFF)),
-        child: const MyBottomNavigationBar(),
-      ),
     );
   }
 }

@@ -1,18 +1,27 @@
 import 'package:get/get.dart';
+import 'package:markopi/view/Artikel/List_artikel.dart';
 // import 'package:markopi/view/Admin/Beranda/Beranda.dart';
 import 'package:markopi/view/Beranda/Beranda.dart';
 import 'package:markopi/view/Budidaya/Jenis_Tahap_Budidaya.dart';
 import 'package:markopi/view/Budidaya/Jenis_Tahap_Budidaya_Detail.dart';
 import 'package:markopi/view/Budidaya/Jenis_kopi.dart';
 import 'package:markopi/view/Budidaya/Tahap_Budidaya.dart';
+import 'package:markopi/view/DataPengepulUser/FormTambahDataPengepul.dart';
+import 'package:markopi/view/HargaKopi/ListPengepulFinal.dart';
+import 'package:markopi/view/HargaKopi/PengepulDetail.dart';
 import 'package:markopi/view/Login/login.dart';
 import 'package:markopi/view/Profile/Profile.dart';
+import 'package:markopi/view/DataPengepulUser/UserPengepu.dart';
 import 'package:markopi/view/forum/ForumKomentar.dart';
 import 'package:markopi/view/forum/ListForum.dart';
+<<<<<<< Updated upstream
 import 'package:markopi/view/pengepul/ListPengepul.dart';
 import 'package:markopi/view/pengepul/listPengepul2.dart';
 import 'package:markopi/view/toko/toko_kopi_page.dart';  // Import halaman Toko Kopi
 import 'package:markopi/view/resep/resep_kopi_page.dart';  // Import halaman Resep Kopi
+=======
+
+>>>>>>> Stashed changes
 import 'package:markopi/binding/Budidaya_Binding.dart';
 
 import './route_name.dart';
@@ -22,10 +31,6 @@ class AppPages {
     GetPage(
       name: RouteName.beranda,
       page: () => Beranda(),
-    ),
-    GetPage(
-      name: RouteName.pengepul,
-      page: () => ListPengepul(),
     ),
 
     /*================Forum=================== */
@@ -65,15 +70,37 @@ class AppPages {
       name: RouteName.login,
       page: () => LoginView(),
     ),
+    /*================Autentikasi=================== */
+
     GetPage(
       name: RouteName.profile,
       page: () => ProfileView(),
+    ),
+    GetPage(
+      name: RouteName.profile + '/datapengepul',
+      page: () => UserPengepulView(),
     ),
 
     /*================Pengepul=================== */
     GetPage(
       name: RouteName.pengepul,
-      page: () => ListPengepul(),
+      page: () => KopiPage(),
+    ),
+
+    /*================Toko Kopi=================== */
+    GetPage(
+      name: RouteName.pengepul + '/detail',
+      page: () => DetailPengepuldanPetani(),
+    ),
+    GetPage(
+      name: RouteName.pengepul + '/tambahDataPengepul',
+      page: () => TambahPengepulView(),
+    ),
+
+    /*================Artikel=================== */
+    GetPage(
+      name: RouteName.artikel,
+      page: () => ListArtikel(),
     ),
 
     /*================Toko Kopi=================== */

@@ -3,7 +3,7 @@ import 'package:markopi/service/User_Storage.dart';
 import 'package:markopi/service/User_Storage_Service.dart';
 import './MyAppBar.dart';
 import './MyBody.dart';
-import '../component/MyBottomNavigation.dart';
+
 import 'package:hive_flutter/hive_flutter.dart';
 
 class Beranda extends StatelessWidget {
@@ -16,6 +16,7 @@ class Beranda extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
+
 
         final user = userStorage.getUser();
         print(user);
@@ -31,13 +32,8 @@ class Beranda extends StatelessWidget {
             ),
           ),
           body: BerandaBody(),
-          bottomNavigationBar: Theme(
-            data: Theme.of(context)
-                .copyWith(canvasColor: const Color(0xFFFFFFFF)),
-            child: const MyBottomNavigationBar(),
-          ),
         );
       },
-    );
+      );
   }
 }

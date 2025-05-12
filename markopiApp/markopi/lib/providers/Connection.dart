@@ -8,4 +8,11 @@ class Connection {
   static String buildUrl(String endpoint) {
     return apiUrl + endpoint;
   }
+  // /storage/pengepul/WqIimfqqENHGMrj5KIIb4RxVS3GXGQdmTCTBkTgx.jpg
+
+  static const String imageUrl = 'http://10.0.2.2:8000/';
+
+  static String buildImageUrl(String image_url) {
+    return imageUrl + image_url;
+  }
 }

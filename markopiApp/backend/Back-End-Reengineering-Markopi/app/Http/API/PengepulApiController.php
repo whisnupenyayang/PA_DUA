@@ -33,7 +33,8 @@ class PengepulApiController extends Controller
             'alamat' => 'required',
             'nama_gambar' => 'nullable|image|mimes:jpeg,png,jpg'
         ]);
-
+        $user = $request->user();
+        $userid = $user->id_users;
         $namaFile = null;
         $path = null;
 
@@ -51,6 +52,7 @@ class PengepulApiController extends Controller
             'alamat' => $request->alamat,
             'nama_gambar' => $namaFile,
             'url_gambar' => $path ? 'storage/' . $path : null,
+            'user_id'=> $userid,
         ]);
 
         if ($pengepul) {
@@ -104,6 +106,8 @@ class PengepulApiController extends Controller
     public function updatePengepul(Request $request, $id){
 
         try {
+
+
             $request->validate([
                 'nama_toko'     => 'required',
                 'jenis_kopi'    => 'required',
@@ -112,7 +116,14 @@ class PengepulApiController extends Controller
                 'alamat'        => 'required',
             ]);
 
+            $user = $request->user();
+            $userid = $user->id_users;
+
             $pengepul = Pengepul::findOrFail($id);
+
+            if($userid !== $pengepul->user_id){
+            return response()->json('anda tidak memiliki akses', 403);
+        }
             $pengepul->update($request->only([
                 'nama_toko',
                 'jenis_kopi',
@@ -168,6 +179,21 @@ class PengepulApiController extends Controller
         }
     }
 
+    public function getPengepulByuser(Request $request){
+        $user = $request->user();
+        $userid = $user->id_users;
+
+        $pengepul = Pengepul::where('user_id', $userid)->get();
+
+        return response()->json($pengepul);
+
+    }
+
+    public function getPengepulDetail ( $id) {
+        $pengepul = Pengepul::findOrFail($id);
+
+        return response()->json($pengepul);
+    }
 
 
 

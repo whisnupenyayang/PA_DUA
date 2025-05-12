@@ -16,9 +16,13 @@ use App\Http\API\ForgotPasswordController;
 use App\Http\API\PengepulApiController;
 use App\Http\Controllers\BudidayaController;
 use App\Models\Pengepul;
+<<<<<<< Updated upstream
 use App\Http\Controllers\Api\TokoController;
 use App\Http\Controllers\Api\ResepController;
 use App\Http\Controllers\Api\IklanController;
+=======
+use GuzzleHttp\Middleware;
+>>>>>>> Stashed changes
 
 /*
 |--------------------------------------------------------------------------
@@ -136,15 +140,36 @@ Route::delete('komentar/{komentar_id}/user/{user_id}/replies/{id}', [ReplyKoment
 // ----------------------------------------------------PENGEPUL----------------------------------------------------
 
 Route::get('/pengepul',[PengepulApiController::class, 'getPengepul']);
-Route::post('/pengepul',[PengepulApiController::class, 'storePengepul']);
-Route::put('/pengepul/{id}', [PengepulApiController::class, 'updatePengepul']);
+Route::post('/pengepul',[PengepulApiController::class, 'storePengepul'])->middleware(['auth:sanctum']);
+Route::put('/pengepul/{id}', [PengepulApiController::class, 'updatePengepul'])->middleware(['auth:sanctum']);
+Route::get('/pengepulByuser',[PengepulApiController::class, 'getPengepulByUser'])->middleware(['auth:sanctum']);
+
+Route::get('/pengepul/detail/{id}',[PengepulApiController::class, 'getPengepulDetail']);
 
 Route::get('/hargaratarata/{jenis_kopi}/{tahun}', [PengepulApiController::class, 'getHargaRataRata']);
 
 //=======================================PengajuanTransaksi============================
-Route::get('/buatpengajuan/{id}',[TransaksiApiController::class, 'createPengajuanTransaksi']);
+Route::post('/buatpengajuan',[TransaksiApiController::class, 'createPengajuanTransaksi'])->middleware(['auth:sanctum']);
 
 Route::put('/updateKeterangan/{id}',[TransaksiApiController::class, 'updateKeterangan'])->middleware(['auth:sanctum']);
+
+
+Route::get('/pengajuanbelikopi', [TransaksiApiController::class, 'mengajukanBeliKopi'])->middleware(['auth:sanctum']);
+
+
+// petani jual
+Route::get('/pengajuanjualkopi', [TransaksiApiController::class, 'mengajukanJualKopi'])->middleware(['auth:sanctum']);
+
+
+// pengepul belikopi
+Route::get('/penerimaPengajuanJualKopi', [TransaksiApiController::class, 'menerimaPengajuanJualKopi'])->middleware(['auth:sanctum']);
+
+
+Route::get('/penerimaPengajuanbelikopi', [TransaksiApiController::class, 'menerimaPengajuanBeliKoPi'])->middleware(['auth:sanctum']);
+
+Route::get('/pengajuan/detail/{id}', [TransaksiApiController::class, 'pengajuanDetail'])->middleware(['auth:sanctum']);
+
+Route::get('/pengajuandalamdata', [TransaksiApiController::class, 'getPengajuanbyData'])->middleware(['auth:sanctum']);
 
 
 

@@ -46,8 +46,7 @@ class TahapanBudidayaSeeder extends Seeder
          foreach($nama_tahapan as $n ){ $tahapan = TahapanKegiatan::create([
             'nama_tahapan' => $n,
             'jenis_kopi' => 'Arabika',
-            'kegiatan' => 'Pasca_Panen'
-
+            'kegiatan' => 'Pasca Panen'
          ]);}
 
 

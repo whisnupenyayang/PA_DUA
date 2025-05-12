@@ -1,84 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:markopi/controllers/BottomNavController.dart';
 import 'package:markopi/routes/route_name.dart';
 import 'package:markopi/service/token_storage.dart';
+import 'package:markopi/view/Artikel/List_artikel.dart';
+import 'package:markopi/view/Beranda/Beranda.dart';
+import 'package:markopi/view/HargaKopi/ListPengepulFinal.dart';
+import 'package:markopi/view/forum/ListForum.dart';
+import 'package:markopi/view/Profile/Profile.dart';
 
-class MyBottomNavigationBar extends StatefulWidget {
+class MyBottomNavigationBar extends StatelessWidget {
   const MyBottomNavigationBar({super.key});
 
   @override
-  State<MyBottomNavigationBar> createState() => _MyBottomNavigationBarState();
-}
-
-class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
-  String? token;
-  @override
-  void initState() {
-    _loadToken();
-  }
-
-  Future<void> _loadToken() async {
-    token = await TokenStorage.getToken();
-    print('Token yang tersimpan: $token');
-  }
-
-  int _selectedIndex = 0;
-  bool isLoggedIn = false;
-
-  final List<String> navList = [
-    RouteName.beranda,
-    RouteName.forum,
-    RouteName.pengepul,
-    RouteName.forum,
-    RouteName.profile,
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-
-      if (token == null) {
-        Get.toNamed(
-          RouteName.login,
-        );
-        return;
-      }
-
-      Get.offAllNamed(navList[index]);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined, color: Colors.black, size: 40),
-          label: 'Beranda',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.people_alt_outlined, color: Colors.black, size: 40),
-          label: 'Forum',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.storefront_sharp, color: Colors.black, size: 40),
-          label: 'Komunitas',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.article_outlined, color: Colors.black, size: 40),
-          label: 'Notifikasi',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle_outlined,
-              color: Colors.black, size: 40),
-          label: 'Profil',
-        ),
-      ],
-      currentIndex: _selectedIndex,
-      selectedItemColor: const Color(0xFF297CBB),
-      showSelectedLabels: true,
-      showUnselectedLabels: false,
-      onTap: _onItemTapped,
+    final BottomNavController controller = Get.put(BottomNavController());
+
+    return Scaffold(
+      body: Obx(() {
+        // Ganti tampilan berdasarkan index yang dipilih
+        switch (controller.selectedIndex.value) {
+          case 0:
+            return Beranda();
+          case 1:
+            return ListForum();
+          case 2:
+            return KopiPage();
+          case 3:
+            return ListArtikel();
+          case 4:
+            return ProfileView();
+          default:
+            return Beranda();
+        }
+      }),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined, color: Colors.black, size: 40),
+            label: 'Beranda',
+          ),
+          BottomNavigationBarItem(
+            icon:
+                Icon(Icons.people_alt_outlined, color: Colors.black, size: 40),
+            label: 'Forum',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.storefront_sharp, color: Colors.black, size: 40),
+            label: 'Jual Beli',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.article_outlined, color: Colors.black, size: 40),
+            label: 'Notifikasi',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle_outlined,
+                color: Colors.black, size: 40),
+            label: 'Profil',
+          ),
+        ],
+        currentIndex: controller.selectedIndex.value,
+        selectedItemColor: const Color(0xFF297CBB),
+        showSelectedLabels: true,
+        showUnselectedLabels: false,
+        onTap: (index) {
+          if (TokenStorage.getToken() == null) {
+            Get.toNamed(RouteName.login);
+          } else {
+            controller.onItemTapped(index);
+          }
+        },
+      ),
     );
   }
 }

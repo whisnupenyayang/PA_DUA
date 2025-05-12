@@ -12,6 +12,9 @@ class PengajuanTransaksi extends Model
     protected $fillable = [
         'keterengan',
         'id_user_pengaju',
-        'id_user_penerima'
+        'id_user_penerima',
+        'id_pengepul',
+        'id_penjual_kopi',
+
     ];
 }

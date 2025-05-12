@@ -7,13 +7,14 @@ import 'package:markopi/test.dart';
 import 'package:markopi/view/Budidaya/Jenis_Tahap_Budidaya.dart';
 import 'package:markopi/view/Budidaya/Jenis_Tahap_Budidaya_Detail.dart';
 import 'package:markopi/view/Budidaya/Jenis_kopi.dart';
+import 'package:markopi/view/HargaKopi/ListPengepulFinal.dart';
 import 'package:markopi/view/Laporan/Laporan_Page.dart';
 import 'package:markopi/view/Login/login.dart';
 import 'package:markopi/view/Profile/Profile.dart';
+import 'package:markopi/view/component/MyBottomNavigation.dart';
 import 'package:markopi/view/forum/ForumKomentar.dart';
-import 'package:markopi/view/pengepul/ListPengepul.dart';
-import 'package:markopi/view/pengepul/PengepulDetail.dart';
-import 'package:markopi/view/pengepul/listPengepul2.dart';
+import 'package:markopi/view/HargaKopi/PengepulDetail.dart';
+
 import './view/Beranda/Beranda.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -37,9 +38,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Beranda(), // Menampilkan halaman utama
+      home: MyBottomNavigationBar(), // Gunakan MyBottomNavigationBar di sini
       getPages: AppPages.pages,
-      // home: ListPengepul(),
     );
   }
 }

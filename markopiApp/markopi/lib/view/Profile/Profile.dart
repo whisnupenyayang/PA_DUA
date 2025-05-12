@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:markopi/routes/route_name.dart';
 import 'package:markopi/service/User_Storage.dart';
 import 'package:markopi/service/User_Storage_Service.dart';
-import 'package:markopi/view/component/MyBottomNavigation.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -187,70 +188,75 @@ class _ProfileViewState extends State<ProfileView> {
                         ],
                       ),
                     ),
-                    Container(
-                      width: double.infinity,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Colors.black, // warna border
-                                  width: 2.0, // ketebalan border
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(RouteName.profile + '/datapengepul');
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Colors.black, // warna border
+                                    width: 2.0, // ketebalan border
+                                  ),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.all(5),
+                                child: Text(
+                                  'Pengajuan Fasilitator',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ),
-                            child: Padding(
-                              padding: EdgeInsets.all(5),
-                              child: Text(
-                                'Pengajuan Fasilitator',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              width: double.infinity,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                          color: Colors.black, // warna border
+                                          width: 2.0, // ketebalan border
+                                        ),
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Text(
+                                        'Pengajuan Pengepul',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                ],
                               ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Container(
-                            width: double.infinity,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: Colors.black, // warna border
-                                        width: 2.0, // ketebalan border
-                                      ),
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Text(
-                                      'Pengajuan Pengepul',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     )
                   ],
@@ -275,10 +281,6 @@ class _ProfileViewState extends State<ProfileView> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(canvasColor: const Color(0xFFFFFFFF)),
-        child: const MyBottomNavigationBar(),
       ),
     );
   }
