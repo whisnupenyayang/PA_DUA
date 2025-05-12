@@ -15,7 +15,7 @@ class Toko {
 
   factory Toko.fromJson(Map<String, dynamic> json) {
     return Toko(
-      id: json['toko_id'] ?? 0,
+      id: json['id'] ?? 0,
       namaToko: json['nama_toko'] ?? '',
       lokasi: json['lokasi'] ?? '',
       jamOperasional: json['jam_operasional'] ?? '',

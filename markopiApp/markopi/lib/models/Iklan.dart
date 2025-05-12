@@ -15,7 +15,7 @@ class Iklan {
 
   factory Iklan.fromJson(Map<String, dynamic> json) {
     return Iklan(
-      idIklan: json['id_iklan'],
+      idIklan: json['id'],
       judulIklan: json['judul_iklan'],
       deskripsiIklan: json['deskripsi_iklan'],
       gambar: json['gambar'],

@@ -17,7 +17,7 @@ class Resep {
 
   factory Resep.fromJson(Map<String, dynamic> json) {
     return Resep(
-      resepId: json['resep_id'],
+      resepId: json['id'],
       namaResep: json['nama_resep'],
       deskripsiResep: json['deskripsi_resep'],
       gambarResep: json['gambar_resep'],
