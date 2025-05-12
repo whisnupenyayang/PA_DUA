@@ -8,16 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Iklan extends Model
 {
     use HasFactory;
-
-    protected $table = 'iklan';
-
-    protected $primaryKey = 'id_iklan';
-
-    protected $fillable = [
+     protected $fillable = [
         'judul_iklan',
         'deskripsi_iklan',
         'gambar',
         'link',
     ];
 }
-

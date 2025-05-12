@@ -8,11 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Resep extends Model
 {
     use HasFactory;
-
-    protected $table = 'Resep';
-
-    protected $primaryKey = 'resep_id';
-
     protected $fillable = [
         'nama_resep',
         'deskripsi_resep',
