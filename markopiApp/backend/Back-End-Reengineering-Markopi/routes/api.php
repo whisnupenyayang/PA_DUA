@@ -16,13 +16,10 @@ use App\Http\API\ForgotPasswordController;
 use App\Http\API\PengepulApiController;
 use App\Http\Controllers\BudidayaController;
 use App\Models\Pengepul;
-<<<<<<< Updated upstream
 use App\Http\Controllers\Api\TokoController;
 use App\Http\Controllers\Api\ResepController;
 use App\Http\Controllers\Api\IklanController;
-=======
 use GuzzleHttp\Middleware;
->>>>>>> Stashed changes
 
 /*
 |--------------------------------------------------------------------------
