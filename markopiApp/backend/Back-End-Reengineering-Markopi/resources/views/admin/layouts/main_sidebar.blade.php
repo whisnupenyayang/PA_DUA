@@ -101,17 +101,8 @@
             
              -->
 
-            <!-- menu sebelumnya -->
-
-            <li class="nav-item">
-                <a href="{{ route('pengepul.index') }}" class="nav-link {{ \Route::is('pengepul.index') ? 'active' : '' }}">
-                <i class="">
-                        <img src="{{ asset('Icon/seller-white.png') }}" alt="Budidaya" width="24" height="24">
-                    </i>
-                    <p>Data Pengepul</p>
-                </a>
-            </li>
-
+             <!-- menu sebelumnya -->
+                
             <li class="nav-item">
                 <a href="{{ route('iklan.index') }}" class="nav-link {{ \Route::is('iklan.index') ? 'active' : '' }}">
                 <i class="">

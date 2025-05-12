@@ -115,28 +115,30 @@
     <section class="col-lg-12 connectedSortable">
         <div class="card-body">
             @foreach ($iklans as $iklan)
-                <div class="card w-100">
-                    <div class="row g-0">
-                        <div class="col-md-3">
-                            <img src="{{ asset('foto/' . $iklan->gambar_produk) }}" alt="Foto Produk" class="profile-img">
-                        </div>
-                        <div class="col-md-9">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $iklan->judul }}</h5>
-                                <p class="card-text">
-                                    <strong>Deskripsi:</strong> {{ $iklan->deskripsi }}<br>
-                                    <strong>Harga:</strong> Rp{{ number_format($iklan->harga, 0, ',', '.') }}<br>
-                                    <strong>Kontak:</strong> {{ $iklan->kontak }}
-                                </p>
-                                <a href="{{ route('iklan.show', $iklan->id) }}" class="text-link">Selengkapnya →</a>
-                            </div>
+            <div class="card w-100">
+                <div class="row g-0">
+                    <div class="col-md-3">
+                        <img src="{{ asset('foto/' . $iklan->gambar) }}" alt="Foto Produk" class="profile-img">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $iklan->judul_iklan }}</h5>
+                            <p class="card-text">
+                                <strong>Deskripsi:</strong> {{ $iklan->deskripsi_iklan }}<br>
+                                <strong>Kontak / Link:</strong>
+                                {!! preg_replace('/(https?:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)/', '<a href="$1" target="_blank" class="text-link">$1</a>', $iklan->link) !!}
+                            </p>
+
+                            <a href="{{ route('iklan.show', $iklan->id) }}" class="text-link">Selengkapnya →</a>
+
                         </div>
                     </div>
                 </div>
+            </div>
             @endforeach
 
             @if (count($iklans) === 0)
-                <div class="text-center text-muted">Belum ada data iklan.</div>
+            <div class="text-center text-muted">Belum ada data iklan.</div>
             @endif
 
             <div class="btn-tambah">

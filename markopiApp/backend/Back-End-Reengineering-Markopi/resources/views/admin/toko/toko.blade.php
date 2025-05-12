@@ -183,7 +183,7 @@
                     <h3>{{ $t->nama_toko }}</h3>
                     <p><strong>Lokasi:</strong> <a href="https://maps.app.goo.gl/{{ $t->lokasi }}" target="_blank">{{ $t->lokasi }}</a></p>
                     <p><strong>Jam Operasional:</strong> {{ $t->jam_operasional }}</p>
-                    <a href="{{ route('toko.detail', $t->toko_id) }}" class="read-more">Selengkapnya</a>
+                    <a href="{{ route('toko.detail', $t->id) }}" class="read-more">Selengkapnya</a>
                 </div>
             </div>
         @endforeach

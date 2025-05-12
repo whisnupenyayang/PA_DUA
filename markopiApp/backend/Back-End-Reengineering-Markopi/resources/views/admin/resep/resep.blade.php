@@ -197,7 +197,7 @@
                 <div class="card-content">
                     <h3>{{ $t->nama_resep }}</h3>
                     <p>Komposisi dan Cara</p>
-                    <a href="{{ route('resep.detail', $t->resep_id) }}" class="read-more">Selengkapnya</a>
+                    <a href="{{ route('resep.detail', $t->id) }}" class="read-more">Selengkapnya</a>
                 </div>
             </div>
         @endforeach
