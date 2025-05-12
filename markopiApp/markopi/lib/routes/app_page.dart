@@ -14,16 +14,9 @@ import 'package:markopi/view/Profile/Profile.dart';
 import 'package:markopi/view/DataPengepulUser/UserPengepu.dart';
 import 'package:markopi/view/forum/ForumKomentar.dart';
 import 'package:markopi/view/forum/ListForum.dart';
-<<<<<<< Updated upstream
-import 'package:markopi/view/pengepul/ListPengepul.dart';
-import 'package:markopi/view/pengepul/listPengepul2.dart';
 import 'package:markopi/view/toko/toko_kopi_page.dart';  // Import halaman Toko Kopi
-import 'package:markopi/view/resep/resep_kopi_page.dart';  // Import halaman Resep Kopi
-=======
-
->>>>>>> Stashed changes
+import 'package:markopi/view/resep/resep_kopi_page.dart'; 
 import 'package:markopi/binding/Budidaya_Binding.dart';
-
 import './route_name.dart';
 
 class AppPages {

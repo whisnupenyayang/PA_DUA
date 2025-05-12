@@ -11,11 +11,7 @@ abstract class RouteName {
   static const budidaya = "/budidaya";
   static const login = "/login";
   static const profile = "/profile";
-<<<<<<< Updated upstream
   static const tokoKopi = '/toko_kopi';  
-  static const resepKopi = '/resep_kopi';  
-
-=======
-  static const artikel = "/artikel";
->>>>>>> Stashed changes
+  static const resepKopi = '/resep_kopi'; 
+  static const artikel = "/artikel"; 
 }
