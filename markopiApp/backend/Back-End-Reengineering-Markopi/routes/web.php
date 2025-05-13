@@ -22,7 +22,20 @@ use App\Http\Controllers\TokoController;
 // Auth Routes
 Route::get('/', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'proseslogin']);
-Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/admin/dashboard', [AuthController::class, 'dashboard'])->name('dashboard.admin');
+
+// // Admin Routes
+// Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+//     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard.admin');
+// });
+
+// //Route::middleware(['auth', 'role:admin'])->group(function () {
+// Route::get('/dashboard', function () {
+//     return view('layouts.dashboard', ['title' => 'Dashboard']);
+// })->name('dashboard');
+
 
 // Fasilitator Routes
 // Route::middleware(['auth', 'role:fasilitator'])->prefix('fasilitator')->group(function () {
@@ -39,15 +52,6 @@ Route::post('/logout', [AuthController::class, 'logout']);
 //     });
 // });
 
-// Admin Routes
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard.admin');
-});
-
-//Route::middleware(['auth', 'role:admin'])->group(function () {
-Route::get('/dashboard', function () {
-    return view('layouts.dashboard', ['title' => 'Dashboard']);
-})->name('dashboard');
 
 // Budidaya
 Route::resource('budidaya', BudidayaController::class)->names(['index' => 'budidaya.index']);
@@ -93,11 +97,12 @@ Route::put('admin/artikel/{id}', [ArtikelController::class, 'update'])->name('ar
 Route::delete('admin/artikel/{id}', [ArtikelController::class, 'destroy'])->name('artikel.destroy');
 
 // Pengepul
-Route::get('/pengepuls', [PengepulController::class, 'index'])->name('admin.pengepul');
-Route::get('/pengepul/{id}', [PengepulController::class, 'show'])->name('admin.pengepul.detail');
-Route::get('/pengepul/{id}/edit', [PengepulController::class, 'edit'])->name('admin.pengepul.edit');
-Route::put('/pengepul/{id}/update', [PengepulController::class, 'update'])->name('admin.pengepul.update');
+Route::get('/admin/pengepuls', [PengepulController::class, 'index'])->name('admin.pengepul');
+Route::get('/admin/pengepul/{id}', [PengepulController::class, 'show'])->name('admin.pengepul.detail');
+Route::get('/admin/pengepul/{id}/edit', [PengepulController::class, 'edit'])->name('admin.pengepul.edit');
+Route::put('/admin/pengepul/{id}/update', [PengepulController::class, 'update'])->name('admin.pengepul.update');
 Route::post('/admin/pengepul/updateField', [PengepulController::class, 'updateField'])->name('admin.pengepul.updateField');
+
 
 // Penjualan
 Route::get('penjualan', [BudidayaController::class, 'penjualan_index'])->name('penjualan.index');

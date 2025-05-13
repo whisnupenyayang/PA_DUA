@@ -112,7 +112,14 @@
                 </a>
             </li>
 
-
+     <li class="nav-item">
+            <a href="{{ route('admin.pengepul') }}" class="nav-link {{ \Route::is('admin.pengepul') ? 'active' : '' }}">
+                <i class="">
+                    <img src="{{ asset('Icon/coffee-bag-white.png') }}" alt="Pengepul" width="24" height="24">
+                </i>
+                <p>Pengepul</p>
+            </a>
+        </li>
 
             <li i class="nav-item">
                 <a href="/pengajuan" class="nav-link {{ \Route::is('pengajuan') ? 'active' : '' }}">

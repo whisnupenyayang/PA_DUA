@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -21,23 +19,20 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        $input = $request->all();
+        $username = $request->username;
+        $password = $request->password;
 
-        // Cek pengguna berdasarkan username
-        $user = User::where('username', $request->username)->first();
+        if ($username === 'admin' && $password === 'admin01') {
+            // Set session secara manual
+            session([
+                'user_id' => 1,
+                'user_role' => 'admin',
+                'username' => 'admin'
+            ]);
 
-        Log::info('Attempting to login', ['username' => $input['username'], 'user_found' => $user ? true : false]);
-
-        if ($user->status === null) {
-            if ($user && auth()->attempt(['username' => $input['username'], 'password' => $input['password']])) {
-                Log::info('User authenticated', ['user_id' => auth()->user()->id_users, 'role' => auth()->user()->role]);
-                session(['user_id' => $user->id_users, 'user_role' => $user->role]);
-                return redirect()->route($user->role == 'admin' ? 'dashboard.admin' : 'dashboard.fasilitator');
-            } else {
-                return back()->withErrors(['Periksa Kembali Username dan Password Anda']);
-            }
+            return redirect()->route('dashboard.admin');
         } else {
-            return back()->withErrors(['Akun Anda tidak aktif!!!']);
+            return back()->withErrors(['Hanya admin dengan username dan password yang benar yang diizinkan masuk.']);
         }
     }
 
@@ -47,13 +42,15 @@ class AuthController extends Controller
 
         $request->session()->invalidate();
 
-        // $request->session()->regenerateToken();
-
         return redirect('/');
     }
 
     public function dashboard()
     {
+        if (session('user_role') !== 'admin') {
+            return redirect('/')->withErrors(['Anda tidak memiliki akses.']);
+        }
+
         return view('admin.layouts.dashboard', [
             'title' => 'Dashboard'
         ]);
