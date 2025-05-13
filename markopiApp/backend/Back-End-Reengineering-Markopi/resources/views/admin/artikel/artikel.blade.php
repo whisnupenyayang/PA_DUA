@@ -1,75 +1,169 @@
 @extends('admin.layouts.admin')
+
 @section('content')
-    <div class="row">
-        <!-- Left col -->
-        <section class="col-lg-12 connectedSortable">
-            <!-- Custom tabs (Charts with tabs)-->
-            <div class="card">
-                <div class="card-header">
-                    <a href="{{ route('artikel.form') }}">
-                        <button type="button" class="btn btn-primary">
-                            <h3 class="card-title">
-                                <i class="">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24">
-                                        <path fill="currentColor"
-                                            d="M16 8h3h-3ZM5 8h8.45H13h.35H5Zm.4-2h13.2l-.85-1H6.25L5.4 6Zm4.6 6.75l2-1l2 1V8h-4v4.75ZM14.55 21H5q-.825 0-1.413-.588T3 19V6.525q0-.35.113-.675t.337-.6L4.7 3.725q.275-.35.687-.538T6.25 3h11.5q.45 0 .863.188t.687.537l1.25 1.525q.225.275.338.6t.112.675v4.9q-.475-.175-.975-.275T19 11.05V8h-3v3.825q-.875.5-1.525 1.238t-1.025 1.662L12 14l-4 2V8H5v11h8.35q.2.575.5 1.075t.7.925ZM18 21v-3h-3v-2h3v-3h2v3h3v2h-3v3h-2Z" />
-                                    </svg>
-                                </i>
-                            </h3>
-                        </button>
-                    </a>
+    <style>
+        body {
+            background-color: #f4f4f4;
+        }
 
-                    <div class="row mt-3">
-                        @foreach ($artikels as $item)
-                            <div class="col-sm-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title artikel-tahapan">
-                                            <a href="{{ route('artikel.show', $item['id_artikels']) }}">
-                                                {{ $item['judul_artikel'] }}
-                                            </a>
-                                        </h5>
-                                        <!-- Pindahkan tombol edit dan delete ke ujung kanan atas -->
-                                        <div class="float-right">
-                                            <a href="{{ route('artikel.edit', $item['id_artikels']) }}"
-                                                class="btn btn-success btn-sm text-center"><i class="fas fa-edit"></i></a>
-                                            <form id="delete-form-{{ $item['id_artikels'] }}"
-                                                action="{{ route('artikel.destroy', $item['id_artikels']) }}" method="POST"
-                                                class="d-inline delete-about-form">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" onclick="confirmDelete({{ $item['id_artikels'] }}, event)"
-                                                    class="btn btn-danger btn-sm delete-about">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
+        .container-artikel {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
 
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .card-artikel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-artikel img {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border: 2px solid red; /* Remove or adjust as needed */
+        }
+
+        .card-artikel-content {
+            flex-grow: 1;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .card-artikel-content h3 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .card-artikel-content .read-more {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .card-artikel-content .read-more:hover {
+            text-decoration: underline;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-add {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 30px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .btn-add:hover {
+            background-color: #333;
+        }
+
+        .btn-add a {
+            color: white;
+            text-decoration: none;
+        }
+
+        @media (min-width: 768px) {
+            .card-artikel {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .card-artikel img {
+                width: 120px;
+                height: 120px;
+                margin-right: 20px;
+            }
+
+            .card-artikel-content {
+                text-align: left;
+            }
+        }
+    </style>
+
+    <div class="container-artikel">
+        <h1>Daftar Artikel</h1>
+
+        @foreach ($artikels as $item)
+            <div class="card-artikel">
+                {{-- Display Image --}}
+                <p>URL Gambar: {{ asset('storage/' . $item->images->first()->gambar) }}</p>
+                
+                @if ($item->images->count() > 0)
+                    <img src="{{ asset('storage/' . $item->images->first()->gambar) }}" alt="Gambar Artikel">
+                @else
+                    <p>Tidak ada gambar</p>
+                @endif
+
+                <div class="card-artikel-content">
+                    <h3>{{ $item->judul_artikel }}</h3>
+                    <a href="{{ route('artikel.show', $item->id_artikels) }}" class="read-more">Baca Selengkapnya</a>
+
+                    <div class="card-actions">
+                        <a href="{{ route('artikel.edit', $item->id_artikels) }}" class="btn btn-success btn-sm">
+                            <i class="fas fa-edit"></i>
+                        </a>
+
+                        <form id="delete-form-{{ $item->id_artikels }}" action="{{ route('artikel.destroy', $item->id_artikels) }}" method="POST" class="d-inline delete-about-form">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" onclick="confirmDelete({{ $item->id_artikels }}, event)" class="btn btn-danger btn-sm delete-about">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
                     </div>
-                </div><!-- /.card-header -->
+                </div>
             </div>
-            <!-- /.card -->
-        </section>
-        <!-- /.Left col -->
+        @endforeach
     </div>
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+
+    <div class="btn-add">
+        <a href="{{ route('artikel.create') }}">
+            <span class="material-icons">add</span>
+        </a>
+    </div>
+
+    {{-- Modal Konfirmasi Hapus --}}
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Hapus</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <h5 class="modal-title">Konfirmasi Hapus</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    Apakah Anda yakin? Data akan dihapus permanen!
-                </div>
+                <div class="modal-body">Apakah Anda yakin ingin menghapus artikel ini secara permanen?</div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                     <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Ya, Hapus</button>
@@ -77,35 +171,24 @@
             </div>
         </div>
     </div>
+
+    {{-- SweetAlert --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function confirmDelete(id, event) {
-            event.preventDefault(); // Mencegah perilaku formulir default
+            event.preventDefault();
             $('#confirmDeleteModal').modal('show');
-
-            $('#confirmDeleteBtn').click(function() {
+            $('#confirmDeleteBtn').off().click(function () {
                 document.getElementById('delete-form-' + id).submit();
             });
         }
-    </script>
-    <script>
-        // Tambahkan script SweetAlert2 di sini
+
         @if (session('success'))
-            Swal.fire({
-                title: 'Success!',
-                text: '{{ session('success') }}',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
+            Swal.fire('Sukses!', '{{ session('success') }}', 'success');
         @endif
 
         @if (session('error'))
-            Swal.fire({
-                title: 'Error!',
-                text: '{{ session('error') }}',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
+            Swal.fire('Gagal!', '{{ session('error') }}', 'error');
         @endif
     </script>
 @endsection

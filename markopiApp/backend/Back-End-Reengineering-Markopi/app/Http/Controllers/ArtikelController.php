@@ -12,41 +12,24 @@ class ArtikelController extends Controller
 {
     public function dashboard()
     {
-        return view('fasilitator.dashboard.index', [
+        return view('admin.dashboard.index', [
             'title' => 'Dashboard'
         ]);
     }
 
-    //artikel admin
+    // List artikel untuk admin
     public function artikel_admin()
     {
-        $artikels = Artikel::get(); // Atau sesuai kebutuhan
+        $artikels = Artikel::get();
         return view('admin.artikel.artikel', compact('artikels'), [
             'title' => 'Artikel'
         ]);
     }
-    
 
-
-    public function artikel()
-    {
-        $artikels = Artikel::get();
-        return view('fasilitator.artikel.index', compact('artikels'), [
-            'title' => 'Artikel'
-        ]);
-    }
-
-    public function show($id)
-    {
-        $artikel = Artikel::findOrFail($id);
-        return view('fasilitator.artikel.show', compact('artikel'), [
-            'title' => 'Detail Artikel'
-        ]);
-    }
-
+    // Tampilkan form tambah artikel
     public function create()
     {
-        return view('fasilitator.artikel.create', [
+        return view('admin.artikel.create', [
             'title' => 'Buat Artikel Baru'
         ]);
     }
@@ -54,44 +37,60 @@ class ArtikelController extends Controller
     public function store(Request $request)
     {
         try {
-            $id = Auth::user()->id_users;
+            // Validasi input
             $request->validate([
-                'judul_artikel' => 'required',
-                'isi_artikel' => 'required',
-                'gambar.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120'
+                'judul_artikel' => 'required|string|max:255',
+                'isi_artikel' => 'required|string',
+                'gambar.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             ]);
 
-            $artikel = Artikel::create([
-                'judul_artikel' => $request->judul_artikel,
-                'isi_artikel' => $request->isi_artikel,
-                'user_id' => $id,
-            ]);
+            // Simpan data artikel
+            $artikel = new Artikel();
+            $artikel->judul_artikel = $request->judul_artikel;
+            $artikel->isi_artikel = $request->isi_artikel;
+            $artikel->user_id = Auth::check() ? Auth::id() : null; // Boleh null
+            $artikel->save();
 
-            if ($artikel) {
-                foreach ($request->file('gambar') as $gambar) {
-                    $gambarPath = $gambar->store('artikelimage', 'public');
+            // Simpan gambar-gambar jika ada
+            if ($request->hasFile('gambar')) {
+                foreach ($request->file('gambar') as $file) {
+                    $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                    $file->move(public_path('images'), $filename);
+
+                    // Simpan path gambar ke relasi
                     $artikel->images()->create([
-                        'gambar' => $gambarPath,
+                        'gambar' => 'images/' . $filename
                     ]);
                 }
-                return redirect()->route('artikel.fasilitator')->with('success', 'Informasi Artikel berhasil ditambahkan');
-            } else {
-                $errorMessage = $artikel->status() . ': ' . $artikel->body();
-                throw new Exception('Failed to add product. ' . $errorMessage);
             }
+
+            return redirect()->route('artikel.admin')->with('success', 'Artikel berhasil ditambahkan!');
         } catch (Exception $e) {
             return redirect()->back()->with('error', $e->getMessage())->withInput();
         }
     }
 
+
+
+    // Tampilkan detail artikel
+    public function show($id)
+    {
+        $artikel = Artikel::findOrFail($id);
+        return view('admin.artikel.show', compact('artikel'), [
+            'title' => 'Detail Artikel'
+        ]);
+    }
+
+    // Tampilkan form edit artikel
     public function edit($id)
     {
         $artikel = Artikel::findOrFail($id);
-        return view('fasilitator.artikel.edit', compact('artikel'), [
+        return view('admin.artikel.edit', compact('artikel'), [
             'title' => 'Edit Artikel'
         ]);
     }
 
+    // Proses update artikel
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -113,44 +112,37 @@ class ArtikelController extends Controller
                 }
 
                 $this->deleteImages($artikel);
-
                 $artikel->images()->delete();
                 $artikel->images()->createMany($newImages);
             }
 
             $artikel->save();
 
-            if ($artikel) {
-                return redirect()->route('artikel.fasilitator')->with('success', 'Data Informasi Artikel Berhasil di Ubah');
-            } else {
-                throw new Exception('Gagal mengupdate data');
-            }
+            return redirect()->route('artikel.admin')->with('success', 'Data Artikel berhasil diperbarui');
         } catch (Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
+    // Hapus artikel
     public function destroy($id)
     {
         try {
             $artikel = Artikel::findOrFail($id);
             $this->deleteImages($artikel);
             $artikel->delete();
-            if ($artikel) {
-                return redirect()->route('artikel.fasilitator')->with('success', 'Data Informasi Artikel Berhasil dihapus');
-            } else {
-                throw new Exception('Failed to delete.');
-            }
+
+            return redirect()->route('artikel.admin')->with('success', 'Artikel berhasil dihapus');
         } catch (Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
+    // Hapus semua gambar terkait artikel
     protected function deleteImages(Artikel $artikel)
     {
         foreach ($artikel->images as $image) {
             Storage::disk('public')->delete($image->gambar);
-
             $image->delete();
         }
     }
