@@ -164,7 +164,7 @@
             </li>
 
             <li i class="nav-item">
-                <a href="{{ route('artikel.admin') }}" class="nav-link {{ \Route::is('artikel.admin') ? 'active' : '' }}">
+                <a href="{{ route('admin.toko') }}" class="nav-link {{ \Route::is('admin.toko') ? 'active' : '' }}">
                 <i class="">
                         <img src="{{ asset('Icon/news_white.png') }}" alt="Budidaya" width="24" height="24">
                     </i>
@@ -174,7 +174,7 @@
             </li>
 
             <li i class="nav-item">
-                <a href="{{ route('artikel.admin') }}" class="nav-link {{ \Route::is('artikel.admin') ? 'active' : '' }}">
+                <a href="{{ route('admin.resep') }}" class="nav-link {{ \Route::is('admin.resep') ? 'active' : '' }}">
                 <i class="">
                         <img src="{{ asset('Icon/news_white.png') }}" alt="Budidaya" width="24" height="24">
                     </i>
