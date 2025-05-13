@@ -7,6 +7,7 @@ import 'package:markopi/view/Budidaya/Jenis_Tahap_Budidaya_Detail.dart';
 import 'package:markopi/view/Budidaya/Jenis_kopi.dart';
 import 'package:markopi/view/Budidaya/Tahap_Budidaya.dart';
 import 'package:markopi/view/DataPengepulUser/FormTambahDataPengepul.dart';
+import 'package:markopi/view/HargaKopi/FormPengajuanDetail.dart';
 import 'package:markopi/view/HargaKopi/ListPengepulFinal.dart';
 import 'package:markopi/view/HargaKopi/PengepulDetail.dart';
 import 'package:markopi/view/Login/login.dart';
@@ -79,8 +80,13 @@ class AppPages {
       name: RouteName.pengepul,
       page: () => KopiPage(),
     ),
+    GetPage(
+      name: RouteName.pengepul + '/pengajuan/:role/:id',
+      page: () => FormPengajuanPage(),
+    ),
 
-    /*================Toko Kopi=================== */
+    
+    /*================Profile========== */
     GetPage(
       name: RouteName.pengepul + '/detail/:role',
       page: () => DetailPengepuldanPetani(),

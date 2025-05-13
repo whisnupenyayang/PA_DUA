@@ -11,6 +11,8 @@ class PengepulController extends GetxController {
   var pengepul = <Pengepul>[].obs;
   var rataRataHargaKopi = <RataRataHargakopi>[].obs;
 
+  var detailPengepul = Pengepul.empty().obs;
+
   final pengepulProvider = PengepulProviders();
 
   Future<void> fetchRataRataHarga(String jenis_kopi, String tahun) async {
@@ -75,5 +77,20 @@ class PengepulController extends GetxController {
       final errorBody = jsonDecode(response.body);
       Get.snackbar('Error', errorBody['message'] ?? 'Upload gagal');
     }
+
+   
   }
+   Future<void> fetcPengepulDetail(int id)async{
+      final response = await pengepulProvider.getPengepulDetail(id);
+
+      if (response.statusCode == 200){
+        Map<String, dynamic> data = response.body;
+        print(data);
+        detailPengepul.value = Pengepul.fromJson(data);
+        print(detailPengepul);
+      } else{
+        Get.snackbar('gagal', 'gagalmengakmbil');
+      }
+
+    }
 }

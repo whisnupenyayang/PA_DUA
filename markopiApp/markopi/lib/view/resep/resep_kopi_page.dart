@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:markopi/service/resep_service.dart';
 import 'package:markopi/models/resep.dart';
+import 'package:markopi/view/resep/ResepKopiPage.dart'; // Import halaman detail
 
 class ResepKopiPage extends StatelessWidget {
   const ResepKopiPage({super.key});
@@ -9,19 +10,19 @@ class ResepKopiPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Resep Kopi'),
+        title: const Text('Resep Kopi'),
       ),
       body: FutureBuilder<List<Resep>>(
         future: ResepService.getAllReseps(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(
               child: Text('Error: ${snapshot.error}'),
             );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(
+            return const Center(
               child: Text('Tidak ada resep kopi ditemukan.'),
             );
           } else {
@@ -31,7 +32,7 @@ class ResepKopiPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 final resep = reseps[index];
                 return Card(
-                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   elevation: 3,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -45,10 +46,10 @@ class ResepKopiPage extends StatelessWidget {
                             height: 60,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
-                              return Icon(Icons.broken_image, size: 40);
+                              return const Icon(Icons.broken_image, size: 40);
                             },
                           )
-                        : Icon(Icons.image_not_supported, size: 40), // fallback icon
+                        : const Icon(Icons.image_not_supported, size: 40), // fallback icon
                     title: Text(resep.namaResep),
                     subtitle: Text(
                       resep.deskripsiResep.length > 100
@@ -56,7 +57,13 @@ class ResepKopiPage extends StatelessWidget {
                           : resep.deskripsiResep,
                     ),
                     onTap: () {
-                      // Bisa diarahkan ke halaman detail
+                      // Navigasi ke halaman detail resep
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ResepDetailPage(resep: resep),
+                        ),
+                      );
                     },
                   ),
                 );

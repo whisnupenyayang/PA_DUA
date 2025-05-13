@@ -17,6 +17,7 @@ class TransaksiApiController extends Controller
 
         $request->validate([
             "id" => "required",
+            
             "role" => "required"
         ]);
 

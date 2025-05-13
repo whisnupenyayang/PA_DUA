@@ -36,7 +36,7 @@
             width: 300px;
             height: 200px;
             object-fit: cover;
-            border: 2px solid red; /* Adjust border if necessary */
+            border: 2px solid red; /* Remove or adjust as needed */
         }
 
         .card-artikel-content {

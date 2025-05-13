@@ -52,8 +52,7 @@ class PengepulProviders extends GetConnect {
     return response;
   }
 
-  Future<Response> getPengepulDetail(int id, String token) async {
-    return get(Connection.buildUrl('/pengepul/detaill/$id'),
-        headers: {'Authorization': 'Bearer $token'});
+  Future<Response> getPengepulDetail(int id) async {
+    return get(Connection.buildUrl('/pengepul/detail/$id'));
   }
 }

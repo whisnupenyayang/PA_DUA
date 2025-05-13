@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:markopi/service/toko_service.dart';
 import 'package:markopi/models/toko.dart';
+import 'package:url_launcher/url_launcher.dart'; // Package untuk membuka URL
 
 class TokoKopiPage extends StatelessWidget {
   const TokoKopiPage({super.key});
+
+  // Fungsi untuk membuka lokasi toko di Google Maps
+  Future<void> _launchMapsUrl(String locationUrl) async {
+    if (await canLaunch(locationUrl)) {
+      await launch(locationUrl);
+    } else {
+      throw 'Could not launch $locationUrl';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +22,7 @@ class TokoKopiPage extends StatelessWidget {
         title: const Text('Lokasi Toko Kopi'),
       ),
       body: FutureBuilder<List<Toko>?>(
-        future: TokoService
-            .getAllTokos(), // Memanggil service untuk mendapatkan data toko
+        future: TokoService.getAllTokos(), // Memanggil service untuk mendapatkan data toko
         builder: (context, snapshot) {
           // Jika data sedang dimuat
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -34,20 +43,40 @@ class TokoKopiPage extends StatelessWidget {
             return ListView.builder(
               itemCount: tokos.length,
               itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    leading: tokos[index].fotoToko.isNotEmpty
-                        ? Image.network(
-                            tokos[index].fotoToko,
-                            width: 50,
-                            height: 50,
-                            fit: BoxFit.cover,
-                          )
-                        : const Icon(
-                            Icons.store), // default icon jika tidak ada foto
-                    title: Text(tokos[index].namaToko),
-                    subtitle: Text(tokos[index].lokasi),
-                    trailing: const Icon(Icons.location_on),
+                final toko = tokos[index];
+
+                return GestureDetector(
+                  onTap: () {
+                    _launchMapsUrl(toko.lokasi); // Membuka lokasi di Google Maps
+                  },
+                  child: Card(
+                    child: ListTile(
+                      leading: toko.fotoToko.isNotEmpty
+                          ? Image.network(
+                              toko.fotoToko,
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                            )
+                          : const Icon(
+                              Icons.store), // default icon jika tidak ada foto
+                      title: Text(toko.namaToko),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            toko.lokasi,
+                            style: TextStyle(
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                          // Menampilkan jam operasional toko
+                          Text('Jam Operasional: ${toko.jamOperasional}'),
+                        ],
+                      ),
+                      trailing: const Icon(Icons.location_on),
+                    ),
                   ),
                 );
               },

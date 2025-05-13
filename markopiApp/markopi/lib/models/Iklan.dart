@@ -18,8 +18,8 @@ class Iklan {
       idIklan: json['id'],
       judulIklan: json['judul_iklan'],
       deskripsiIklan: json['deskripsi_iklan'],
-      gambar: json['gambar'],
-      link: json['link'],
+      gambar: json['gambar'] ?? '', // Pastikan tidak null
+      link: json['link'] ?? '',
     );
   }
 }
