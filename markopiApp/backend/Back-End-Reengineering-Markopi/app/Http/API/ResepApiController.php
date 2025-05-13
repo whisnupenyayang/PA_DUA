@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Resep;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 
-class ResepController extends Controller
+class ResepApiController extends Controller
 {
     public function index()
     {

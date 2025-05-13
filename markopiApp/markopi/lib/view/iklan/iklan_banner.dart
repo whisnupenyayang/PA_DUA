@@ -65,12 +65,14 @@ class _IklanBannerState extends State<IklanBanner> {
                         child: Stack(
                           fit: StackFit.expand,
                           children: [
-                            Image.network(
-                              'http://YOUR_BACKEND_URL/storage/${iklan.gambar}',
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  const Icon(Icons.broken_image),
-                            ),
+                            iklan.gambar != null && iklan.gambar.isNotEmpty
+                                ? Image.network(
+                                    iklan.gambar,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) =>
+                                        const Icon(Icons.broken_image, size: 50),
+                                  )
+                                : const Icon(Icons.store, size: 50),
                             Positioned(
                               bottom: 0,
                               left: 0,

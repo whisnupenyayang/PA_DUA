@@ -36,7 +36,7 @@
             width: 300px;
             height: 200px;
             object-fit: cover;
-            border: 2px solid red; /* Remove or adjust as needed */
+            border: 2px solid red; /* Adjust border if necessary */
         }
 
         .card-artikel-content {
@@ -117,10 +117,8 @@
         @foreach ($artikels as $item)
             <div class="card-artikel">
                 {{-- Display Image --}}
-                <p>URL Gambar: {{ asset('storage/' . $item->images->first()->gambar) }}</p>
-                
                 @if ($item->images->count() > 0)
-                    <img src="{{ asset('storage/' . $item->images->first()->gambar) }}" alt="Gambar Artikel">
+                    <img src="{{ asset('images/' . $item->images->first()->gambar) }}" alt="Gambar Artikel">
                 @else
                     <p>Tidak ada gambar</p>
                 @endif

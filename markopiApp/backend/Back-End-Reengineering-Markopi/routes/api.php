@@ -13,10 +13,11 @@ use App\Http\API\BudidayaAPIController;
 use App\Http\API\ReplyKomentarController;
 use App\Http\API\ResetPasswordController;
 use App\Http\API\ForgotPasswordController;
+use App\Http\Api\IklanApiController;
 use App\Http\API\PengepulApiController;
-use App\Http\Controllers\Api\TokoController;
-use App\Http\Controllers\Api\ResepController;
-use App\Http\Controllers\Api\IklanController;
+use App\Http\Api\ResepApiController;
+use App\Http\API\TokoApiController;
+
 use App\Http\Controllers\BudidayaController;
 use App\Models\Pengepul;
 use GuzzleHttp\Middleware;
@@ -171,13 +172,13 @@ Route::get('/pengajuandalamdata', [TransaksiApiController::class, 'getPengajuanb
 
 
 //toko
-Route::get('tokos', [TokoController::class, 'index']);  // Mengambil semua toko
-Route::get('tokos/{id}', [TokoController::class, 'show']);  // Mengambil toko berdasarkan ID
+Route::get('/tokos', [TokoApiController::class, 'index']);  // Mengambil semua toko
+Route::get('/tokos/{id}', [TokoApiController::class, 'show']);  // Mengambil toko berdasarkan ID
 
 //resep
-Route::get('/reseps', [ResepController::class, 'index']);
+Route::get('/reseps', [ResepApiController::class, 'index']);
 
 //iklan
-Route::get('/iklans', [IklanController::class, 'index']);
-Route::get('/iklans/{id}', [IklanController::class, 'show']);
+Route::get('/iklans', [IklanApiController::class, 'index']);
+Route::get('/iklans/{id}', [IklanApiController::class, 'show']);
 

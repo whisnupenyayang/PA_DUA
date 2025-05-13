@@ -16,10 +16,14 @@ class _DetailPengepuldanPetaniState extends State<DetailPengepuldanPetani> {
       Get.put(PengajuanTransaksiController());
 
   final PengepulController pengepulC = Get.put(PengepulController());
+
+  String? role;
   @override
   void initState() {
     super.initState();
-    // pengepulC.fetchPengepulByUser();
+    role = Get.parameters['role'];
+    
+    pengepulC.fetchPengepulByUser();
   }
 
   @override
@@ -101,7 +105,8 @@ class _DetailPengepuldanPetaniState extends State<DetailPengepuldanPetani> {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  pengajuanC.buatpengajuan(1, 'petani');
+                  print(role);
+                  pengajuanC.buatpengajuan(1, role!);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,

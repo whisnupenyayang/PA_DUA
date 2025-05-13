@@ -18,7 +18,11 @@ class _BerandaBodyState extends State<BerandaBody> {
   final ArtikelController artikelC = Get.put(ArtikelController());
   bool isLoading = true;
   String? token;
-
+  @override
+  void initState(){
+    super.initState();
+    artikelC.fetchArtikel();
+  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

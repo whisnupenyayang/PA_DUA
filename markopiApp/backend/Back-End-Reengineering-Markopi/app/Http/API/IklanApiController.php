@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Iklan;
 use Illuminate\Http\Request;
 
-class IklanController extends Controller
+class IklanApiController extends Controller
 {
     // Fetch semua iklan
     public function index()

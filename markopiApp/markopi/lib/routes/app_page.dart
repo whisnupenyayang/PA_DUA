@@ -82,7 +82,7 @@ class AppPages {
 
     /*================Toko Kopi=================== */
     GetPage(
-      name: RouteName.pengepul + '/detail',
+      name: RouteName.pengepul + '/detail/:role',
       page: () => DetailPengepuldanPetani(),
     ),
     GetPage(

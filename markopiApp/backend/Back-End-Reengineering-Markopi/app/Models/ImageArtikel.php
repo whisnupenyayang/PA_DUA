@@ -20,6 +20,6 @@ class ImageArtikel extends Model
 
     public function getUrlAttribute()
     {
-        return asset('storage/' . $this->gambar);
+        return asset('images/' . $this->gambar);
     }
 }

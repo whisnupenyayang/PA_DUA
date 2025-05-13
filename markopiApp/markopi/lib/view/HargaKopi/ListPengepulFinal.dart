@@ -26,7 +26,7 @@ class _KopiPageState extends State<KopiPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final data = isPengepul ? '' : petaniData;
+    String role = isPengepul ? 'pengepul' : 'petani';
 
     return Scaffold(
       appBar: AppBar(
@@ -84,7 +84,7 @@ class _KopiPageState extends State<KopiPage> {
                   return GestureDetector(
                     onTap: () {
                       print(item.url_gambar);
-                      Get.toNamed(RouteName.pengepul + '/detail');
+                      Get.toNamed(RouteName.pengepul + '/detail/$role');
                     },
                     child: Card(
                       elevation: 4,

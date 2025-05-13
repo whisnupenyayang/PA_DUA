@@ -1,23 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\API;
 
 use App\Models\Toko;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\URL;
 
-class TokoController extends Controller
+class TokoApiController extends Controller
 {
     public function index()
     {
-        $tokos = Toko::all()->map(function ($toko) {
+        // $tokos = Toko::all();
+         $tokos = Toko::all()->map(function ($toko) {
             $toko->foto_toko = $toko->foto_toko
                 ? URL::to('/images/' . $toko->foto_toko)
                 : null;
             return $toko;
         });
 
+
+        // return response()->json('hai');
         return response()->json($tokos);
     }
     public function show($id)
