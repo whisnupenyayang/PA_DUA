@@ -121,11 +121,11 @@
         <!-- Action buttons -->
         <div class="action-buttons">
             <!-- Delete button (trash icon) -->
-            <form action="{{ route('toko.destroy', $toko->toko_id) }}" method="POST">
+            <form action="{{ route('toko.destroy', $toko->id) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn-trash">
-                    <i class="bi bi-trash"></i> 
+                    <i class="bi bi-trash"></i>
                 </button>
             </form>
         </div>

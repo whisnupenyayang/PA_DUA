@@ -148,7 +148,7 @@
             <!-- Action buttons -->
             <div class="action-buttons">
                 <!-- Delete button (trash icon) -->
-                <form action="{{ route('resep.destroy', $resep->resep_id) }}" method="POST">
+                <form action="{{ route('resep.destroy', $resep->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn-trash">
@@ -178,7 +178,7 @@
             document.getElementById("save-name").addEventListener("click", function() {
                 const newName = document.getElementById("edit-name-input").value;
 
-                fetch("{{ route('resep.update', $resep->resep_id) }}", {
+                fetch("{{ route('resep.update', $resep->id) }}", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -217,7 +217,7 @@
             document.getElementById("save-desc").addEventListener("click", function() {
                 const newDesc = document.getElementById("edit-desc-input").value;
 
-                fetch("{{ route('resep.update', $resep->resep_id) }}", {
+                fetch("{{ route('resep.update', $resep->id) }}", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -249,7 +249,7 @@
                 const imageFile = document.getElementById("edit-img-input").files[0];
                 formData.append("image", imageFile);
 
-                fetch("{{ route('resep.update', $resep->resep_id) }}", {
+                fetch("{{ route('resep.update', $resep->id) }}", {
                     method: "POST",
                     headers: {
                         "X-CSRF-TOKEN": "{{ csrf_token() }}"
@@ -278,7 +278,7 @@
                 const imageFile = document.getElementById("edit-img-input").files[0];
                 formData.append("image", imageFile);
 
-                fetch("{{ route('resep.update', $resep->resep_id) }}", {
+                fetch("{{ route('resep.update', $resep->id) }}", {
                     method: "POST",
                     headers: {
                         "X-CSRF-TOKEN": "{{ csrf_token() }}"
