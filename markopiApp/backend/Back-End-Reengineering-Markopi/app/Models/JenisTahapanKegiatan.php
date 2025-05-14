@@ -1,4 +1,5 @@
 <?php
+// App\Models\JenisTahapanKegiatan.php
 
 namespace App\Models;
 
@@ -9,7 +10,6 @@ class JenisTahapanKegiatan extends Model
 {
     use HasFactory;
 
-
     protected $fillable = [
         'judul',
         'deskripsi',
@@ -17,4 +17,10 @@ class JenisTahapanKegiatan extends Model
         'url_gambar',
         'tahapan_kegiatan_id'
     ];
+
+    // Relasi Belongs To ke TahapanKegiatan
+    public function tahapanKegiatan()
+    {
+        return $this->belongsTo(TahapanKegiatan::class, 'tahapan_kegiatan_id');
+    }
 }

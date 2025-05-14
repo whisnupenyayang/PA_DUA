@@ -27,23 +27,26 @@ class KegiatanController extends Controller
         ]);
     }
 
-   public function dataBudidaya(Request $request, $nama_tahapan)
+    public function dataBudidaya($namaTahapan, Request $request)
 {
-    $jenisKopi = $request->query('jenis_kopi');
-    
-    $tahapanBudidaya = TahapanKegiatan::whereRaw('LOWER(nama_tahapan) = ?', [str_replace('-', ' ', strtolower($nama_tahapan))])
+    $jenisKopi = $request->input('jenis_kopi');
+
+    $tahapanBudidaya = TahapanKegiatan::with('jenisTahapanKegiatan')
+        ->where('kegiatan', 'budidaya')
+        ->where('nama_tahapan', str_replace('-', ' ', $namaTahapan))
         ->when($jenisKopi, function ($query) use ($jenisKopi) {
             return $query->where('jenis_kopi', $jenisKopi);
         })
         ->get();
 
     return view('admin.kegiatan.data_budidaya', [
-        'tahapanBudidaya' => $tahapanBudidaya,
-        'namaTahapan' => ucwords(str_replace('-', ' ', $nama_tahapan)),
+        'title' => 'Data Budidaya Kopi',
+        'namaTahapan' => $namaTahapan,
         'jenisKopi' => $jenisKopi,
-        'title' => 'Data Budidaya'
+        'tahapanBudidaya' => $tahapanBudidaya,
     ]);
 }
+
 
 
     // Menampilkan kegiatan panen
@@ -63,6 +66,24 @@ class KegiatanController extends Controller
         ]);
     }
 
+    public function dataPanen(Request $request, $nama_tahapan)
+    {
+        $jenisKopi = $request->query('jenis_kopi');
+
+        $tahapanBudidaya = TahapanKegiatan::whereRaw('LOWER(nama_tahapan) = ?', [str_replace('-', ' ', strtolower($nama_tahapan))])
+            ->when($jenisKopi, function ($query) use ($jenisKopi) {
+                return $query->where('jenis_kopi', $jenisKopi);
+            })
+            ->get();
+
+        return view('admin.kegiatan.data_budidaya', [
+            'tahapanBudidaya' => $tahapanBudidaya,
+            'namaTahapan' => ucwords(str_replace('-', ' ', $nama_tahapan)),
+            'jenisKopi' => $jenisKopi,
+            'title' => 'Data Budidaya'
+        ]);
+    }
+
     public function pascapanen(Request $request)
     {
         $jenisKopi = $request->input('jenis_kopi');
@@ -79,6 +100,23 @@ class KegiatanController extends Controller
         ]);
     }
 
+    public function datapascapanen(Request $request, $nama_tahapan)
+    {
+        $jenisKopi = $request->query('jenis_kopi');
+
+        $tahapanBudidaya = TahapanKegiatan::whereRaw('LOWER(nama_tahapan) = ?', [str_replace('-', ' ', strtolower($nama_tahapan))])
+            ->when($jenisKopi, function ($query) use ($jenisKopi) {
+                return $query->where('jenis_kopi', $jenisKopi);
+            })
+            ->get();
+
+        return view('admin.kegiatan.data_budidaya', [
+            'tahapanBudidaya' => $tahapanBudidaya,
+            'namaTahapan' => ucwords(str_replace('-', ' ', $nama_tahapan)),
+            'jenisKopi' => $jenisKopi,
+            'title' => 'Data Budidaya'
+        ]);
+    }
 
 
     public function create()

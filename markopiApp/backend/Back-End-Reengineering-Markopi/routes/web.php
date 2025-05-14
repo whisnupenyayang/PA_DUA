@@ -112,7 +112,11 @@ Route::get('kegiatan/panen', [KegiatanController::class, 'panen'])->name('kegiat
 Route::get('kegiatan/pascapanen', [KegiatanController::class, 'pascapanen'])->name('kegiatan.pascapanen');
 Route::get('kegiatan/budidaya/{nama_tahapan}', [KegiatanController::class, 'detailTahapan'])->name('kegiatan.detailTahapan');
 Route::get('kegiatan/budidaya/data/{nama_tahapan}', [KegiatanController::class, 'dataBudidaya'])->name('kegiatan.data_budidaya');
+Route::get('/kegiatan/panen', [KegiatanController::class, 'panen'])->name('kegiatan.panen');
+Route::get('/kegiatan/panen/{nama_tahapan}', [KegiatanController::class, 'dataPanen'])->name('kegiatan.data_panen');
 
+Route::get('/kegiatan/pascapanen', [KegiatanController::class, 'pascapanen'])->name('kegiatan.pascapanen');
+Route::get('/kegiatan/pascapanen/{nama_tahapan}', [KegiatanController::class, 'dataPascaPanen'])->name('kegiatan.data_pascapanen');
 
 
 // Penjualan

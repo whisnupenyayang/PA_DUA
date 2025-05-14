@@ -1,7 +1,7 @@
 @extends('admin.layouts.admin')
 
 @section('content')
-<h2>{{ $title }} - Tahapan Budidaya: {{ $namaTahapan }}</h2>
+<h2>{{ $title }} - Tahapan Panen: {{ $namaTahapan }}</h2>
 
 @if ($jenisKopi)
     <p><strong>Jenis Kopi yang Dipilih:</strong> {{ $jenisKopi }}</p>
@@ -10,7 +10,7 @@
 <div class="row">
     <section class="col-lg-12 connectedSortable">
         <div class="card-body">
-            @foreach ($tahapanBudidaya as $tahapan)
+            @foreach ($tahapanPanen as $tahapan)
                 <div class="card mb-3">
                     <div class="card-header">
                         <h5 class="mb-0">{{ $tahapan->nama_tahapan }}</h5>
@@ -19,7 +19,6 @@
                         <p><strong>Kegiatan:</strong> {{ $tahapan->kegiatan }}</p>
                         <p><strong>Jenis Kopi:</strong> {{ $tahapan->jenis_kopi }}</p>
 
-                        <!-- Data dari relasi jenisTahapanKegiatan -->
                         @foreach ($tahapan->jenisTahapanKegiatan as $jenis)
                             <div class="border rounded p-3 mb-2">
                                 <h6>{{ $jenis->judul }}</h6>

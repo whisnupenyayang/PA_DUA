@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Pengepul;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 
 class AuthController extends Controller
 {
@@ -46,13 +47,18 @@ class AuthController extends Controller
     }
 
     public function dashboard()
-    {
-        if (session('user_role') !== 'admin') {
-            return redirect('/')->withErrors(['Anda tidak memiliki akses.']);
-        }
-
-        return view('admin.layouts.dashboard', [
-            'title' => 'Dashboard'
-        ]);
+{
+    if (session('user_role') !== 'admin') {
+        return redirect('/')->withErrors(['Anda tidak memiliki akses.']);
     }
+
+    // Ambil data pengepul
+    $pengepuls = Pengepul::select('nama_toko', 'harga')->get();
+
+    // Kirim ke view
+    return view('admin.layouts.dashboard', [
+        'title' => 'Dashboard',
+        'pengepuls' => $pengepuls,
+    ]);
+}
 }

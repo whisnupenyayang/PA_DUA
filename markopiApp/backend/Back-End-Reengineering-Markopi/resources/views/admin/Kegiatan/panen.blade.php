@@ -6,7 +6,7 @@
 <!-- Filter Jenis Kopi -->
 <div class="row mb-3">
     <div class="col-md-4">
-        <form method="GET" action="{{ route('kegiatan.budidaya') }}">
+        <form method="GET" action="{{ route('kegiatan.panen') }}">
             <div class="form-group">
                 <label for="jenis_kopi">Pilih Jenis Kopi</label>
                 <select name="jenis_kopi" id="jenis_kopi" class="form-control">
@@ -20,30 +20,24 @@
     </div>
 </div>
 
-
 <div class="row">
     <section class="col-lg-12 connectedSortable">
         <div class="card-body">
-            @forelse ($tahapanPanen as $tahapan)
-            <div class="card w-100">
-                <div class="row g-0">
-                    <div class="col-md-3">
-                        <img src="{{ asset('img/kopi.jpg') }}" alt="Ilustrasi Kopi" class="profile-img">
+            <!-- Mengelompokkan data berdasarkan nama tahapan -->
+            @foreach ($tahapanPanen->groupBy('nama_tahapan') as $namaTahapan => $tahapans)
+                <div class="card mb-3">
+                    <div class="card-header" id="heading-{{ Str::slug($namaTahapan) }}">
+                        <h5 class="mb-0">
+                            <a href="{{ route('kegiatan.data_panen', ['nama_tahapan' => Str::slug($namaTahapan), 'jenis_kopi' => request('jenis_kopi')]) }}" class="btn btn-link">
+                                {{ $namaTahapan }}
+                            </a>
+                        </h5>
                     </div>
-                    <div class="col-md-9">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $tahapan->nama_tahapan }}</h5>
-                            <p class="card-text">
-                                <strong>Jenis Kopi:</strong> {{ $tahapan->jenis_kopi }}<br>
-                                <strong>Kegiatan:</strong> {{ $tahapan->kegiatan }}
-                            </p>
-                        </div>
+                    <div class="card-body">
+                        <p><strong>Kegiatan:</strong> Panen</p>
                     </div>
                 </div>
-            </div>
-            @empty
-            <div class="text-center text-muted">Belum ada data kegiatan panen.</div>
-            @endforelse
+            @endforeach
         </div>
     </section>
 </div>

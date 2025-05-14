@@ -1,5 +1,7 @@
 <?php
 
+// App\Models\TahapanKegiatan.php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,4 +16,10 @@ class TahapanKegiatan extends Model
      'kegiatan',
      'jenis_kopi',
     ];
+
+    // Relasi One to Many ke JenisTahapanKegiatan
+    public function jenisTahapanKegiatan()
+    {
+        return $this->hasMany(JenisTahapanKegiatan::class, 'tahapan_kegiatan_id');
+    }
 }
