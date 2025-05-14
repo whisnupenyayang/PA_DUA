@@ -47,11 +47,11 @@ class MyBottomNavigationBar extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.storefront_sharp, color: Colors.black, size: 40),
-            label: 'Jual Beli',
+            label: 'Pengepul',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.article_outlined, color: Colors.black, size: 40),
-            label: 'Notifikasi',
+            label: 'Artikel',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle_outlined,

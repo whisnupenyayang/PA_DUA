@@ -2,27 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markopi/routes/route_name.dart';
 
-class BudidayaView extends StatelessWidget {
+class BudidayaView extends StatefulWidget {
+  @override
+  _BudidayaViewState createState() => _BudidayaViewState();
+}
+
+class _BudidayaViewState extends State<BudidayaView> {
+  late String kegiatan;
   final List<String> kopiList = ['Arabika', 'Robusta'];
 
   @override
+  void initState() {
+    super.initState();
+    kegiatan = Get.parameters['kegiatan'] ?? '';
+    print('Kegiatan: $kegiatan');
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final kegiatan = Get.parameters['kegiatan'];
-    print(kegiatan);
     return Scaffold(
       appBar: AppBar(
-        title: Text('$kegiatan'),
+        title: Text(kegiatan),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
               'Jenis Kopi',
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
             ),
             SizedBox(height: 16),
             Expanded(
@@ -30,7 +39,6 @@ class BudidayaView extends StatelessWidget {
                 itemCount: kopiList.length,
                 itemBuilder: (context, i) {
                   final jenisKopi = kopiList[i];
-
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: Column(
@@ -38,15 +46,11 @@ class BudidayaView extends StatelessWidget {
                       children: [
                         Text(
                           jenisKopi,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                         SizedBox(height: 8),
                         InkWell(
-                          onTap: () => Get.toNamed(
-                              '${RouteName.kegiatan}/$kegiatan/$jenisKopi'),
+                          onTap: () => Get.toNamed('${RouteName.kegiatan}/$kegiatan/$jenisKopi'),
                           borderRadius: BorderRadius.circular(10),
                           child: Card(
                             elevation: 4,
@@ -59,8 +63,7 @@ class BudidayaView extends StatelessWidget {
                                 Container(
                                   height: 172,
                                   width: double.infinity,
-                                  color:
-                                      Colors.blue, // bisa diganti Image.asset
+                                  color: Colors.blue,
                                 ),
                                 Container(
                                   width: double.infinity,

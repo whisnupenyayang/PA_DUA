@@ -48,41 +48,37 @@
                 </a>
             </li>
 
-            <li class="nav-item">
-                <a href="/budidaya" class="nav-link {{ \Route::is('budidaya.index') ? 'active' : '' }}">
-                    <i class="">
-                        <img src="{{ asset('Icon/coffee-plant-white.png') }}" alt="Budidaya" width="24" height="24">
-                    </i>
-                    <p>
-                        Budidaya Kopi
-                    </p>
-                </a>
-            </li>
-
-
-
-
-            <li class="nav-item">
-                <a href="/panen" class="nav-link {{ \Route::is('panen.index') ? 'active' : '' }}">
+           <li class="nav-item">
+            <a href="{{ route('kegiatan.budidaya') }}" class="nav-link {{ \Route::is('kegiatan.budidaya') ? 'active' : '' }}">
                 <i class="">
-                        <img src="{{ asset('Icon/coffee-bag-white.png') }}" alt="Budidaya" width="24" height="24">
-                    </i>
-                    <p>
-                        Panen Kopi
-                    </p>
-                </a>
-            </li>
+                    <img src="{{ asset('Icon/coffee-plant-white.png') }}" alt="Budidaya" width="24" height="24">
+                </i>
+                <p>Budidaya Kopi</p>
+            </a>
+        </li>
 
-            <li class="nav-item">
-                <a href="/pasca" class="nav-link {{ \Route::is('pasca.index') ? 'active' : '' }}">
+
+
+
+          <!-- Panen -->
+        <li class="nav-item">
+            <a href="{{ route('kegiatan.panen') }}" class="nav-link {{ \Route::is('kegiatan.panen') ? 'active' : '' }}">
                 <i class="">
-                        <img src="{{ asset('Icon/coffee-bean-white.png') }}" alt="Budidaya" width="24" height="24">
-                    </i>
-                    <p>
-                        Pasca Panen Kopi
-                    </p>
-                </a>
-            </li>
+                    <img src="{{ asset('Icon/coffee-bag-white.png') }}" alt="Panen" width="24" height="24">
+                </i>
+                <p>Panen Kopi</p>
+            </a>
+        </li>
+
+            <!-- Pasca Panen -->
+        <li class="nav-item">
+            <a href="{{ route('kegiatan.pascapanen') }}" class="nav-link {{ \Route::is('kegiatan.pascapanen') ? 'active' : '' }}">
+                <i class="">
+                    <img src="{{ asset('Icon/coffee-bean-white.png') }}" alt="Pasca Panen" width="24" height="24">
+                </i>
+                <p>Pasca Panen Kopi</p>
+            </a>
+        </li>
             <!-- menu sebelumnya -->
             <!--
              <li class="nav-item">

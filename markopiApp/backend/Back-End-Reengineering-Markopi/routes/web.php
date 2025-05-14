@@ -12,7 +12,7 @@ use App\Http\Controllers\IklanController;
 use App\Http\Controllers\PengepulController;
 use App\Http\Controllers\ResepController;
 use App\Http\Controllers\TokoController;
-
+use App\Http\Controllers\KegiatanController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -102,6 +102,17 @@ Route::get('/admin/pengepul/{id}', [PengepulController::class, 'show'])->name('a
 Route::get('/admin/pengepul/{id}/edit', [PengepulController::class, 'edit'])->name('admin.pengepul.edit');
 Route::put('/admin/pengepul/{id}/update', [PengepulController::class, 'update'])->name('admin.pengepul.update');
 Route::post('/admin/pengepul/updateField', [PengepulController::class, 'updateField'])->name('admin.pengepul.updateField');
+
+//kegiatan
+Route::get('/kegiatan', [KegiatanController::class, 'index']);
+Route::get('/tahapan/create', [KegiatanController::class, 'create'])->name('tahapan.create');
+Route::post('/tahapan', [KegiatanController::class, 'store'])->name('tahapan.store');
+Route::get('kegiatan/budidaya', [KegiatanController::class, 'budidaya'])->name('kegiatan.budidaya');
+Route::get('kegiatan/panen', [KegiatanController::class, 'panen'])->name('kegiatan.panen');
+Route::get('kegiatan/pascapanen', [KegiatanController::class, 'pascapanen'])->name('kegiatan.pascapanen');
+Route::get('kegiatan/budidaya/{nama_tahapan}', [KegiatanController::class, 'detailTahapan'])->name('kegiatan.detailTahapan');
+Route::get('kegiatan/budidaya/data/{nama_tahapan}', [KegiatanController::class, 'dataBudidaya'])->name('kegiatan.data_budidaya');
+
 
 
 // Penjualan

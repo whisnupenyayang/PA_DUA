@@ -16,3 +16,4 @@ class Budidaya {
         jenis_kopi: json['jenis_kopi']);
   }
 }
+  
