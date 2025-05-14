@@ -34,7 +34,7 @@ class _IklanBannerState extends State<IklanBanner> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Pilihan Pupuk Terbaik!',
+          'Temukkan Kebutuhan tanaman anda',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:markopi/controllers/Artikel_Controller.dart';
+import 'package:markopi/models/Artikel_Model.dart';
+import 'package:markopi/view/artikel/detail_artikel.dart';
 
 class ListArtikel extends StatefulWidget {
   @override
@@ -6,22 +10,13 @@ class ListArtikel extends StatefulWidget {
 }
 
 class _ListArtikelState extends State<ListArtikel> {
-  final List<Map<String, String>> artikelList = [
-    {
-      "title": "Budidaya Tanaman Kopi dengan Cara Stek",
-      "desc":
-          "Budidaya tanaman kopi menggunakan teknik vegetative stek batang memiliki banyak keuntungan....",
-      "image":
-          "https://upload.wikimedia.org/wikipedia/commons/e/e7/Coffee_cherries_2.jpg",
-    },
-    {
-      "title": "Kenali Hama Penyakit Tanaman Kopi dan Pengendaliannya",
-      "desc":
-          "Serangan hama dan penyakit pada tanaman kopi dapat menurunkan produktivitas...",
-      "image":
-          "https://upload.wikimedia.org/wikipedia/commons/6/6d/Leaf_rust_on_coffee.jpg",
-    },
-  ];
+  final ArtikelController artikelC = Get.put(ArtikelController());
+
+  @override
+  void initState() {
+    super.initState();
+    artikelC.fetchArtikel();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,67 +39,64 @@ class _ListArtikelState extends State<ListArtikel> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: artikelList.length,
-              itemBuilder: (context, index) {
-                final artikel = artikelList[index];
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  child: Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(16)),
-                          child: Image.network(
-                            artikel["image"]!,
-                            height: 180,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                artikel["title"]!,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
+            child: Obx(() {
+              if (artikelC.artikel.isEmpty) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              return ListView.builder(
+                itemCount: artikelC.artikel.length,
+                itemBuilder: (context, index) {
+                  final Artikel artikel = artikelC.artikel[index];
+
+                  return Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    child: Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              artikel.judulArtikel,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
-                              SizedBox(height: 6),
-                              Text(
-                                artikel["desc"]!,
-                                style: TextStyle(fontSize: 14),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              SizedBox(height: 6),
-                              Text(
+                            ),
+                            SizedBox(height: 6),
+                            Text(
+                              artikel.isiArtikel ?? '',
+                              style: TextStyle(fontSize: 14),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 6),
+                            GestureDetector(
+                              onTap: () {
+                                Get.to(() => DetailArtikel(artikel: artikel));
+                              },
+                              child: Text(
                                 "Lihat Selengkapnya",
                                 style: TextStyle(
                                   color: Colors.blue,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                            ],
-                          ),
-                        )
-                      ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
+                  );
+                },
+              );
+            }),
           )
         ],
       ),
