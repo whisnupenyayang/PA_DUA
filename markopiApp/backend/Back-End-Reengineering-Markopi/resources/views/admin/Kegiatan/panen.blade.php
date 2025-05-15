@@ -20,6 +20,15 @@
     </div>
 </div>
 
+<!-- Tombol Tambah Informasi Panen -->
+<div class="row mb-3">
+    <div class="col-md-12 text-right">
+        <a href="{{ route('kegiatan.panen.create') }}" class="btn btn-success">
+            + Tambah Informasi Panen
+        </a>
+    </div>
+</div>
+
 <div class="row">
     <section class="col-lg-12 connectedSortable">
         <div class="card-body">

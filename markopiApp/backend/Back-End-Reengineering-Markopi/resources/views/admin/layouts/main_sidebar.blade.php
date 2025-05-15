@@ -127,7 +127,7 @@
                     </p>
                 </a>
             </li>
-            <li i class="nav-item">
+            <!-- <li i class="nav-item">
                 <a href="/data_user" class="nav-link {{ \Route::is('getDataUser') ? 'active' : '' }}">
                     <i class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
@@ -147,7 +147,7 @@
                         Data User
                     </p>
                 </a>
-            </li>
+            </li> -->
 
             <li i class="nav-item">
                 <a href="{{ route('artikel.admin') }}" class="nav-link {{ \Route::is('artikel.admin') ? 'active' : '' }}">

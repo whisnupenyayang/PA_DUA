@@ -19,19 +19,20 @@
                         <p><strong>Kegiatan:</strong> {{ $tahapan->kegiatan }}</p>
                         <p><strong>Jenis Kopi:</strong> {{ $tahapan->jenis_kopi }}</p>
 
-                        <!-- Data dari relasi jenisTahapanKegiatan -->
                         @foreach ($tahapan->jenisTahapanKegiatan as $jenis)
-                            <div class="border rounded p-3 mb-2">
-                                <h6>{{ $jenis->judul }}</h6>
-                                <p>{{ $jenis->deskripsi }}</p>
+                            <div class="border rounded p-3 mb-2 d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6>{{ $jenis->judul }}</h6>
+                                    <p>{{ $jenis->deskripsi }}</p>
 
-                                @if ($jenis->url_gambar)
-                                    <img src="{{ asset('storage/' . $jenis->url_gambar) }}" alt="Gambar" style="max-width: 200px;">
-                                @endif
+                                    @if ($jenis->url_gambar)
+                                        <img src="{{ asset('storage/' . $jenis->url_gambar) }}" alt="Gambar" style="max-width: 200px;">
+                                    @endif
 
-                                @if ($jenis->nama_file)
-                                    <p><a href="{{ asset('storage/' . $jenis->nama_file) }}" download>Download File</a></p>
-                                @endif
+                                    @if ($jenis->nama_file)
+                                        <p><a href="{{ asset('storage/' . $jenis->nama_file) }}" download>Download File</a></p>
+                                    @endif
+                                </div>
                             </div>
                         @endforeach
 

@@ -20,6 +20,15 @@
     </div>
 </div>
 
+<!-- Tombol Tambah Informasi Pasca Panen -->
+<div class="row mb-3">
+    <div class="col-md-12 text-right">
+        <a href="{{ route('kegiatan.pascapanen.create') }}" class="btn btn-success">
+            + Tambah Informasi Pasca Panen
+        </a>
+    </div>
+</div>
+
 <div class="row">
     <section class="col-lg-12 connectedSortable">
         <div class="card-body">
@@ -43,4 +52,3 @@
     </section>
 </div>
 @endsection
-    

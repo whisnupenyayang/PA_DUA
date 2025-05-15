@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\TahapanKegiatan;
+use App\Models\JenisTahapanKegiatan;
 
 class KegiatanController extends Controller
 {
@@ -28,25 +29,65 @@ class KegiatanController extends Controller
     }
 
     public function dataBudidaya($namaTahapan, Request $request)
-{
-    $jenisKopi = $request->input('jenis_kopi');
+    {
+        $jenisKopi = $request->input('jenis_kopi');
 
-    $tahapanBudidaya = TahapanKegiatan::with('jenisTahapanKegiatan')
-        ->where('kegiatan', 'budidaya')
-        ->where('nama_tahapan', str_replace('-', ' ', $namaTahapan))
-        ->when($jenisKopi, function ($query) use ($jenisKopi) {
-            return $query->where('jenis_kopi', $jenisKopi);
-        })
-        ->get();
+        $tahapanBudidaya = TahapanKegiatan::with('jenisTahapanKegiatan')
+            ->where('kegiatan', 'budidaya')
+            ->where('nama_tahapan', str_replace('-', ' ', $namaTahapan))
+            ->when($jenisKopi, function ($query) use ($jenisKopi) {
+                return $query->where('jenis_kopi', $jenisKopi);
+            })
+            ->get();
 
-    return view('admin.kegiatan.data_budidaya', [
-        'title' => 'Data Budidaya Kopi',
-        'namaTahapan' => $namaTahapan,
-        'jenisKopi' => $jenisKopi,
-        'tahapanBudidaya' => $tahapanBudidaya,
-    ]);
-}
+        return view('admin.kegiatan.data_budidaya', [
+            'title' => 'Data Budidaya Kopi',
+            'namaTahapan' => $namaTahapan,
+            'jenisKopi' => $jenisKopi,
+            'tahapanBudidaya' => $tahapanBudidaya,
+        ]);
+    }
 
+
+    public function createBudidaya()
+    {
+        $existingTahapan = TahapanKegiatan::where('kegiatan', 'budidaya')->pluck('nama_tahapan')->unique();
+
+        return view('admin.kegiatan.create_budidaya', [
+            'title' => 'Buat Informasi Budidaya Kopi',
+            'existingTahapan' => $existingTahapan,
+        ]);
+    }
+
+    public function storeBudidaya(Request $request)
+    {
+        $request->validate([
+            'jenis_kopi' => 'required|string|max:255',
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'nama_tahapan_existing' => 'nullable|string',
+            'nama_tahapan_baru' => 'nullable|string'
+        ]);
+
+        $namaTahapan = $request->nama_tahapan_baru ?: $request->nama_tahapan_existing;
+
+        if (!$namaTahapan) {
+            return back()->withErrors(['nama_tahapan' => 'Pilih atau masukkan nama tahapan.']);
+        }
+
+        $tahapan = TahapanKegiatan::firstOrCreate([
+            'nama_tahapan' => $namaTahapan,
+            'kegiatan' => 'budidaya',
+            'jenis_kopi' => $request->jenis_kopi
+        ]);
+
+        $tahapan->jenisTahapanKegiatan()->create([
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi
+        ]);
+
+        return redirect()->route('kegiatan.budidaya')->with('success', 'Informasi budidaya berhasil ditambahkan.');
+    }
 
 
     // Menampilkan kegiatan panen
@@ -84,6 +125,50 @@ class KegiatanController extends Controller
         ]);
     }
 
+    public function createPanen()
+{
+    $existingTahapan = TahapanKegiatan::where('kegiatan', 'panen')->pluck('nama_tahapan')->unique();
+
+    return view('admin.kegiatan.create_panen', [
+        'title' => 'Buat Informasi Panen Kopi',
+        'existingTahapan' => $existingTahapan,
+    ]);
+}
+
+public function storePanen(Request $request)
+{
+    $request->validate([
+        'jenis_kopi' => 'required|string',
+        'judul' => 'required|string',
+        'deskripsi' => 'required|string',
+    ]);
+
+    $namaTahapan = $request->nama_tahapan_baru ?: $request->nama_tahapan_existing;
+
+    if (!$namaTahapan) {
+        return redirect()->back()->with('error', 'Silakan pilih atau isi nama tahapan.');
+    }
+
+    // Cek apakah tahapan sudah ada
+    $tahapan = TahapanKegiatan::firstOrCreate(
+        [
+            'nama_tahapan' => $namaTahapan,
+            'kegiatan' => 'panen',
+        ]
+    );
+
+    JenisTahapanKegiatan::create([
+        'tahapan_kegiatan_id' => $tahapan->id,
+        'jenis_kopi' => $request->jenis_kopi,
+        'judul' => $request->judul,
+        'deskripsi' => $request->deskripsi,
+    ]);
+
+    return redirect()->route('kegiatan.panen')->with('success', 'Informasi panen berhasil ditambahkan.');
+}
+
+
+
     public function pascapanen(Request $request)
     {
         $jenisKopi = $request->input('jenis_kopi');
@@ -118,10 +203,53 @@ class KegiatanController extends Controller
         ]);
     }
 
+    public function createPascapanen()
+    {
+        $existingTahapan = TahapanKegiatan::where('kegiatan', 'pascapanen')->pluck('nama_tahapan')->unique();
+
+        return view('admin.kegiatan.create_pascapanen', [
+            'title' => 'Buat Informasi Pasca Panen Kopi',
+            'existingTahapan' => $existingTahapan,
+        ]);
+    }
+
+    // Simpan data pascapanen
+    public function storePascapanen(Request $request)
+    {
+        $request->validate([
+            'jenis_kopi' => 'required|string',
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+        ]);
+
+        // Tentukan nama tahapan
+        if ($request->nama_tahapan_baru) {
+            $namaTahapan = $request->nama_tahapan_baru;
+
+            // Simpan tahapan baru jika belum ada
+            TahapanKegiatan::firstOrCreate([
+                'nama_tahapan' => $namaTahapan,
+                'kegiatan' => 'pasca_panen',
+            ]);
+        } else {
+            $namaTahapan = $request->nama_tahapan_existing;
+        }
+
+        // Simpan data kegiatan pascapanen (sesuaikan model dan kolomnya)
+        TahapanKegiatan::create([
+            'jenis_kopi' => $request->jenis_kopi,
+            'nama_tahapan' => $namaTahapan,
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+            'kegiatan' => 'pasca_panen',
+        ]);
+
+        return redirect()->route('kegiatan.pascapanen')->with('success', 'Informasi Pasca Panen berhasil disimpan.');
+    }
 
     public function create()
     {
-        return view('admin.create_tahapan'); // Halaman form tambah tahapan
+        return view('admin.kegiatan.create_budidaya'); // Halaman form tambah tahapan
     }
 
     public function store(Request $request)
@@ -140,4 +268,8 @@ class KegiatanController extends Controller
 
         return redirect()->route('kegiatan.index'); // Redirect kembali ke halaman index kegiatan
     }
+
+
+
+
 }

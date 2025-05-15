@@ -118,6 +118,20 @@ Route::get('/kegiatan/panen/{nama_tahapan}', [KegiatanController::class, 'dataPa
 Route::get('/kegiatan/pascapanen', [KegiatanController::class, 'pascapanen'])->name('kegiatan.pascapanen');
 Route::get('/kegiatan/pascapanen/{nama_tahapan}', [KegiatanController::class, 'dataPascaPanen'])->name('kegiatan.data_pascapanen');
 
+Route::get('/admin/kegiatan/budidaya/create', [KegiatanController::class, 'createBudidaya'])->name('kegiatan.budidaya.create');
+Route::post('/admin/kegiatan/budidaya/store', [KegiatanController::class, 'store'])->name('kegiatan.budidaya.store');
+
+Route::get('/admin/kegiatan/panen/create', [KegiatanController::class, 'createPanen'])->name('kegiatan.panen.create');
+Route::post('/admin/kegiatan/panen/store', [KegiatanController::class, 'storePanen'])->name('kegiatan.panen.store');
+
+Route::get('/admin/kegiatan/pascapanen/create', [KegiatanController::class, 'createPascapanen'])->name('kegiatan.pascapanen.create');
+Route::post('/admin/kegiatan/pascapanen/store', [KegiatanController::class, 'storePascapanen'])->name('kegiatan.pascapanen.store');
+
+Route::delete('/admin/kegiatan/budidaya/{id}', [KegiatanController::class, 'destroyBudidaya'])->name('admin.kegiatan.budidaya.destroy');
+Route::delete('/admin/kegiatan/panen/{id}', [KegiatanController::class, 'destroyPanen'])->name('admin.kegiatan.panen.destroy');
+Route::delete('/admin/kegiatan/pascapanen/{id}', [KegiatanController::class, 'destroyPascapanen'])->name('admin.kegiatan.pascapanen.destroy');
+
+
 
 // Penjualan
 Route::get('penjualan', [BudidayaController::class, 'penjualan_index'])->name('penjualan.index');

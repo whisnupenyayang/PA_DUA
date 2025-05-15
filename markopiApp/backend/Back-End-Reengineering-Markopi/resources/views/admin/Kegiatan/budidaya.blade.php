@@ -25,21 +25,27 @@
         <div class="card-body">
             <!-- Mengelompokkan data berdasarkan nama tahapan -->
             @foreach ($tahapanBudidaya->groupBy('nama_tahapan') as $namaTahapan => $tahapans)
-                <div class="card mb-3">
-                    <div class="card-header" id="heading-{{ Str::slug($namaTahapan) }}">
-                        <h5 class="mb-0">
-                            <!-- Link untuk menuju halaman data budidaya tahapan -->
-                            <a href="{{ route('kegiatan.data_budidaya', ['nama_tahapan' => Str::slug($namaTahapan), 'jenis_kopi' => request('jenis_kopi')]) }}" class="btn btn-link">
-    {{ $namaTahapan }}
-</a>
+            <div class="card mb-3">
+                <div class="card-header" id="heading-{{ Str::slug($namaTahapan) }}">
+                    <h5 class="mb-0">
+                        <!-- Link untuk menuju halaman data budidaya tahapan -->
+                        <a href="{{ route('kegiatan.data_budidaya', ['nama_tahapan' => Str::slug($namaTahapan), 'jenis_kopi' => request('jenis_kopi')]) }}" class="btn btn-link">
+                            {{ $namaTahapan }}
+                        </a>
 
-                        </h5>
+                    </h5>
+                    <div class="mb-3">
+                        <a href="{{ route('kegiatan.budidaya.create') }}" class="btn btn-success">
+                            + Tambah Informasi Budidaya
+                        </a>
                     </div>
-                    <!-- Jika perlu bisa menambahkan informasi lain, misalnya deskripsi singkat -->
-                    <div class="card-body">
-                        <p><strong>Kegiatan:</strong> Budidaya</p>
-                    </div>
+
                 </div>
+                <!-- Jika perlu bisa menambahkan informasi lain, misalnya deskripsi singkat -->
+                <div class="card-body">
+                    <p><strong>Kegiatan:</strong> Budidaya</p>
+                </div>
+            </div>
             @endforeach
         </div>
     </section>
