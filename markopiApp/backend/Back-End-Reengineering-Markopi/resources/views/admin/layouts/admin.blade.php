@@ -11,6 +11,7 @@
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -40,6 +41,65 @@
             /* Untuk mempertahankan pemformatan garis baru */
             /* Atau bisa menggunakan white-space: pre-wrap; untuk mempertahankan pemformatan garis baru dan spasi */
         }
+
+        .tahapan-item {
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .tahapan-item:hover {
+            background-color: #e9ecef;
+        }
+
+        .next-button {
+            background-color: #001f3f;
+            color: white;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 4px;
+            margin-left: 15px;
+        }
+
+        .next-button:hover {
+            background-color: #003366;
+        }
+
+        .add-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background-color: #1e2e49;
+            color: white;
+            border-radius: 16px;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            font-family: 'Segoe UI', sans-serif;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .add-btn:hover {
+            background-color: #2c3e5a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .add-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .material-icons {
+            font-size: 18px;
+        }
     </style>
 
     <script src="https://cdn.ckeditor.com/ckeditor5/41.3.0/classic/ckeditor.js"></script>
@@ -56,10 +116,10 @@
         </div>
 
         <!-- agar bisa mengatur halaman yang tidak ingin menampilkan navbar -->
-        @if(!View::hasSection('no-navbar'))
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            @include('admin.layouts.navbar')
-        </nav>
+        @if (!View::hasSection('no-navbar'))
+            <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+                @include('admin.layouts.navbar')
+            </nav>
         @endif
 
         <!-- Main Sidebar Container -->
@@ -70,24 +130,24 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
 
-             <!-- agar bisa mengatur halaman yang tidak ingin menampilkan header -->
+            <!-- agar bisa mengatur halaman yang tidak ingin menampilkan header -->
             <!-- Content Header (Page header) -->
-            @if(!View::hasSection('no-header'))
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0">{{ $title }}</h1>
-                        </div><!-- /.col -->
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="/admin/dashboard">Beranda</a></li>
-                                <li class="breadcrumb-item active">{{ $title }}</li>
-                            </ol>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
-            </div>
+            @if (!View::hasSection('no-header'))
+                <div class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1 class="m-0">{{ $title }}</h1>
+                            </div><!-- /.col -->
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a href="/admin/dashboard">Beranda</a></li>
+                                    <li class="breadcrumb-item active">{{ $title }}</li>
+                                </ol>
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+                    </div><!-- /.container-fluid -->
+                </div>
             @endif
 
             <!-- Main content -->

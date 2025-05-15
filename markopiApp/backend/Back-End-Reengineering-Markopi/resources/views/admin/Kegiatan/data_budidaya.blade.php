@@ -1,7 +1,7 @@
 @extends('admin.layouts.admin')
 
 @section('content')
-<h2>{{ $title }} - Tahapan Budidaya: {{ $namaTahapan }}</h2>
+<h2>Tahapan Budidaya: {{ $namaTahapan }}</h2>
 
 @if ($jenisKopi)
     <p><strong>Jenis Kopi yang Dipilih:</strong> {{ $jenisKopi }}</p>
@@ -16,8 +16,6 @@
                         <h5 class="mb-0">{{ $tahapan->nama_tahapan }}</h5>
                     </div>
                     <div class="card-body">
-                        <p><strong>Kegiatan:</strong> {{ $tahapan->kegiatan }}</p>
-                        <p><strong>Jenis Kopi:</strong> {{ $tahapan->jenis_kopi }}</p>
 
                         @foreach ($tahapan->jenisTahapanKegiatan as $jenis)
                             <div class="border rounded p-3 mb-2 d-flex justify-content-between align-items-start">
