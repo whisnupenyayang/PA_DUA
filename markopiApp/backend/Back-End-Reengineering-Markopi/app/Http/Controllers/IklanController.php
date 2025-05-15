@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Iklan;
+use Illuminate\Support\Facades\Storage;
 
 class IklanController extends Controller
 {
@@ -61,5 +62,28 @@ class IklanController extends Controller
         ]);
 
         return redirect()->route('iklan.index')->with('success', 'Iklan berhasil ditambahkan.');
+
     }
+
+
+    public function destroy($id)
+    {
+        try {
+            $iklan = Iklan::findOrFail($id);
+            $this->deleteImages($iklan);
+            $iklan->delete();
+
+            return redirect()->route('iklan.index')->with('success', 'Iklan berhasil dihapus');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    protected function deleteImages(Iklan $iklan)
+{
+    if ($iklan->gambar && Storage::disk('public')->exists($iklan->gambar)) {
+        Storage::disk('public')->delete($iklan->gambar);
+    }
+}
+
 }

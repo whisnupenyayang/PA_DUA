@@ -58,7 +58,7 @@
         @forelse ($pengepuls as $pengepul)
         <div class="card">
             {{-- Ganti sesuai kolom gambar yang kamu gunakan --}}
-           <img src="{{ asset('images/' . $pengepul->nama_gambar) }}" alt="Foto Pengepul">
+            <img src="{{ asset('images/' . $pengepul->nama_gambar) }}" alt="Foto Pengepul">
 
             <div class="card-info">
                 <h5>{{ $pengepul->nama }}</h5>

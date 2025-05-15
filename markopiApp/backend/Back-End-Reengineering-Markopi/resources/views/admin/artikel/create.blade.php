@@ -4,7 +4,6 @@
 
 @section('content')
 <div class="container">
-    <h2>Tambah Artikel</h2>
 
     @if(session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
@@ -12,7 +11,7 @@
 
     <form action="{{ route('artikel.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-    
+
         <div class="mb-3">
             <label for="judul_artikel" class="form-label">Judul Artikel</label>
             <input type="text" class="form-control" id="judul_artikel" name="judul_artikel" value="{{ old('judul_artikel') }}" required>

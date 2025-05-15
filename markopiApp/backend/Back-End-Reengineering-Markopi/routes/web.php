@@ -69,6 +69,8 @@ Route::get('/admin/iklan/create', [IklanController::class, 'create'])->name('ikl
 Route::post('/admin/iklan', [IklanController::class, 'store'])->name('iklan.store');
 Route::get('/admin/iklan/{id}', [IklanController::class, 'show'])->name('iklan.show');
 Route::put('/admin/iklan/{id}', [IklanController::class, 'update'])->name('iklan.update');
+Route::delete('/admin/iklan/{id}', [IklanController::class, 'destroy'])->name('iklan.destroy');
+
 
 //resep
 Route::get('/resep', [ResepController::class, 'index'])->name('admin.resep');  // <-- Correct route name

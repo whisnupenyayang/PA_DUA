@@ -27,8 +27,7 @@
                 </div>
                 <div class="card-body text-center">
                     @if ($pengepul->url_gambar)
-                        <img src="{{ asset($pengepul->url_gambar) }}" alt="Foto Pengepul" class="img-fluid rounded mb-3"
-                             style="max-height: 300px;">
+                        <img src="{{ asset($pengepul->url_gambar) }}" alt="Foto Pengepul" class="img-fluid rounded mb-3"style="max-height: 300px;">
                     @else
                         <p class="text-muted">Belum ada gambar</p>
                     @endif
@@ -53,13 +52,11 @@
 
                         <div class="mb-3">
                             <label for="nama_toko" class="form-label">Nama Toko</label>
-                            <input type="text" id="nama_toko" name="nama_toko" class="form-control @error('nama_toko') is-invalid @enderror"
-                                   value="{{ old('nama_toko', $pengepul->nama_toko) }}" required>
+                            <input type="text" id="nama_toko" name="nama_toko" class="form-control @error('nama_toko') is-invalid @enderror" value="{{ old('nama_toko', $pengepul->nama_toko) }}" required>
                             @error('nama_toko')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
                         <div class="mb-3">
                             <label for="alamat" class="form-label">Alamat</label>
                             <textarea id="alamat" name="alamat" class="form-control @error('alamat') is-invalid @enderror" rows="2" required>{{ old('alamat', $pengepul->alamat) }}</textarea>
