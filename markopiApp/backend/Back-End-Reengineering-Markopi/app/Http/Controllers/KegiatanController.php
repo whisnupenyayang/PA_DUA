@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\TahapanKegiatan;
 use App\Models\JenisTahapanKegiatan;
+use Illuminate\Support\Facades\Storage;
 
 class KegiatanController extends Controller
 {
@@ -60,34 +61,61 @@ class KegiatanController extends Controller
     }
 
     public function storeBudidaya(Request $request)
-    {
-        $request->validate([
-            'jenis_kopi' => 'required|string|max:255',
-            'judul' => 'required|string|max:255',
-            'deskripsi' => 'required|string',
-            'nama_tahapan_existing' => 'nullable|string',
-            'nama_tahapan_baru' => 'nullable|string'
-        ]);
+{
+    $request->validate([
+        'jenis_kopi' => 'required|string',
+        'judul' => 'required|string|max:255',
+        'deskripsi' => 'required|string',
+        'url_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'nama_file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,zip|max:5120',
+        'nama_tahapan_existing' => 'nullable|string',
+        'nama_tahapan_baru' => 'nullable|string',
+    ]);
 
-        $namaTahapan = $request->nama_tahapan_baru ?: $request->nama_tahapan_existing;
-
-        if (!$namaTahapan) {
-            return back()->withErrors(['nama_tahapan' => 'Pilih atau masukkan nama tahapan.']);
-        }
-
-        $tahapan = TahapanKegiatan::firstOrCreate([
-            'nama_tahapan' => $namaTahapan,
-            'kegiatan' => 'budidaya',
-            'jenis_kopi' => $request->jenis_kopi
-        ]);
-
-        $tahapan->jenisTahapanKegiatan()->create([
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi
-        ]);
-
-        return redirect()->route('kegiatan.budidaya')->with('success', 'Informasi budidaya berhasil ditambahkan.');
+    // Validasi: hanya boleh pilih salah satu (tahapan baru atau existing)
+    if ($request->filled('nama_tahapan_existing') && $request->filled('nama_tahapan_baru')) {
+        return back()->withErrors(['nama_tahapan_baru' => 'Pilih salah satu: tahapan yang sudah ada atau masukkan tahapan baru.']);
     }
+
+    // Tentukan nama tahapan
+    $namaTahapan = $request->nama_tahapan_baru ?: $request->nama_tahapan_existing;
+
+    if (!$namaTahapan) {
+        return back()->withErrors(['nama_tahapan' => 'Pilih atau masukkan nama tahapan.']);
+    }
+
+    // Ambil atau buat tahapan budidaya berdasarkan jenis kopi
+    $tahapan = TahapanKegiatan::firstOrCreate([
+        'nama_tahapan' => $namaTahapan,
+        'kegiatan' => 'budidaya',
+        'jenis_kopi' => $request->jenis_kopi,
+    ]);
+
+    // Data yang akan disimpan ke jenis_tahapan_kegiatan
+    $data = [
+        'judul' => $request->judul,
+        'deskripsi' => $request->deskripsi,
+    ];
+
+    // Upload gambar jika ada
+    if ($request->hasFile('url_gambar')) {
+        $gambarPath = $request->file('url_gambar')->store('gambar_budidaya', 'public');
+        $data['url_gambar'] = $gambarPath;
+    }
+
+    // Upload file jika ada
+    if ($request->hasFile('nama_file')) {
+        $filePath = $request->file('nama_file')->store('file_budidaya', 'public');
+        $data['nama_file'] = $filePath;
+    }
+
+    // Simpan melalui relasi ke tahapan
+    $tahapan->jenisTahapanKegiatan()->create($data);
+
+    return redirect()->route('kegiatan.budidaya')->with('success', 'Informasi Budidaya berhasil ditambahkan.');
+}
+
+
 
 
     // Menampilkan kegiatan panen
@@ -126,46 +154,60 @@ class KegiatanController extends Controller
     }
 
     public function createPanen()
-{
-    $existingTahapan = TahapanKegiatan::where('kegiatan', 'panen')->pluck('nama_tahapan')->unique();
+    {
+        $existingTahapan = TahapanKegiatan::where('kegiatan', 'panen')->pluck('nama_tahapan')->unique();
 
-    return view('admin.kegiatan.create_panen', [
-        'title' => 'Buat Informasi Panen Kopi',
-        'existingTahapan' => $existingTahapan,
-    ]);
-}
-
-public function storePanen(Request $request)
-{
-    $request->validate([
-        'jenis_kopi' => 'required|string',
-        'judul' => 'required|string',
-        'deskripsi' => 'required|string',
-    ]);
-
-    $namaTahapan = $request->nama_tahapan_baru ?: $request->nama_tahapan_existing;
-
-    if (!$namaTahapan) {
-        return redirect()->back()->with('error', 'Silakan pilih atau isi nama tahapan.');
+        return view('admin.kegiatan.create_panen', [
+            'title' => 'Buat Informasi Panen Kopi',
+            'existingTahapan' => $existingTahapan,
+        ]);
     }
 
-    // Cek apakah tahapan sudah ada
-    $tahapan = TahapanKegiatan::firstOrCreate(
-        [
+    public function storePanen(Request $request)
+    {
+        $request->validate([
+            'jenis_kopi' => 'required|string',
+            'judul' => 'required|string',
+            'deskripsi' => 'required|string',
+            'url_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nama_file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,zip|max:5120',
+        ]);
+
+        $namaTahapan = $request->nama_tahapan_baru ?: $request->nama_tahapan_existing;
+
+        if (!$namaTahapan) {
+            return redirect()->back()->with('error', 'Silakan pilih atau isi nama tahapan.');
+        }
+
+        // Cek atau buat tahapan
+        $tahapan = TahapanKegiatan::firstOrCreate([
             'nama_tahapan' => $namaTahapan,
             'kegiatan' => 'panen',
-        ]
-    );
+        ]);
 
-    JenisTahapanKegiatan::create([
-        'tahapan_kegiatan_id' => $tahapan->id,
-        'jenis_kopi' => $request->jenis_kopi,
-        'judul' => $request->judul,
-        'deskripsi' => $request->deskripsi,
-    ]);
+        $data = [
+            'tahapan_kegiatan_id' => $tahapan->id,
+            'jenis_kopi' => $request->jenis_kopi,
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+        ];
 
-    return redirect()->route('kegiatan.panen')->with('success', 'Informasi panen berhasil ditambahkan.');
-}
+        if ($request->hasFile('url_gambar')) {
+            $gambarPath = $request->file('url_gambar')->store('gambar_panen', 'public');
+            $data['url_gambar'] = $gambarPath;
+        }
+
+        if ($request->hasFile('nama_file')) {
+            $filePath = $request->file('nama_file')->store('file_panen', 'public');
+            $data['nama_file'] = $filePath;
+        }
+
+        // **Simpan data ke model JenisTahapanKegiatan**
+        JenisTahapanKegiatan::create($data);
+
+        return redirect()->route('kegiatan.panen')->with('success', 'Informasi panen berhasil ditambahkan.');
+    }
+
 
 
 
@@ -205,7 +247,7 @@ public function storePanen(Request $request)
 
     public function createPascapanen()
     {
-        $existingTahapan = TahapanKegiatan::where('kegiatan', 'pascapanen')->pluck('nama_tahapan')->unique();
+        $existingTahapan = TahapanKegiatan::where('kegiatan', 'pasca_panen')->pluck('nama_tahapan')->unique();
 
         return view('admin.kegiatan.create_pascapanen', [
             'title' => 'Buat Informasi Pasca Panen Kopi',
@@ -220,32 +262,44 @@ public function storePanen(Request $request)
             'jenis_kopi' => 'required|string',
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
+            'url_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // validasi gambar opsional
+            'nama_tahapan_existing' => 'nullable|string',
+            'nama_tahapan_baru' => 'nullable|string',
         ]);
 
         // Tentukan nama tahapan
-        if ($request->nama_tahapan_baru) {
-            $namaTahapan = $request->nama_tahapan_baru;
+        $namaTahapan = $request->nama_tahapan_baru ?: $request->nama_tahapan_existing;
 
-            // Simpan tahapan baru jika belum ada
-            TahapanKegiatan::firstOrCreate([
-                'nama_tahapan' => $namaTahapan,
-                'kegiatan' => 'pasca_panen',
-            ]);
-        } else {
-            $namaTahapan = $request->nama_tahapan_existing;
+        if (!$namaTahapan) {
+            return back()->withErrors(['nama_tahapan' => 'Pilih atau masukkan nama tahapan.']);
         }
 
-        // Simpan data kegiatan pascapanen (sesuaikan model dan kolomnya)
-        TahapanKegiatan::create([
-            'jenis_kopi' => $request->jenis_kopi,
+        // Ambil atau buat tahapan baru
+        $tahapan = TahapanKegiatan::firstOrCreate([
             'nama_tahapan' => $namaTahapan,
+            'kegiatan' => 'pasca_panen',
+            'jenis_kopi' => $request->jenis_kopi,
+        ]);
+
+        // Siapkan data untuk membuat detail kegiatan pasca panen (misal relasi ke tahapan)
+        $data = [
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
-            'kegiatan' => 'pasca_panen',
-        ]);
+        ];
+
+        // Upload gambar jika ada
+        if ($request->hasFile('url_gambar')) {
+            $gambarPath = $request->file('url_gambar')->store('gambar_pascapanen', 'public');
+            $data['url_gambar'] = $gambarPath;
+        }
+
+        // Simpan data detailnya (asumsi ada relasi hasMany dari TahapanKegiatan ke detailnya)
+        $tahapan->jenisTahapanKegiatan()->create($data);
 
         return redirect()->route('kegiatan.pascapanen')->with('success', 'Informasi Pasca Panen berhasil disimpan.');
     }
+
+
 
     public function create()
     {
@@ -269,7 +323,62 @@ public function storePanen(Request $request)
         return redirect()->route('kegiatan.index'); // Redirect kembali ke halaman index kegiatan
     }
 
+    public function destroy($id)
+    {
+        $jenis = JenisTahapanKegiatan::findOrFail($id);
 
+        // Hapus file gambar dan file jika ada
+        if ($jenis->url_gambar) {
+            Storage::delete($jenis->url_gambar);
+        }
+        if ($jenis->nama_file) {
+            Storage::delete($jenis->nama_file);
+        }
 
+        $jenis->delete();
 
+        return redirect()->back()->with('success', 'Data berhasil dihapus.');
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validasi data input
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'url_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nama_file' => 'nullable|file|max:5120',
+        ]);
+
+        // Cari data berdasarkan ID
+        $jenis = JenisTahapanKegiatan::findOrFail($id);
+
+        // Update field teks
+        $jenis->judul = $request->judul;
+        $jenis->deskripsi = $request->deskripsi;
+
+        // Jika ada gambar baru, simpan dan hapus yang lama
+        if ($request->hasFile('url_gambar')) {
+            if ($jenis->url_gambar) {
+                Storage::delete('images/' . $jenis->url_gambar);
+            }
+            $pathGambar = $request->file('url_gambar')->store('gambar_tahapan', 'public');
+            $jenis->url_gambar = $pathGambar;
+        }
+
+        // Jika ada file baru, simpan dan hapus yang lama
+        if ($request->hasFile('nama_file')) {
+            if ($jenis->nama_file) {
+                Storage::delete('images/' . $jenis->nama_file);
+            }
+            $pathFile = $request->file('nama_file')->store('file_tahapan', 'public');
+            $jenis->nama_file = $pathFile;
+        }
+
+        // Simpan perubahan
+        $jenis->save();
+
+        // Redirect kembali dengan pesan sukses
+        return redirect()->back()->with('success', 'Data berhasil diperbarui.');
+    }
 }
