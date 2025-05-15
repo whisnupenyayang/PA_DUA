@@ -74,18 +74,18 @@ class _JenisTahapBudidayaViewState extends State<JenisTahapBudidayaView> {
                   child: Row(
                     children: [
                       Container(
-                          width: MediaQuery.of(context).size.width * 3 / 8,
-                          height: 100,
-                          color: Colors.black,
-                          child: CachedNetworkImage(
-                            // imageUrl: 'http://10.0.2.2:8000${item.url_gambar}',
-                            imageUrl:
-                                'http://10.0.2.2:8000/storage/budidayaimage/OjPcIQh71iVEIq6A2wk3Z1AuZh73KgFTX9JQOWtP.png',
-                            placeholder: (context, url) => Center(
-                                child: CircularProgressIndicator()), // loading
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.error), // error
-                          )),
+                        width: MediaQuery.of(context).size.width * 3 / 8,
+                        height: 100,
+                        color: Colors.black,
+                        child: CachedNetworkImage(
+                          imageUrl:
+                              'http://192.168.150.244:8000/storage/${item.url_gambar}',
+                          placeholder: (context, url) =>
+                              Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                        ),
+                      ),
                       SizedBox(width: 15),
                       Expanded(
                         child: Container(

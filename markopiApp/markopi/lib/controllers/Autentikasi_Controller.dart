@@ -10,15 +10,13 @@ class AutentikasiController extends GetxController {
   var namaLengkap = ''.obs;
   var sukses = false.obs;
 
-final autentikasiProvider = AutentikasiProvider();
+  final autentikasiProvider = AutentikasiProvider();
   var idUser = 0.obs;
   var role = ''.obs;
 
   final userService = UserStorage();
 
   Future<void> login(String username, String password) async {
-    
-
     final response = await autentikasiProvider.login(username, password);
 
     if (response.statusCode == 200) {
@@ -41,7 +39,7 @@ final autentikasiProvider = AutentikasiProvider();
     }
   }
 
-  Future<void> logout()async{
+  Future<void> logout() async {
     final String? token = await TokenStorage.getToken();
     if (token == null) {
       Get.snackbar("gagal", "Anda Belum Login");
@@ -51,6 +49,7 @@ final autentikasiProvider = AutentikasiProvider();
 
     if (response.statusCode == 200) {
       await TokenStorage.clearToken();
-    }                                                                    b 
+      sukses.value = true;
+    }
   }
 }

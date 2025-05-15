@@ -81,11 +81,11 @@ class _JenisTahapBudidayDetailViewState
                 Container(
                   color: Colors.grey,
                   child: CachedNetworkImage(
-                    imageUrl: 'http://10.0.2.2:8000${item.url_gambar}',
+                    imageUrl:
+                        'http://192.168.150.244:8000/storage/${item.url_gambar}',
                     placeholder: (context, url) =>
-                        Center(child: CircularProgressIndicator()), // loading
-                    errorWidget: (context, url, error) =>
-                        Icon(Icons.error), // error
+                        Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                 ),
                 SizedBox(height: 14),

@@ -4,6 +4,9 @@ import '../models/Artikel_Model.dart';
 
 class ArtikelController extends GetxController {
   var artikel = <Artikel>[].obs;
+  var isLoading = false.obs;
+  var errorMessage = ''.obs;
+
   final artikelProvider = ArtikelProvider();
 
   @override
@@ -14,22 +17,15 @@ class ArtikelController extends GetxController {
 
   Future<void> fetchArtikel() async {
     try {
-      final response = await artikelProvider.getPosts();
-
-      print('STATUS CODE: ${response.statusCode}');
-      print('BODY: ${response.body}');
-
-      if (response.statusCode == 200) {
-        final List<dynamic> jsonData = response.body['data'];
-
-        artikel.value = jsonData.map((e) => Artikel.fromJson(e)).toList();
-        print('Jumlah artikel: ${artikel.length}');
-      } else {
-        Get.snackbar('Error', 'Gagal mengambil data: ${response.statusText}');
-      }
+      isLoading.value = true;
+      errorMessage.value = '';
+      final data = await artikelProvider.fetchArtikels(); // Panggil method baru di provider
+      artikel.value = data;
     } catch (e) {
+      errorMessage.value = e.toString();
       Get.snackbar('Error', 'Terjadi kesalahan: $e');
-      print('Error saat fetchArtikel: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 }

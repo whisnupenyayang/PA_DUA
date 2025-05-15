@@ -51,8 +51,8 @@
                 @if ($item->images->count() > 0)
                     <img src="{{ asset('images/' . $item->images->first()->gambar) }}" alt="Gambar Artikel">
                 @else
-                    <img src="{{ asset('images/default.jpg') }}" alt="Default Gambar"> {{-- Optional: fallback --}}
-                @endif
+                    <p>Tidak ada gambar</p>
+                    @endif
 
                 <div class="card-artikel-content">
                     <h3>{{ $item->judul_artikel }}</h3>

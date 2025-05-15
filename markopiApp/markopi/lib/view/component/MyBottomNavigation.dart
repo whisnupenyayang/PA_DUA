@@ -34,46 +34,51 @@ class MyBottomNavigationBar extends StatelessWidget {
             return Beranda();
         }
       }),
-      bottomNavigationBar: Obx(() => BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined, color: Colors.black, size: 40),
-                label: 'Beranda',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.people_alt_outlined,
-                    color: Colors.black, size: 40),
-                label: 'Forum',
-              ),
-              BottomNavigationBarItem(
-                icon:
-                    Icon(Icons.storefront_sharp, color: Colors.black, size: 40),
-                label: 'Pengepul',
-              ),
-              BottomNavigationBarItem(
-                icon:
-                    Icon(Icons.article_outlined, color: Colors.black, size: 40),
-                label: 'Artikel',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle_outlined,
-                    color: Colors.black, size: 40),
-                label: 'Profil',
-              ),
-            ],
-            currentIndex: controller.selectedIndex.value,
-            selectedItemColor: const Color(0xFF297CBB),
-            showSelectedLabels: true,
-            showUnselectedLabels: false,
-            onTap: (index) async {
-              final token = await TokenStorage.getToken();
-              if (token == null) {
-                Get.toNamed(RouteName.login);
-              } else {
-                controller.onItemTapped(index);
-              }
-            },
-          )),
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined, color: Colors.black, size: 40),
+              label: 'Beranda',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people_alt_outlined,
+                  color: Colors.black, size: 40),
+              label: 'Forum',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.storefront_sharp, color: Colors.black, size: 40),
+              label: 'Pengepul',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.article_outlined, color: Colors.black, size: 40),
+              label: 'Artikel',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle_outlined,
+                  color: Colors.black, size: 40),
+              label: 'Profil',
+            ),
+          ],
+          currentIndex: controller.selectedIndex.value,
+          selectedItemColor: const Color(0xFF297CBB),
+          showSelectedLabels: true,
+          showUnselectedLabels: false,
+          onTap: (index) async {
+            final token = await TokenStorage.getToken();
+            if (index == 0) {
+              // Selalu izinkan akses ke Beranda
+              controller.onItemTapped(index);
+            } else if (token == null) {
+              // Kalau bukan index 0 dan token null, arahkan ke login
+              Get.toNamed(RouteName.login);
+            } else {
+              // Kalau token ada, izinkan akses
+              controller.onItemTapped(index);
+            }
+          },
+        ),
+      ),
     );
   }
 }

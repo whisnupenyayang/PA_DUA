@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:markopi/controllers/Autentikasi_Controller.dart';
 import 'package:markopi/routes/route_name.dart';
 import 'package:markopi/service/User_Storage.dart';
 import 'package:markopi/service/User_Storage_Service.dart';
@@ -12,6 +13,7 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  var autentikasiC = Get.put(AutentikasiController());
   final userStorage = UserStorage();
   UserModel? _user;
 
@@ -263,21 +265,33 @@ class _ProfileViewState extends State<ProfileView> {
                 ),
               ),
             ),
-            Container(
-              width: 209,
-              height: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.blue,
-              ),
-              child: Center(
+            GestureDetector(
+              onTap: () async {
+                await autentikasiC.logout();
+                print(autentikasiC.sukses.value);
+                if (autentikasiC.sukses.value) {
+                  Get.offAllNamed(RouteName.beranda);
+                }
+                print('hha');
+              },
+              child: Container(
+                width: 209,
+                height: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.blue,
+                ),
+                child: Center(
                   child: Text(
-                'Keluar',
-                style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600),
-              )),
+                    'Keluar',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
