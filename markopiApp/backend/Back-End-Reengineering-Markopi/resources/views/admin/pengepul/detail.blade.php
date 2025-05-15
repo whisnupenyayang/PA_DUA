@@ -79,7 +79,7 @@
                         <div class="mb-3">
                             <label for="harga" class="form-label">Harga/kg</label>
                             <input type="number" id="harga" name="harga" class="form-control @error('harga') is-invalid @enderror"
-                                   value="{{ old('harga', $pengepul->harga) }}" required>
+                            value="{{ old('harga', $pengepul->harga) }}" required>
                             @error('harga')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -88,7 +88,7 @@
                         <div class="mb-3">
                             <label for="nomor_telepon" class="form-label">Nomor Telepon</label>
                             <input type="text" id="nomor_telepon" name="nomor_telepon" class="form-control @error('nomor_telepon') is-invalid @enderror"
-                                   value="{{ old('nomor_telepon', $pengepul->nomor_telepon) }}" required>
+                            value="{{ old('nomor_telepon', $pengepul->nomor_telepon) }}" required>
                             @error('nomor_telepon')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
