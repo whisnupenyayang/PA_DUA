@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markopi/controllers/Autentikasi_Controller.dart';
 import 'package:markopi/service/token_storage.dart';
+import 'package:markopi/routes/route_name.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -73,8 +74,13 @@ class _LoginViewState extends State<LoginView> {
                 String password = _password.text;
                 print('username : $username \npassword : $password');
                 await autentikasiController.login(username, password);
-                token = await TokenStorage.getToken();
-                print(token);
+                if (autentikasiController.sukses.value){
+                  autentikasiController.sukses.value = false;
+                  token = await TokenStorage.getToken();
+                  Get.offAllNamed(RouteName.beranda);
+                  print(token);
+                }
+                
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xff2696D6),

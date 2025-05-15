@@ -80,8 +80,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('password/forgot',[ForgotPasswordController::class,'forgotPassword']);
 Route::post('password/reset',[ResetPasswordController::class,'resetPassword']);
 // Route::middleware('auth:sanctum')->group(function () {
-//     Route::post('/logout', [AuthController::class, 'logout']);
-// });
+Route::get('/logout', [AuthController::class, 'logout'])->middleware(['auth:sanctum']);
+
 
 Route::get('getUserById/{id}', [AuthController::class, 'getUserById']);
 Route::get('getAllUser', [AuthController::class, 'getAllUser']);

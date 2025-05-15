@@ -211,7 +211,7 @@ class _ProfileViewState extends State<ProfileView> {
                               child: Padding(
                                 padding: EdgeInsets.all(5),
                                 child: Text(
-                                  'Pengajuan Fasilitator',
+                                  'Data Pengepul',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
@@ -241,7 +241,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     child: Padding(
                                       padding: EdgeInsets.all(5),
                                       child: Text(
-                                        'Pengajuan Pengepul',
+                                        'Artikel',
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,

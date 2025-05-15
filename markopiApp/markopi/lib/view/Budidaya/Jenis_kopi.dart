@@ -46,11 +46,13 @@ class _BudidayaViewState extends State<BudidayaView> {
                       children: [
                         Text(
                           jenisKopi,
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                         SizedBox(height: 8),
                         InkWell(
-                          onTap: () => Get.toNamed('${RouteName.kegiatan}/$kegiatan/$jenisKopi'),
+                          onTap: () => Get.toNamed(
+                              '${RouteName.kegiatan}/$kegiatan/$jenisKopi'),
                           borderRadius: BorderRadius.circular(10),
                           child: Card(
                             elevation: 4,
@@ -63,7 +65,14 @@ class _BudidayaViewState extends State<BudidayaView> {
                                 Container(
                                   height: 172,
                                   width: double.infinity,
-                                  color: Colors.blue,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/icon/$jenisKopi.jpg'), // Ganti dengan path gambar kamu
+                                      fit: BoxFit
+                                          .cover, // Supaya gambar mengisi penuh
+                                    ),
+                                  ),
                                 ),
                                 Container(
                                   width: double.infinity,
