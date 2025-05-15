@@ -43,9 +43,9 @@ class _BerandaBodyState extends State<BerandaBody> {
               'Harga Rata-rata Kopi',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 5),
             buildHargaRataRata(), // Display average price
-            SizedBox(height: 30),
+            SizedBox(height: 10),
             IklanBanner(),
           ],
         ),

@@ -37,6 +37,7 @@ class AppPages {
       name: RouteName.forumkomen + '/:id',
       page: () => ForumKomentar(),
     ),
+    
 
     /*================Budidaya=================== */
     GetPage(

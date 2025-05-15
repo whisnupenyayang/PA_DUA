@@ -12,7 +12,7 @@ class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
   State<MyAppBar> createState() => _MyAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(50);
+  Size get preferredSize => const Size.fromHeight(60);
 }
 
 class _MyAppBarState extends State<MyAppBar> {
@@ -41,55 +41,49 @@ class _MyAppBarState extends State<MyAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    // Jangan tampilkan apapun kalau masih loading
     if (isLoading) return const SizedBox.shrink();
 
     return AppBar(
-      toolbarHeight: 40,
+      toolbarHeight: 60,
       titleSpacing: 10,
+      backgroundColor: Colors.white,
+      elevation: 1,
       title: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(
-            child: const Icon(Icons.account_circle, size: 45),
-          ),
-          const SizedBox(width: 10),
-          Center(
+          const Icon(Icons.account_circle, size: 50),
+          const SizedBox(width: 12),
+          Expanded(
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _user?.namaLengkap ?? 'pengunjung',
+                  _user?.namaLengkap ?? 'Pengunjung',
                   style: const TextStyle(
-                    fontSize: 15,
+                    fontSize: 17,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 if (_user?.namaLengkap == null)
                   const Text(
-                    'anda belum login',
+                    'Anda belum login',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 13,
                       color: Colors.grey,
                     ),
                   ),
               ],
             ),
           ),
-          const Spacer(),
           if (token == null)
             InkWell(
-              onTap: () {
-                Get.toNamed(RouteName.login);
-              },
+              onTap: () => Get.toNamed(RouteName.login),
               child: Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                 decoration: BoxDecoration(
                   color: const Color(0xFF2696D6),
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(8),
                   boxShadow: const [
                     BoxShadow(
                       color: Colors.black26,
@@ -101,7 +95,7 @@ class _MyAppBarState extends State<MyAppBar> {
                 child: const Text(
                   'Masuk',
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
@@ -110,8 +104,6 @@ class _MyAppBarState extends State<MyAppBar> {
             ),
         ],
       ),
-      backgroundColor: Colors.white,
-      elevation: 1,
     );
   }
 }
