@@ -1,164 +1,111 @@
 @extends('admin.layouts.admin')
 
-@section('no-navbar') 
-    ->
-@endsection
-@section('no-header')
-@endsection
-
+@section('no-navbar', true)
+@section('no-header', true)
 
 @section('content')
-<div class="row mb-3">
-    <div class="col">
-        <!-- Tombol Kembali -->
-        <a href="{{ route('admin.pengepul') }}" class="btn btn-secondary">
-            <i class="fa fa-arrow-left"></i> Kembali ke Daftar Pengepul
-        </a>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header">
-                <h4>Detail Pengepul</h4>
-            </div>
-            <div class="card-body">
-                <h5>{{ $pengepul->nama }}</h5>
-
-                <!-- Alamat -->
-                <p>
-                    <strong>Alamat:</strong>
-                    <span class="editable me-2" id="alamat" data-id="{{ $pengepul->id }}">{{ $pengepul->alamat }}</span>
-                    <button class="btn btn-link btn-sm p-0 edit-icon" data-field="alamat" title="Edit">
-                        <i class="fa fa-pencil-alt"></i>
-                    </button>
-                </p>
-
-                <!-- Jenis Kopi -->
-                <p>
-                    <strong>Jenis Kopi:</strong>
-                    <span class="editable me-2" id="jenis_kopi" data-id="{{ $pengepul->id }}">{{ $pengepul->jenis_kopi }}</span>
-                    <button class="btn btn-link btn-sm p-0 edit-icon" data-field="jenis_kopi" title="Edit">
-                        <i class="fa fa-pencil-alt"></i>
-                    </button>
-                </p>
-
-                <!-- Jenis Produk -->
-                <p>
-                    <strong>Jenis Produk:</strong>
-                    <span class="editable me-2" id="jenis_produk" data-id="{{ $pengepul->id }}">{{ $pengepul->jenis_produk }}</span>
-                    <button class="btn btn-link btn-sm p-0 edit-icon" data-field="jenis_produk" title="Edit">
-                        <i class="fa fa-pencil-alt"></i>
-                    </button>
-                </p>
-
-                <!-- Harga -->
-                <p>
-                    <strong>Harga/kg:</strong>
-                    <span class="editable me-2" id="harga" data-id="{{ $pengepul->id }}">Rp{{ number_format($pengepul->harga, 0, ',', '.') }}</span>
-                    <button class="btn btn-link btn-sm p-0 edit-icon" data-field="harga" title="Edit">
-                        <i class="fa fa-pencil-alt"></i>
-                    </button>
-                </p>
-            </div>
+    <div class="row mb-3">
+        <div class="col">
+            <a href="{{ route('admin.pengepul') }}" class="btn btn-secondary">
+                <i class="fa fa-arrow-left"></i> Kembali ke Daftar Pengepul
+            </a>
         </div>
     </div>
-</div>
-@endsection
 
-@section('scripts')
-<script>
-    $(document).ready(function () {
-    $('.edit-icon').click(function () {
-        var field = $(this).data('field');
-        var $span = $('#' + field);
-        var oldValue = $span.text().trim();
-        var pengepulId = $span.data('id');
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @elseif(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
 
-        if ($span.find('input, select').length > 0) return;
-
-        var inputHtml = '';
-        var options = [];
-
-        if (field === 'harga') {
-            oldValue = oldValue.replace(/[^\d]/g, '');
-            inputHtml = `
-                <div class="d-flex gap-2 align-items-center">
-                    <input type="text" class="form-control form-control-sm" value="${oldValue}" id="input-${field}" style="max-width: 200px;">
-                    <button class="btn btn-success btn-sm save-btn" data-field="${field}" data-id="${pengepulId}">Save</button>
+    <div class="row">
+        <!-- Kolom Kiri: Foto -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Foto Pengepul</h5>
                 </div>
-            `;
-        } else if (field === 'jenis_kopi') {
-            options = ['Arabika', 'Robusta'];
-            inputHtml = `
-                <div class="d-flex gap-2 align-items-center">
-                    <select class="form-select form-select-sm" id="input-${field}" style="max-width: 200px;">
-                        ${options.map(opt => `<option value="${opt}" ${opt === oldValue ? 'selected' : ''}>${opt}</option>`).join('')}
-                    </select>
-                    <button class="btn btn-success btn-sm save-btn" data-field="${field}" data-id="${pengepulId}">Save</button>
+                <div class="card-body text-center">
+                    @if ($pengepul->url_gambar)
+                        <img src="{{ asset($pengepul->url_gambar) }}" alt="Foto Pengepul" class="img-fluid rounded mb-3"
+                             style="max-height: 300px;">
+                    @else
+                        <p class="text-muted">Belum ada gambar</p>
+                    @endif
+                    <div class="mt-3">
+                        <input type="file" name="gambar" form="update-form" class="form-control form-control-sm" accept="image/*">
+                    </div>
                 </div>
-            `;
-        } else if (field === 'jenis_produk') {
-            options = ['Kopi mentah', 'Kopi sangrai', 'Kopi bubuk'];
-            inputHtml = `
-                <div class="d-flex gap-2 align-items-center">
-                    <select class="form-select form-select-sm" id="input-${field}" style="max-width: 200px;">
-                        ${options.map(opt => `<option value="${opt}" ${opt === oldValue ? 'selected' : ''}>${opt}</option>`).join('')}
-                    </select>
-                    <button class="btn btn-success btn-sm save-btn" data-field="${field}" data-id="${pengepulId}">Save</button>
+            </div>
+        </div>
+
+        <!-- Kolom Kanan: Detail Form -->
+        <div class="col-md-8">
+            <form id="update-form" action="{{ route('admin.pengepul.update', $pengepul->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Edit Detail Toko</h4>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="mb-3">
+                            <label for="nama_toko" class="form-label">Nama Toko</label>
+                            <input type="text" id="nama_toko" name="nama_toko" class="form-control @error('nama_toko') is-invalid @enderror"
+                                   value="{{ old('nama_toko', $pengepul->nama_toko) }}" required>
+                            @error('nama_toko')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="alamat" class="form-label">Alamat</label>
+                            <textarea id="alamat" name="alamat" class="form-control @error('alamat') is-invalid @enderror" rows="2" required>{{ old('alamat', $pengepul->alamat) }}</textarea>
+                            @error('alamat')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="jenis_kopi" class="form-label">Jenis Kopi</label>
+                            <select id="jenis_kopi" name="jenis_kopi" class="form-select @error('jenis_kopi') is-invalid @enderror" required>
+                                <option value="Arabika" {{ old('jenis_kopi', $pengepul->jenis_kopi) === 'Arabika' ? 'selected' : '' }}>Arabika</option>
+                                <option value="Robusta" {{ old('jenis_kopi', $pengepul->jenis_kopi) === 'Robusta' ? 'selected' : '' }}>Robusta</option>
+                            </select>
+                            @error('jenis_kopi')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="harga" class="form-label">Harga/kg</label>
+                            <input type="number" id="harga" name="harga" class="form-control @error('harga') is-invalid @enderror"
+                                   value="{{ old('harga', $pengepul->harga) }}" required>
+                            @error('harga')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="nomor_telepon" class="form-label">Nomor Telepon</label>
+                            <input type="text" id="nomor_telepon" name="nomor_telepon" class="form-control @error('nomor_telepon') is-invalid @enderror"
+                                   value="{{ old('nomor_telepon', $pengepul->nomor_telepon) }}" required>
+                            @error('nomor_telepon')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-save"></i> Simpan Perubahan
+                            </button>
+                        </div>
+
+                    </div>
                 </div>
-            `;
-        } else {
-            inputHtml = `
-                <div class="d-flex gap-2 align-items-center">
-                    <input type="text" class="form-control form-control-sm" value="${oldValue}" id="input-${field}" style="max-width: 200px;">
-                    <button class="btn btn-success btn-sm save-btn" data-field="${field}" data-id="${pengepulId}">Save</button>
-                </div>
-            `;
-        }
-
-        $span.html(inputHtml);
-        $('#input-' + field).focus();
-    });
-
-    $(document).on('click', '.save-btn', function () {
-        var field = $(this).data('field');
-        var pengepulId = $(this).data('id');
-        var $input = $('#input-' + field);
-        var newValue = $input.val();
-        var $span = $('#' + field);
-        var oldValue = $input.closest('div').data('old-value') || '';
-
-        $.ajax({
-            url: "{{ route('admin.pengepul.updateField') }}",
-            method: 'POST',
-            data: {
-                _token: "{{ csrf_token() }}",
-                id: pengepulId,
-                field: field,
-                value: newValue
-            },
-            success: function (response) {
-                if (response.success) {
-                    if (field === 'harga') {
-                        var formatted = new Intl.NumberFormat('id-ID').format(newValue);
-                        $span.html('Rp' + formatted);
-                    } else {
-                        $span.text(newValue);
-                    }
-                } else {
-                    alert('Gagal menyimpan perubahan.');
-                    $span.text(oldValue);
-                }
-            },
-            error: function () {
-                alert('Terjadi kesalahan saat menyimpan data.');
-                $span.text(oldValue);
-            }
-        });
-    });
-});
-
-</script>
+            </form>
+        </div>
+    </div>
 @endsection

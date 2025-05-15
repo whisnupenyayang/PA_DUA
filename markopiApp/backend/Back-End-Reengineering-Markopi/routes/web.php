@@ -88,7 +88,7 @@ Route::delete('/toko/{id}', [TokoController::class, 'destroy'])->name('toko.dest
 Route::post('/toko/store', [TokoController::class, 'store'])->name('toko.store');
 
 // Artikel Admin
-Route::get('admin/artikel', [ArtikelController::class, 'artikel_admin'])->name('artikel.admin');
+Route::get('admin/artikel', [ArtikelController::class, 'index'])->name('artikel.index');
 Route::get('admin/artikel/create', [ArtikelController::class, 'create'])->name('artikel.create');
 Route::post('admin/artikel', [ArtikelController::class, 'store'])->name('artikel.store');
 Route::get('admin/artikel/{id}', [ArtikelController::class, 'show'])->name('artikel.show');
@@ -96,12 +96,16 @@ Route::get('admin/artikel/{id}/edit', [ArtikelController::class, 'edit'])->name(
 Route::put('admin/artikel/{id}', [ArtikelController::class, 'update'])->name('artikel.update');
 Route::delete('admin/artikel/{id}', [ArtikelController::class, 'destroy'])->name('artikel.destroy');
 
+
 // Pengepul
 Route::get('/admin/pengepuls', [PengepulController::class, 'index'])->name('admin.pengepul');
-Route::get('/admin/pengepul/{id}', [PengepulController::class, 'show'])->name('admin.pengepul.detail');
+Route::get('/admin/pengepul/create', [PengepulController::class, 'create'])->name('pengepul.create');
+Route::post('/admin/pengepul', [PengepulController::class, 'store'])->name('pengepul.store');
+Route::get('/admin/pengepul/{id}', [PengepulController::class, 'show'])->name('pengepul.show');
 Route::get('/admin/pengepul/{id}/edit', [PengepulController::class, 'edit'])->name('admin.pengepul.edit');
 Route::put('/admin/pengepul/{id}/update', [PengepulController::class, 'update'])->name('admin.pengepul.update');
 Route::post('/admin/pengepul/updateField', [PengepulController::class, 'updateField'])->name('admin.pengepul.updateField');
+
 
 //kegiatan
 Route::get('/kegiatan', [KegiatanController::class, 'index']);
@@ -119,7 +123,8 @@ Route::get('/kegiatan/pascapanen', [KegiatanController::class, 'pascapanen'])->n
 Route::get('/kegiatan/pascapanen/{nama_tahapan}', [KegiatanController::class, 'dataPascaPanen'])->name('kegiatan.data_pascapanen');
 
 Route::get('/admin/kegiatan/budidaya/create', [KegiatanController::class, 'createBudidaya'])->name('kegiatan.budidaya.create');
-Route::post('/admin/kegiatan/budidaya/store', [KegiatanController::class, 'store'])->name('kegiatan.budidaya.store');
+Route::post('/admin/kegiatan/budidaya/store', [KegiatanController::class, 'storeBudidaya'])->name('kegiatan.budidaya.store');
+
 
 Route::get('/admin/kegiatan/panen/create', [KegiatanController::class, 'createPanen'])->name('kegiatan.panen.create');
 Route::post('/admin/kegiatan/panen/store', [KegiatanController::class, 'storePanen'])->name('kegiatan.panen.store');
@@ -130,6 +135,9 @@ Route::post('/admin/kegiatan/pascapanen/store', [KegiatanController::class, 'sto
 Route::delete('/admin/kegiatan/budidaya/{id}', [KegiatanController::class, 'destroyBudidaya'])->name('admin.kegiatan.budidaya.destroy');
 Route::delete('/admin/kegiatan/panen/{id}', [KegiatanController::class, 'destroyPanen'])->name('admin.kegiatan.panen.destroy');
 Route::delete('/admin/kegiatan/pascapanen/{id}', [KegiatanController::class, 'destroyPascapanen'])->name('admin.kegiatan.pascapanen.destroy');
+
+Route::delete('/jenis-tahapan-kegiatan/{id}', [KegiatanController::class, 'destroy'])->name('jenisTahapanKegiatan.destroy');
+Route::put('/jenis-tahapan-kegiatan/{id}', [KegiatanController::class, 'update'])->name('jenisTahapanKegiatan.update');
 
 
 

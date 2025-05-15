@@ -8,4 +8,10 @@ class AutentikasiProvider extends GetConnect {
 
     return post(Connection.buildUrl('/login'), body);
   }
+
+  Future<Response> logout(String token) async {
+    return get(Connection.buildUrl('/logout'), headers: {
+      'Authorization': 'Bearer $token',
+    });
+  }
 }

@@ -24,10 +24,10 @@ class Beranda extends StatelessWidget {
         return Scaffold(
           backgroundColor: const Color(0xFFF4F4F4),
           appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(120),
+            preferredSize: const Size.fromHeight(70),
             child: Container(
               color: Colors.white,
-              padding: const EdgeInsets.only(top: 32),
+              padding: const EdgeInsets.only(top: 12),
               child: MyAppBar(),
             ),
           ),

@@ -5,33 +5,21 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Models\Artikel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ArtikelController extends Controller
 {
     public function dashboard()
     {
-        return view('fasilitator.dashboard.index', [
+        return view('admin.dashboard.index', [
             'title' => 'Dashboard'
         ]);
     }
 
-    //artikel admin
-    public function artikel_admin()
+    public function index()
     {
-        $artikels = Artikel::get(); // Atau sesuai kebutuhan
+        $artikels = Artikel::all();
         return view('admin.artikel.artikel', compact('artikels'), [
-            'title' => 'Artikel'
-        ]);
-    }
-    
-
-
-    public function artikel()
-    {
-        $artikels = Artikel::get();
-        return view('fasilitator.artikel.index', compact('artikels'), [
             'title' => 'Artikel'
         ]);
     }
@@ -39,96 +27,99 @@ class ArtikelController extends Controller
     public function show($id)
     {
         $artikel = Artikel::findOrFail($id);
-        return view('fasilitator.artikel.show', compact('artikel'), [
+        return view('admin.artikel.show', compact('artikel'), [
             'title' => 'Detail Artikel'
         ]);
     }
 
     public function create()
     {
-        return view('fasilitator.artikel.create', [
+        return view('admin.artikel.create', [
             'title' => 'Buat Artikel Baru'
         ]);
     }
 
     public function store(Request $request)
-    {
-        try {
-            $id = Auth::user()->id_users;
-            $request->validate([
-                'judul_artikel' => 'required',
-                'isi_artikel' => 'required',
-                'gambar.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120'
-            ]);
+{
+    try {
+        $request->validate([
+            'judul_artikel' => 'required',
+            'isi_artikel' => 'required',
+            'gambar.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120'
+        ]);
 
-            $artikel = Artikel::create([
-                'judul_artikel' => $request->judul_artikel,
-                'isi_artikel' => $request->isi_artikel,
-                'user_id' => $id,
-            ]);
+        $artikel = Artikel::create([
+            'judul_artikel' => $request->judul_artikel,
+            'isi_artikel' => $request->isi_artikel,
+            'user_id' => 2,  // <== set user_id dari user login (admin)
+        ]);
 
-            if ($artikel) {
+        if ($artikel) {
+            if ($request->hasFile('gambar')) {
                 foreach ($request->file('gambar') as $gambar) {
-                    $gambarPath = $gambar->store('artikelimage', 'public');
+                    $filename = time() . '_' . uniqid() . '.' . $gambar->getClientOriginalExtension();
+                    $gambar->move(public_path('images'), $filename);
+
                     $artikel->images()->create([
-                        'gambar' => $gambarPath,
+                        'gambar' => $filename,
                     ]);
                 }
-                return redirect()->route('artikel.fasilitator')->with('success', 'Informasi Artikel berhasil ditambahkan');
-            } else {
-                $errorMessage = $artikel->status() . ': ' . $artikel->body();
-                throw new Exception('Failed to add product. ' . $errorMessage);
             }
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage())->withInput();
+
+            return redirect()->route('artikel.index')->with('success', 'Artikel berhasil ditambahkan');
+        } else {
+            throw new Exception('Gagal menambahkan artikel.');
         }
+    } catch (Exception $e) {
+        return redirect()->back()->with('error', $e->getMessage())->withInput();
     }
+}
+
+
 
     public function edit($id)
     {
         $artikel = Artikel::findOrFail($id);
-        return view('fasilitator.artikel.edit', compact('artikel'), [
+        return view('admin.artikel.edit', compact('artikel'), [
             'title' => 'Edit Artikel'
         ]);
     }
 
     public function update(Request $request, $id)
-    {
+{
+    try {
         $request->validate([
-            'judul_artikel' => 'required',
             'isi_artikel' => 'required',
+            // 'judul_artikel' => 'required', // hapus dulu kalau tidak diedit inline
         ]);
 
-        try {
-            $artikel = Artikel::findOrFail($id);
-            $artikel->judul_artikel = $request->judul_artikel;
-            $artikel->isi_artikel = $request->isi_artikel;
+        $artikel = Artikel::findOrFail($id);
+        // Judul artikel tidak berubah kalau form hanya edit isi artikel
+        // $artikel->judul_artikel = $request->judul_artikel;
 
-            if ($request->hasFile('gambar')) {
-                $newImages = [];
+        $artikel->isi_artikel = $request->isi_artikel;
 
-                foreach ($request->file('gambar') as $newImage) {
-                    $newImagePath = $newImage->store('artikelimage', 'public');
-                    $newImages[] = ['gambar' => $newImagePath];
-                }
+        if ($request->hasFile('gambar')) {
+            // Hapus gambar lama
+            $this->deleteImages($artikel);
 
-                $this->deleteImages($artikel);
-
-                $artikel->images()->delete();
-                $artikel->images()->createMany($newImages);
+            $newImages = [];
+            foreach ($request->file('gambar') as $gambar) {
+                $gambarPath = $gambar->store('artikelimage', 'public');
+                $newImages[] = ['gambar' => $gambarPath];
             }
-
-            $artikel->save();
-
-            if ($artikel) {
-                return redirect()->route('artikel.fasilitator')->with('success', 'Data Informasi Artikel Berhasil di Ubah');
-            } else {
-                throw new Exception('Gagal mengupdate data');
-            }
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            $artikel->images()->delete();
+            $artikel->images()->createMany($newImages);
         }
+
+        $artikel->save();
+
+        return redirect()->route('artikel.show', $artikel->id_artikels)->with('success', 'Artikel berhasil diperbarui');
+    } catch (Exception $e) {
+        return redirect()->back()->with('error', $e->getMessage());
     }
+}
+
 
     public function destroy($id)
     {
@@ -136,11 +127,8 @@ class ArtikelController extends Controller
             $artikel = Artikel::findOrFail($id);
             $this->deleteImages($artikel);
             $artikel->delete();
-            if ($artikel) {
-                return redirect()->route('artikel.fasilitator')->with('success', 'Data Informasi Artikel Berhasil dihapus');
-            } else {
-                throw new Exception('Failed to delete.');
-            }
+
+            return redirect()->route('artikel.index')->with('success', 'Artikel berhasil dihapus');
         } catch (Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -150,7 +138,6 @@ class ArtikelController extends Controller
     {
         foreach ($artikel->images as $image) {
             Storage::disk('public')->delete($image->gambar);
-
             $image->delete();
         }
     }

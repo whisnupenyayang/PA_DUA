@@ -62,10 +62,41 @@
                         🚀 INI HALAMAN DASHBOARD UTAMA!
                     </div>
 
-                    <!-- Grafik Harga Pengepul -->
+                    <!-- Info Card Row -->
+                    <div class="row">
+
+                        <!-- Total Pengepul -->
+                        <div class="col-lg-3 col-6">
+                            <div class="small-box bg-success">
+                                <div class="inner">
+                                    <h3>{{ $totalPengepul }}</h3>
+                                    <p>Total Pengepul</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-store"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total Iklan -->
+                        <div class="col-lg-3 col-6">
+                            <div class="small-box bg-info">
+                                <div class="inner">
+                                    <h3>{{ $totalIklan }}</h3>
+                                    <p>Total Iklan</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-bullhorn"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Grafik Harga Rata-Rata -->
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Grafik Harga Kopi per Toko</h3>
+                            <h3 class="card-title">Grafik Rata-Rata Harga Kopi per Bulan ({{ date('Y') }})</h3>
                         </div>
                         <div class="card-body">
                             <canvas id="hargaChart" height="100"></canvas>
@@ -97,13 +128,22 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const ctx = document.getElementById('hargaChart').getContext('2d');
+
+            const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            const dataRataHarga = Array(12).fill(0);
+
+            const avgPerMonth = {!! json_encode($avgPerMonth) !!};
+            avgPerMonth.forEach(item => {
+                dataRataHarga[item.bulan - 1] = parseFloat(item.rata_harga);
+            });
+
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: {!! json_encode($pengepuls->pluck('nama_toko')) !!},
+                    labels: labels,
                     datasets: [{
-                        label: 'Harga Kopi (Rp)',
-                        data: {!! json_encode($pengepuls->pluck('harga')) !!},
+                        label: 'Rata-Rata Harga Kopi (Rp)',
+                        data: dataRataHarga,
                         backgroundColor: 'rgba(60,141,188,0.9)',
                         borderColor: 'rgba(60,141,188,1)',
                         borderWidth: 1

@@ -8,13 +8,16 @@ import 'package:hive_flutter/hive_flutter.dart';
 class AutentikasiController extends GetxController {
   var token = RxnString();
   var namaLengkap = ''.obs;
+  var sukses = false.obs;
+
+final autentikasiProvider = AutentikasiProvider();
   var idUser = 0.obs;
   var role = ''.obs;
 
   final userService = UserStorage();
 
   Future<void> login(String username, String password) async {
-    final autentikasiProvider = AutentikasiProvider();
+    
 
     final response = await autentikasiProvider.login(username, password);
 
@@ -25,6 +28,7 @@ class AutentikasiController extends GetxController {
         await TokenStorage.saveToken(body['token']);
 
         // print(body['user']);
+        sukses.value = true;
 
         final UserModel user = UserModel.fromJson(body['user']);
         await userService.openBox();
@@ -35,5 +39,18 @@ class AutentikasiController extends GetxController {
     } else {
       Get.snackbar('Error', 'Terjadi kesalahan server');
     }
+  }
+
+  Future<void> logout()async{
+    final String? token = await TokenStorage.getToken();
+    if (token == null) {
+      Get.snackbar("gagal", "Anda Belum Login");
+      return;
+    }
+    final response = await autentikasiProvider.logout(token);
+
+    if (response.statusCode == 200) {
+      await TokenStorage.clearToken();
+    }                                                                    b 
   }
 }
