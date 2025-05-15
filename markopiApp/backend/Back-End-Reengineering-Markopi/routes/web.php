@@ -67,9 +67,11 @@ Route::resource('pasca', PascaPanenController::class)->names(['index' => 'pasca.
 Route::get('/admin/iklan', [IklanController::class, 'index'])->name('iklan.index');
 Route::get('/admin/iklan/create', [IklanController::class, 'create'])->name('iklan.create');
 Route::post('/admin/iklan', [IklanController::class, 'store'])->name('iklan.store');
-Route::get('/admin/iklan/{id}', [IklanController::class, 'show'])->name('iklan.show');
+Route::get('/admin/iklan/{id}/edit', [IklanController::class, 'edit'])->name('iklan.edit');
 Route::put('/admin/iklan/{id}', [IklanController::class, 'update'])->name('iklan.update');
 Route::delete('/admin/iklan/{id}', [IklanController::class, 'destroy'])->name('iklan.destroy');
+Route::get('/admin/iklan/{id}', [IklanController::class, 'show'])->name('iklan.show');
+
 
 
 //resep

@@ -111,6 +111,17 @@
         }
     </style>
 
+    <script>
+        function toggleEdit(id) {
+            const form = document.getElementById('form-' + id);
+            if (form.style.display === 'none') {
+                form.style.display = 'block';
+            } else {
+                form.style.display = 'none';
+            }
+        }
+    </script>
+
     <div class="row">
         <section class="col-lg-12 connectedSortable">
             <div class="card-body">
@@ -132,31 +143,66 @@
                                             $iklan->link,
                                         ) !!}
                                     </p>
-{{-- Tombol aksi --}}
-        <form action="{{ route('iklan.destroy', $iklan->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus iklan ini?')">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger">Hapus</button>
-        </form>
-    </div>
+                                    <div class="d-flex gap-2 mt-2">
+                                        {{-- Tombol Edit --}}
+                                        <button onclick="toggleEdit({{ $iklan->id }})" class="btn btn-warning d-flex align-items-center gap-1" title="Edit Iklan">
+                                            <span class="material-icons" style="font-size:16px;">edit</span> Edit
+                                        </button>
 
+                                        {{-- Tombol Hapus --}}
+                                        <form action="{{ route('iklan.destroy', $iklan->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus iklan ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">Hapus</button>
+                                        </form>
+                                    </div>
+
+                                    {{-- Form Edit (Hidden by default) --}}
+                                    <div id="form-{{ $iklan->id }}" style="display: none;" class="mt-3">
+                                        <form action="{{ route('iklan.update', $iklan->id) }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            @method('PUT')
+
+                                            <div class="mb-2">
+                                                <label>Judul</label>
+                                                <input type="text" name="judul_iklan" class="form-control" value="{{ $iklan->judul_iklan }}">
+                                            </div>
+
+                                            <div class="mb-2">
+                                                <label>Deskripsi</label>
+                                                <textarea name="deskripsi_iklan" class="form-control" rows="3">{{ $iklan->deskripsi_iklan }}</textarea>
+                                            </div>
+
+                                            <div class="mb-2">
+                                                <label>Link</label>
+                                                <input type="text" name="link" class="form-control" value="{{ $iklan->link }}">
+                                            </div>
+
+                                            <div class="mb-2">
+                                                <label>Gambar (opsional)</label>
+                                                <input type="file" name="gambar" class="form-control">
+                                            </div>
+
+                                            <button type="submit" class="btn btn-success btn-sm">Simpan</button>
+                                            <button type="button" class="btn btn-secondary btn-sm" onclick="toggleEdit({{ $iklan->id }})">Batal</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-            </div>
-            @endforeach
+                @endforeach
 
-            @if (count($iklans) === 0)
-                <div class="text-center text-muted">Belum ada data iklan.</div>
-            @endif
+                @if (count($iklans) === 0)
+                    <div class="text-center text-muted">Belum ada data iklan.</div>
+                @endif
 
-            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 20px;">
-                <a href="{{ route('iklan.create') }}" class="add-btn">
-                    <span class="material-icons">add</span>
-                </a>
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 20px;">
+                    <a href="{{ route('iklan.create') }}" class="add-btn">
+                        <span class="material-icons">add</span>
+                    </a>
+                </div>
             </div>
-    </div>
-    </section>
+        </section>
     </div>
 @endsection
