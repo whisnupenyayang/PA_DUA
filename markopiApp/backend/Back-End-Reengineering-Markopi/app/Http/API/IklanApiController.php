@@ -11,7 +11,10 @@ class IklanApiController extends Controller
     // Fetch semua iklan
     public function index()
     {
-        $iklans = Iklan::all();
+        $iklans = Iklan::all()->map(function ($iklan) {
+            $iklan->gambar_url = asset('foto/' . $iklan->gambar);
+            return $iklan;
+        });
 
         return response()->json([
             'status' => 'success',
@@ -25,6 +28,8 @@ class IklanApiController extends Controller
         $iklan = Iklan::find($id);
 
         if ($iklan) {
+            $iklan->gambar_url = asset('foto/' . $iklan->gambar);
+
             return response()->json([
                 'status' => 'success',
                 'data' => $iklan

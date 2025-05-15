@@ -18,26 +18,26 @@ class Artikel {
   });
 
   factory Artikel.fromJson(Map<String, dynamic> json) {
-    List<String> imageUrls = [];
+  List<String> imageUrls = [];
 
-    if (json['images'] is String) {
-      imageUrls = [json['images']]; // Ubah string menjadi List<String>
-    } else if (json['images'] is List) {
-      imageUrls =
-          (json['images'] as List).map((image) => image.toString()).toList();
-    }
-
-    DateTime createdAt = DateTime.parse(json['create_at']);
-    final formatter = DateFormat('dd MMMM yyyy', 'id_ID');
-    final formattedDate = formatter.format(createdAt);
-
-    return Artikel(
-      id: json['id_artikels'],
-      judulArtikel: json['judul_artikel'],
-      isiArtikel: json['isi_artikel'],
-      tanggal: formattedDate,
-      imageUrls: imageUrls,
-      userId: json['user_id'],
-    );
+  if (json['images'] != null && json['images'] is List) {
+    imageUrls = (json['images'] as List)
+        .map((img) => img['gambar_url'].toString())
+        .toList();
   }
+
+  DateTime createdAt = DateTime.parse(json['created_at']);
+  final formatter = DateFormat('dd MMMM yyyy', 'id_ID');
+  final formattedDate = formatter.format(createdAt);
+
+  return Artikel(
+    id: json['id'] ?? 0,
+    judulArtikel: json['judul_artikel'] ?? '',
+    isiArtikel: json['isi_artikel'] ?? '',
+    tanggal: formattedDate,
+    imageUrls: imageUrls,
+    userId: json['user_id'] ?? 0,
+  );
+}
+
 }

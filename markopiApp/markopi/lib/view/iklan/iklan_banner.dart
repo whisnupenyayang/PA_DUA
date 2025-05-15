@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:markopi/service/iklan_service.dart';
 import 'package:markopi/models/iklan.dart';
-import 'package:url_launcher/url_launcher.dart'; // Pastikan menambahkan package ini
+import 'package:url_launcher/url_launcher.dart';
 
 class IklanBanner extends StatefulWidget {
   const IklanBanner({super.key});
@@ -21,9 +21,11 @@ class _IklanBannerState extends State<IklanBanner> {
   }
 
   Future<void> _launchURL(String url) async {
+    if (url.isEmpty) return; // jangan coba buka jika kosong
     if (await canLaunch(url)) {
       await launch(url);
     } else {
+      // Bisa diganti dengan toast/snackbar untuk UX lebih baik
       throw 'Could not launch $url';
     }
   }
@@ -57,7 +59,7 @@ class _IklanBannerState extends State<IklanBanner> {
                   itemBuilder: (context, index) {
                     final iklan = iklanList[index];
                     return GestureDetector(
-                      onTap: () => _launchURL(iklan.link), // Ketika card diklik
+                      onTap: () => _launchURL(iklan.link),
                       child: Container(
                         width: 300,
                         margin: const EdgeInsets.only(right: 10),
@@ -81,12 +83,12 @@ class _IklanBannerState extends State<IklanBanner> {
                                   ? CachedNetworkImage(
                                       imageUrl: iklan.gambar,
                                       placeholder: (context, url) =>
-                                          const CircularProgressIndicator(),
+                                          const Center(child: CircularProgressIndicator()),
                                       errorWidget: (context, url, error) =>
-                                          const Icon(Icons.broken_image, size: 50),
+                                          const Center(child: Icon(Icons.broken_image, size: 50)),
                                       fit: BoxFit.cover,
                                     )
-                                  : const Icon(Icons.store, size: 50),
+                                  : const Center(child: Icon(Icons.store, size: 50)),
                               Positioned(
                                 bottom: 0,
                                 left: 0,

@@ -1,25 +1,23 @@
 class Iklan {
-  final int idIklan;
+  final int id;
   final String judulIklan;
-  final String deskripsiIklan;
   final String gambar;
   final String link;
 
   Iklan({
-    required this.idIklan,
+    required this.id,
     required this.judulIklan,
-    required this.deskripsiIklan,
     required this.gambar,
     required this.link,
   });
 
   factory Iklan.fromJson(Map<String, dynamic> json) {
-    return Iklan(
-      idIklan: json['id'],
-      judulIklan: json['judul_iklan'],
-      deskripsiIklan: json['deskripsi_iklan'],
-      gambar: json['gambar'] ?? '', // Pastikan tidak null
-      link: json['link'] ?? '',
-    );
-  }
+  return Iklan(
+    id: json['id'],
+    judulIklan: json['judul_iklan'] ?? '',
+    gambar: json['gambar_url'] ?? '',  // pakai gambar_url, bukan gambar
+    link: json['link'] ?? '',
+  );
+}
+
 }
