@@ -88,13 +88,14 @@ Route::delete('/toko/{id}', [TokoController::class, 'destroy'])->name('toko.dest
 Route::post('/toko/store', [TokoController::class, 'store'])->name('toko.store');
 
 // Artikel Admin
-Route::get('admin/artikel', [ArtikelController::class, 'artikel_admin'])->name('artikel.admin');
+Route::get('admin/artikel', [ArtikelController::class, 'index'])->name('artikel.index');
 Route::get('admin/artikel/create', [ArtikelController::class, 'create'])->name('artikel.create');
 Route::post('admin/artikel', [ArtikelController::class, 'store'])->name('artikel.store');
 Route::get('admin/artikel/{id}', [ArtikelController::class, 'show'])->name('artikel.show');
 Route::get('admin/artikel/{id}/edit', [ArtikelController::class, 'edit'])->name('artikel.edit');
 Route::put('admin/artikel/{id}', [ArtikelController::class, 'update'])->name('artikel.update');
 Route::delete('admin/artikel/{id}', [ArtikelController::class, 'destroy'])->name('artikel.destroy');
+
 
 // Pengepul
 Route::get('/admin/pengepuls', [PengepulController::class, 'index'])->name('admin.pengepul');

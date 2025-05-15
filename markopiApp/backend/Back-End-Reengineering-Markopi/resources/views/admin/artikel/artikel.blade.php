@@ -36,7 +36,6 @@
             width: 300px;
             height: 200px;
             object-fit: cover;
-            border: 2px solid red; /* Remove or adjust as needed */
         }
 
         .card-artikel-content {
@@ -51,21 +50,16 @@
             color: #333;
         }
 
-        .card-artikel-content .read-more {
+        .read-more-link {
+            display: inline-block;
+            margin-top: 8px;
             color: #007bff;
+            font-weight: 600;
             text-decoration: none;
-            font-weight: bold;
         }
 
-        .card-artikel-content .read-more:hover {
+        .read-more-link:hover {
             text-decoration: underline;
-        }
-
-        .card-actions {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
         }
 
         .btn-add {
@@ -125,21 +119,7 @@
 
                 <div class="card-artikel-content">
                     <h3>{{ $item->judul_artikel }}</h3>
-                    <a href="{{ route('artikel.show', $item->id_artikels) }}" class="read-more">Baca Selengkapnya</a>
-
-                    <div class="card-actions">
-                        <a href="{{ route('artikel.edit', $item->id_artikels) }}" class="btn btn-success btn-sm">
-                            <i class="fas fa-edit"></i>
-                        </a>
-
-                        <form id="delete-form-{{ $item->id_artikels }}" action="{{ route('artikel.destroy', $item->id_artikels) }}" method="POST" class="d-inline delete-about-form">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" onclick="confirmDelete({{ $item->id_artikels }}, event)" class="btn btn-danger btn-sm delete-about">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </form>
-                    </div>
+                    <a href="{{ route('artikel.show', $item->id_artikels) }}" class="read-more-link">Selengkapnya</a>
                 </div>
             </div>
         @endforeach
@@ -150,43 +130,4 @@
             <span class="material-icons">add</span>
         </a>
     </div>
-
-    {{-- Modal Konfirmasi Hapus --}}
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Konfirmasi Hapus</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">Apakah Anda yakin ingin menghapus artikel ini secara permanen?</div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Ya, Hapus</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- SweetAlert --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        function confirmDelete(id, event) {
-            event.preventDefault();
-            $('#confirmDeleteModal').modal('show');
-            $('#confirmDeleteBtn').off().click(function () {
-                document.getElementById('delete-form-' + id).submit();
-            });
-        }
-
-        @if (session('success'))
-            Swal.fire('Sukses!', '{{ session('success') }}', 'success');
-        @endif
-
-        @if (session('error'))
-            Swal.fire('Gagal!', '{{ session('error') }}', 'error');
-        @endif
-    </script>
 @endsection
