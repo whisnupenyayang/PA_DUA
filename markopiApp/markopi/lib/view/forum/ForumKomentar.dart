@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:markopi/controllers/Forum_Controller.dart';
 import 'package:get/get.dart';
-import 'package:markopi/models/Budidaya_Model.dart';
+import 'package:markopi/controllers/Forum_Controller.dart';
 import 'package:markopi/models/Forum_Model.dart';
 
 class ForumKomentar extends StatefulWidget {
@@ -19,13 +18,17 @@ class _ForumKomentarState extends State<ForumKomentar> {
 
   int? id;
 
+  @override
   void initState() {
     super.initState();
     final idParam = Get.parameters['id'];
+    print('ID yang diterima dari route: $idParam');
     id = int.tryParse(idParam ?? '');
 
     if (id != null) {
       forumC.komentarForum.clear();
+      forumC.forumDetail.value = null; // reset supaya loading muncul
+      forumC.fetchForumDetail(id!);
       forumC.fetchKomentar(id!);
     }
   }
@@ -34,152 +37,161 @@ class _ForumKomentarState extends State<ForumKomentar> {
   Widget build(BuildContext context) {
     if (id == null) {
       return Scaffold(
-        appBar: AppBar(
-          title: Text("Error"),
-        ),
-        body: Center(
-          child: Text("ID tidak Valid"),
-        ),
+        appBar: AppBar(title: Text("Error")),
+        body: Center(child: Text("ID tidak Valid")),
       );
     }
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text('Komentar'),
-      ),
+      appBar: AppBar(title: Text('Komentar Forum')),
       body: Column(
         children: [
-          // Bagian atas forum (header)
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.blueGrey,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          width: 39,
-                          height: 39,
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Text("Username",
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+          // Header forum
+          Obx(() {
+            final forum = forumC.forumDetail.value;
+            if (forum == null) {
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
+
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.blueGrey.shade100,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
                         children: [
-                          Container(
-                            height: 165,
-                            width: double.infinity,
-                            color: Colors.black12,
+                          CircleAvatar(
+                            backgroundColor: Colors.black,
+                            radius: 20,
+                            // Bisa pakai foto profil: backgroundImage: NetworkImage(forum.user.avatarUrl)
                           ),
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Ada masalah Pada Daun Kopi Saya',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  'Pada daun kopi saya ada bercak kuning yang menempel...',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
+                          SizedBox(width: 10),
+                          Text(
+                            forum.user.username,
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
-                    )
-                  ],
+                      SizedBox(height: 16),
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            forum.imageUrls.isNotEmpty
+                                ? Image.network(
+                                    forum.imageUrls[0],
+                                    height: 165,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Container(
+                                    height: 165,
+                                    width: double.infinity,
+                                    color: Colors.black12,
+                                  ),
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    forum.judulForum,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    forum.deskripsiForum,
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    forum.tanggal,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey.shade600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          }),
 
-          // Bagian komentar dengan loading indicator
+          // List komentar
           Expanded(
             child: Obx(() {
-              return forumC.komentarForum.isEmpty
-                  ? Center(child: CircularProgressIndicator())
-                  : ListView.builder(
-                      padding: EdgeInsets.only(bottom: 10),
-                      itemCount: forumC.komentarForum.length,
-                      itemBuilder: (context, index) {
-                        var komentar = forumC.komentarForum[index];
-                        return Padding(
-                          padding: EdgeInsets.only(bottom: 10),
+              if (forumC.komentarForum.isEmpty) {
+                return Center(child: Text("Belum ada komentar"));
+              }
+
+              return ListView.builder(
+                padding: EdgeInsets.only(bottom: 10),
+                itemCount: forumC.komentarForum.length,
+                itemBuilder: (context, index) {
+                  var komentar = forumC.komentarForum[index];
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.orange,
+                          radius: 23,
+                          // Bisa pakai foto profil jika ada
+                        ),
+                        SizedBox(width: 16),
+                        Expanded(
                           child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 16),
-                            alignment: Alignment.center,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 47,
-                                  width: 47,
-                                  decoration: BoxDecoration(
-                                    color: Colors.orange,
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                ),
-                                SizedBox(width: 16),
-                                Flexible(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.orange.shade100,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    padding: EdgeInsets.all(12),
-                                    child: Text(
-                                      komentar.komentar.trim(),
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.orange.shade100,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              komentar.komentar.trim(),
+                              style: TextStyle(fontSize: 14),
                             ),
                           ),
-                        );
-                      },
-                    );
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
             }),
           ),
 
-          // Bagian input komentar
+          // Input komentar
           SafeArea(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+              padding: const EdgeInsets.all(8.0),
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
@@ -211,16 +223,12 @@ class _ForumKomentarState extends State<ForumKomentar> {
                       onPressed: isSending
                           ? null
                           : () async {
-                              String komentar = _komentar.text;
+                              String komentar = _komentar.text.trim();
                               if (komentar.isNotEmpty && id != null) {
-                                setState(() {
-                                  isSending = true;
-                                });
+                                setState(() => isSending = true);
                                 await forumC.buatKomentar(komentar, id!);
                                 _komentar.clear();
-                                setState(() {
-                                  isSending = false;
-                                });
+                                setState(() => isSending = false);
                               }
                             },
                       style: ElevatedButton.styleFrom(
@@ -243,14 +251,5 @@ class _ForumKomentarState extends State<ForumKomentar> {
         ],
       ),
     );
-  }
-
-  String formatTanggal(String tanggal) {
-    try {
-      DateTime parsed = DateTime.parse(tanggal);
-      return "${parsed.day}/${parsed.month}/${parsed.year} ${parsed.hour}:${parsed.minute.toString().padLeft(2, '0')}";
-    } catch (e) {
-      return tanggal;
-    }
   }
 }

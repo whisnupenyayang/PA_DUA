@@ -2,14 +2,18 @@ import 'package:get/get.dart';
 import 'package:markopi/providers/Connection.dart';
 import 'dart:convert';
 
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
-
 class ForumProvider extends GetConnect {
   final String url = '/forum';
 
   Future<Response> getForum(int page, String? token) {
     return get(Connection.buildUrl(url + '?limit=5&page=$page'), headers: {
-      'Authorization': 'Bearer $token',
+      if (token != null) 'Authorization': 'Bearer $token',
+    });
+  }
+
+  Future<Response> getForumDetail(int id, String? token) {
+    return get(Connection.buildUrl('$url/$id'), headers: {
+      if (token != null) 'Authorization': 'Bearer $token',
     });
   }
 
@@ -19,8 +23,10 @@ class ForumProvider extends GetConnect {
 
   Future<Response> postKomentar(String komentar, String? token, int forum_id) {
     final body = json.encode({"komentar": komentar, "forum_id": forum_id});
-
-    return post(Connection.buildUrl('/user/$forum_id'),body,
-        headers: {'Authorization': 'Bearer $token'});
+    return post(Connection.buildUrl('/forum/$forum_id/komentar'), body,
+        headers: {
+          if (token != null) 'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        });
   }
 }
