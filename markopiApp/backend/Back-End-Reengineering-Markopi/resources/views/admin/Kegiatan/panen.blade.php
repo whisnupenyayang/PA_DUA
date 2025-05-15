@@ -1,7 +1,6 @@
 @extends('admin.layouts.admin')
 
 @section('content')
-<h2>{{ $title }}</h2>
 
 <!-- Filter Jenis Kopi -->
 <div class="row mb-3">

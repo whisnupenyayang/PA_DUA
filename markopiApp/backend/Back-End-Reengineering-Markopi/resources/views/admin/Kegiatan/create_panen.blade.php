@@ -3,7 +3,7 @@
 @section('content')
 <h2>{{ $title }}</h2>
 
-<form action="{{ route('kegiatan.panen.store') }}" method="POST">
+<form action="{{ route('kegiatan.panen.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
     <div class="form-group">
@@ -15,7 +15,7 @@
     </div>
 
     <div class="form-group">
-        <label for="nama_tahapan">Pilih Tahapan yang Ada</label>
+        <label for="nama_tahapan_existing">Pilih Tahapan yang Ada</label>
         <select name="nama_tahapan_existing" class="form-control">
             <option value="">-- Pilih Jika Ingin Menggunakan Tahapan yang Sudah Ada --</option>
             @foreach ($existingTahapan as $tahapan)
@@ -37,6 +37,16 @@
     <div class="form-group">
         <label for="deskripsi">Deskripsi</label>
         <textarea name="deskripsi" class="form-control" rows="5" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="url_gambar">Upload Gambar (opsional)</label>
+        <input type="file" name="url_gambar" accept="image/*" class="form-control-file">
+    </div>
+
+    <div class="form-group">
+        <label for="nama_file">Upload File (opsional)</label>
+        <input type="file" name="nama_file" accept=".pdf,.doc,.docx,.xls,.xlsx,.zip" class="form-control-file">
     </div>
 
     <button type="submit" class="btn btn-success">Simpan Informasi</button>
