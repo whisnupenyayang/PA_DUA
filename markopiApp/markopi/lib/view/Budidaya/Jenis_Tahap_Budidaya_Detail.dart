@@ -93,11 +93,6 @@ class _JenisTahapBudidayDetailViewState
                   item.deskripsi ?? '-',
                   style: TextStyle(fontSize: 14),
                 ),
-                SizedBox(height: 14),
-                Container(
-                  height: 186,
-                  color: Colors.blue,
-                ),
               ],
             ),
           ),

@@ -29,7 +29,6 @@ class _JenisTahapBudidayaViewState extends State<JenisTahapBudidayaView> {
     if (id != null) {
       budidayaC.jenisTahapBudidayaList.clear();
       kegiatanC.fetchJenisTahapanKegiatan(id!);
-      // budidayaC.fetchJenisTahapBudidaya(id!);
     }
   }
 
@@ -65,41 +64,50 @@ class _JenisTahapBudidayaViewState extends State<JenisTahapBudidayaView> {
                 height: 130,
                 decoration: BoxDecoration(
                   border: Border(
-                    top: BorderSide(color: Colors.grey, width: 1.0),
-                    bottom: BorderSide(color: Colors.grey, width: 1.0),
+                    top: BorderSide(color: Colors.grey.shade300),
+                    bottom: BorderSide(color: Colors.grey.shade300),
                   ),
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(16),
                   child: Row(
                     children: [
+                      // Gambar tanpa warna hitam dan proporsional
                       Container(
                         width: MediaQuery.of(context).size.width * 3 / 8,
                         height: 100,
-                        color: Colors.black,
-                        child: CachedNetworkImage(
-                          imageUrl:
-                              'http://192.168.150.244:8000/storage/${item.url_gambar}',
-                          placeholder: (context, url) =>
-                              Center(child: CircularProgressIndicator()),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                'http://192.168.150.244:8000/storage/${item.url_gambar}',
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) =>
+                                Center(child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                          ),
                         ),
                       ),
                       SizedBox(width: 15),
+                      // Teks judul
                       Expanded(
                         child: Container(
                           height: 100,
-                          color: Colors.white,
                           padding: EdgeInsets.symmetric(horizontal: 8),
+                          alignment: Alignment.centerLeft,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                item.judul ?? 'Tanpa Judul',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
+                              Flexible(
+                                child: Text(
+                                  item.judul ?? 'Tanpa Judul',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                               Icon(Icons.chevron_right, size: 30),
