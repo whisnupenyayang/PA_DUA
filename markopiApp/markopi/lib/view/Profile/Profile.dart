@@ -33,7 +33,6 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    // Show a loading indicator if user data is not loaded yet
     if (_user == null) {
       return Scaffold(
         appBar: AppBar(),
@@ -48,22 +47,18 @@ class _ProfileViewState extends State<ProfileView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: [
-            Container(
-              color: Colors.amber,
-              height: 200,
-              width: 249,
-              child: Padding(
-                padding: EdgeInsets.all(30),
-                child: Container(
-                  width: 150, // tambahkan ini
-                  height: 150, // dan ini
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.blue,
-                  ),
-                ),
+            // Hapus container warna kuning dan lingkaran biru
+            // Ganti dengan icon profil sederhana
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30),
+              child: Icon(
+                Icons.person,
+                size: 120,
+                color: Colors.grey[700],
               ),
             ),
+
+            // Data profil lain tetap sama
             Container(
               width: double.infinity,
               child: Padding(
@@ -73,123 +68,96 @@ class _ProfileViewState extends State<ProfileView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Container(
-                      width: double.infinity,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Nama',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Colors.black, // warna border
-                                  width: 2.0, // ketebalan border
-                                ),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(5),
-                              child: Text(
-                                '${_user!.namaLengkap}',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                        ],
+                    // Nama
+                    Text(
+                      'Nama',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     Container(
                       width: double.infinity,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'email',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.black,
+                            width: 2.0,
                           ),
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Colors.black, // warna border
-                                  width: 2.0, // ketebalan border
-                                ),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(5),
-                              child: Text(
-                                '${_user!.email}',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(5),
+                        child: Text(
+                          '${_user!.namaLengkap}',
+                          style: TextStyle(
+                            fontSize: 16,
                           ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                        ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 15),
+
+                    // Email
+                    Text(
+                      'email',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     Container(
                       width: double.infinity,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'alamat',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.black,
+                            width: 2.0,
                           ),
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Colors.black, // warna border
-                                  width: 2.0, // ketebalan border
-                                ),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(5),
-                              child: Text(
-                                '${_user!.provinsi},${_user!.kabupaten}',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(5),
+                        child: Text(
+                          '${_user!.email}',
+                          style: TextStyle(
+                            fontSize: 16,
                           ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                        ],
+                        ),
                       ),
                     ),
+                    SizedBox(height: 15),
+
+                    // Alamat
+                    Text(
+                      'alamat',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.black,
+                            width: 2.0,
+                          ),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(5),
+                        child: Text(
+                          '${_user!.provinsi},${_user!.kabupaten}',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 15),
+
                     GestureDetector(
                       onTap: () {
                         Get.toNamed(RouteName.profile + '/datapengepul');
@@ -205,8 +173,8 @@ class _ProfileViewState extends State<ProfileView> {
                               decoration: BoxDecoration(
                                 border: Border(
                                   bottom: BorderSide(
-                                    color: Colors.black, // warna border
-                                    width: 2.0, // ketebalan border
+                                    color: Colors.black,
+                                    width: 2.0,
                                   ),
                                 ),
                               ),
@@ -221,9 +189,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: 15,
-                            ),
+                            SizedBox(height: 15),
                             Container(
                               width: double.infinity,
                               child: Column(
@@ -235,8 +201,8 @@ class _ProfileViewState extends State<ProfileView> {
                                     decoration: BoxDecoration(
                                       border: Border(
                                         bottom: BorderSide(
-                                          color: Colors.black, // warna border
-                                          width: 2.0, // ketebalan border
+                                          color: Colors.black,
+                                          width: 2.0,
                                         ),
                                       ),
                                     ),
@@ -251,9 +217,7 @@ class _ProfileViewState extends State<ProfileView> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
+                                  SizedBox(height: 15),
                                 ],
                               ),
                             )
@@ -268,11 +232,9 @@ class _ProfileViewState extends State<ProfileView> {
             GestureDetector(
               onTap: () async {
                 await autentikasiC.logout();
-                print(autentikasiC.sukses.value);
                 if (autentikasiC.sukses.value) {
                   Get.offAllNamed(RouteName.beranda);
                 }
-                print('hha');
               },
               child: Container(
                 width: 209,

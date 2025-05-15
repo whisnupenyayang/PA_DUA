@@ -14,7 +14,6 @@ class _MainMenuState extends State<MainMenu> {
     'assets/images/budidaya_baru.jpg',
     'assets/images/panen_baru.jpg',
     'assets/images/pascapanen_baru.jpg',
-    'assets/images/laporan_baru.jpg',
     'assets/images/toko_kopi.jpg',
     'assets/images/resepkopi.jpg',
   ];
@@ -23,7 +22,6 @@ class _MainMenuState extends State<MainMenu> {
     'Budidaya',
     'Panen',
     'Pasca_Panen',
-    'Laporan',
     'Toko_Kopi',
     'Resep_Kopi',
   ];
@@ -32,12 +30,11 @@ class _MainMenuState extends State<MainMenu> {
     'Budidaya',
     'Panen',
     'PascaPanen',
-    'Laporan',
     'Toko Kopi',
     'Resep Kopi',
   ];
 
-  List<bool> isPressed = List.generate(6, (_) => false);
+  List<bool> isPressed = List.generate(5, (_) => false);
 
   void _handleTap(int index) {
     setState(() {
@@ -56,60 +53,69 @@ class _MainMenuState extends State<MainMenu> {
     });
   }
 
+  Widget buildMenuItem(int index) {
+    return GestureDetector(
+      onTap: () => _handleTap(index),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 100),
+        width: 100,
+        height: 110,
+        decoration: BoxDecoration(
+          color: isPressed[index] ? Colors.blue[900] : Colors.transparent,
+          border: Border.all(
+            color: Colors.black.withOpacity(0.5),
+            width: 3.0,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              imageList[index],
+              width: 50,
+              height: 50,
+              fit: BoxFit.cover,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              labelMenu[index],
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 14),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.all(15.0),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-          childAspectRatio: 100 / 110,
-        ),
-        itemCount: imageList.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              _handleTap(index);
-            },
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 100),
-              decoration: BoxDecoration(
-                color: isPressed[index] ? Colors.blue[900] : Colors.transparent,
-                border: Border.all(
-                  color: Colors.black.withOpacity(0.5),
-                  width: 3.0,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: SizedBox(
-                width: 100,
-                height: 110,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      imageList[index],
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      labelMenu[index],
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
+      child: Column(
+        children: [
+          // Baris 1 - 3 menu
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              buildMenuItem(0),
+              buildMenuItem(1),
+              buildMenuItem(2),
+            ],
+          ),
+          const SizedBox(height: 20),
+          // Baris 2 - 2 menu, rata tengah dengan spasi di antaranya
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              buildMenuItem(3),
+              const SizedBox(width: 30),
+              buildMenuItem(4),
+            ],
+          ),
+        ],
       ),
     );
   }

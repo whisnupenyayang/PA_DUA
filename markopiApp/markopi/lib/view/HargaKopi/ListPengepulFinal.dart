@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:markopi/controllers/Pengepul_Controller.dart';
 import 'package:markopi/providers/Connection.dart';
 import 'package:markopi/routes/route_name.dart';
-import 'package:markopi/test.dart';
-import 'package:markopi/view/HargaKopi/PengepulDetail.dart';
-
 import 'package:get/get.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -42,37 +39,37 @@ class _KopiPageState extends State<KopiPage> {
               'Ayo!! Temukan harga terbaik untuk Kopi Anda.',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 12),
-            Row(
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      isPengepul = true;
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: isPengepul ? Colors.brown : Colors.grey,
-                  ),
-                  child: Text('Pengepul'),
-                ),
-                SizedBox(width: 8),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      isPengepul = false;
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: !isPengepul ? Colors.brown : Colors.grey,
-                  ),
-                  child: Text('Petani'),
-                ),
-              ],
-            ),
-            SizedBox(height: 12),
-            SimpleLineChart(),
-            SizedBox(height: 12),
+            // SizedBox(height: 12),
+            // Row(
+            //   children: [
+            //     ElevatedButton(
+            //       onPressed: () {
+            //         setState(() {
+            //           isPengepul = true;
+            //         });
+            //       },
+            //       style: ElevatedButton.styleFrom(
+            //         backgroundColor: isPengepul ? Colors.brown : Colors.grey,
+            //       ),
+            //       child: Text('Pengepul'),
+            //     ),
+            //     SizedBox(width: 8),
+            //     ElevatedButton(
+            //       onPressed: () {
+            //         setState(() {
+            //           isPengepul = false;
+            //         });
+            //       },
+            //       style: ElevatedButton.styleFrom(
+            //         backgroundColor: !isPengepul ? Colors.brown : Colors.grey,
+            //       ),
+            //       child: Text('Petani'),
+            //     ),
+            //   ],
+            // ),
+            // SizedBox(height: 12),
+            // SimpleLineChart(),
+            // SizedBox(height: 12),
             Obx(() {
               return MasonryGridView.count(
                 crossAxisCount: 2,
