@@ -1,12 +1,7 @@
 @extends('admin.layouts.admin')
 
-<<<<<<< HEAD
-    @section('content')
-    <h2></h2>
-=======
 @section('content')
-<h2>{{ $title }}</h2>
->>>>>>> 43eb876ee923c663d584b53ad8f037829c9a99d9
+    <h2></h2>
 
 <form action="{{ route('kegiatan.budidaya.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
