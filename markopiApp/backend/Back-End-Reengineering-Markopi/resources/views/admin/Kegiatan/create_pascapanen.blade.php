@@ -1,7 +1,7 @@
 @extends('admin.layouts.admin')
 
 @section('content')
-<h2></h2>
+<h2>Tambah Informasi Pasca Panen</h2>
 
 <form action="{{ route('kegiatan.pascapanen.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
@@ -61,6 +61,14 @@
         <label for="url_gambar">Upload Gambar (Opsional)</label>
         <input type="file" name="url_gambar" class="form-control-file @error('url_gambar') is-invalid @enderror" accept="image/*">
         @error('url_gambar')
+            <div class="invalid-feedback d-block">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label for="nama_file">Upload Dokumen (PDF, DOC, XLS, ZIP) - Maks 5MB</label>
+        <input type="file" name="nama_file" class="form-control-file @error('nama_file') is-invalid @enderror" accept=".pdf,.doc,.docx,.xls,.xlsx,.zip" required>
+        @error('nama_file')
             <div class="invalid-feedback d-block">{{ $message }}</div>
         @enderror
     </div>

@@ -15,8 +15,8 @@ import 'package:markopi/view/Profile/Profile.dart';
 import 'package:markopi/view/DataPengepulUser/UserPengepu.dart';
 import 'package:markopi/view/forum/ForumKomentar.dart';
 import 'package:markopi/view/forum/ListForum.dart';
-import 'package:markopi/view/toko/toko_kopi_page.dart';  // Import halaman Toko Kopi
-import 'package:markopi/view/resep/resep_kopi_page.dart'; 
+import 'package:markopi/view/toko/toko_kopi_page.dart'; // Import halaman Toko Kopi
+import 'package:markopi/view/resep/resep_kopi_page.dart';
 import 'package:markopi/binding/Budidaya_Binding.dart';
 import './route_name.dart';
 
@@ -37,7 +37,6 @@ class AppPages {
       name: RouteName.forumkomen + '/:id',
       page: () => ForumKomentar(),
     ),
-    
 
     /*================Budidaya=================== */
     GetPage(
@@ -85,8 +84,11 @@ class AppPages {
       name: RouteName.pengepul + '/pengajuan/:role/:id',
       page: () => FormPengajuanPage(),
     ),
+    GetPage(
+      name: '/pengepul/detail/:role/:id',
+      page: () => DetailPengepuldanPetani(),
+    ),
 
-    
     /*================Profile========== */
     GetPage(
       name: RouteName.pengepul + '/detail/:role',
@@ -106,13 +108,13 @@ class AppPages {
     /*================Toko Kopi=================== */
     GetPage(
       name: RouteName.tokoKopi,
-      page: () => TokoKopiPage(),  // Menambahkan halaman Toko Kopi
+      page: () => TokoKopiPage(), // Menambahkan halaman Toko Kopi
     ),
 
     /*================Resep Kopi=================== */
     GetPage(
       name: RouteName.resepKopi,
-      page: () => ResepKopiPage(),  // Menambahkan halaman Resep Kopi
+      page: () => ResepKopiPage(), // Menambahkan halaman Resep Kopi
     ),
   ];
 }

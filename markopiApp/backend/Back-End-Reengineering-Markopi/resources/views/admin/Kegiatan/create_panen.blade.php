@@ -40,12 +40,12 @@
     </div>
 
     <div class="form-group">
-        <label for="url_gambar">Upload Gambar (opsional)</label>
+        <label for="url_gambar">Upload Gambar</label>
         <input type="file" name="url_gambar" accept="image/*" class="form-control-file">
     </div>
 
     <div class="form-group">
-        <label for="nama_file">Upload File (opsional)</label>
+        <label for="nama_file">Upload File</label>
         <input type="file" name="nama_file" accept=".pdf,.doc,.docx,.xls,.xlsx,.zip" class="form-control-file">
     </div>
 

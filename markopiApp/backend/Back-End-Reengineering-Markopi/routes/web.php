@@ -143,6 +143,8 @@ Route::delete('/admin/kegiatan/pascapanen/{id}', [KegiatanController::class, 'de
 Route::delete('/jenis-tahapan-kegiatan/{id}', [KegiatanController::class, 'destroy'])->name('jenisTahapanKegiatan.destroy');
 Route::put('/jenis-tahapan-kegiatan/{id}', [KegiatanController::class, 'update'])->name('jenisTahapanKegiatan.update');
 
+Route::get('/admin/tahapan/create', [KegiatanController::class, 'create'])->name('tahapan.create');
+Route::post('/admin/tahapan/store', [KegiatanController::class, 'store'])->name('tahapan.store');
 
 
 // Penjualan

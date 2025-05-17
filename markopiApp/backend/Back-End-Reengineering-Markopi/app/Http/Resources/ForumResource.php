@@ -17,15 +17,12 @@ class ForumResource extends JsonResource
         return [
             'id_forums' => $this->id_forums,
             'title' => $this->title,
-            'deskripsi' =>  $this->deskripsi,
+            'deskripsi' => $this->deskripsi,
             'user_id' => $this->user_id,
-            // 'images'=>'nando.jpg',
-            'user_id'=> $this->user_id,
             'created_at' => $this->created_at,
-            'updated-at' => $this->updated_at,
-            'images' => $this->images,
-            'user' => $this->user,
-
+            'updated_at' => $this->updated_at,
+            'images' => $this->images, // pastikan relasi images ada
+            'user' => $this->user,     // pastikan relasi user ada
         ];
     }
 }

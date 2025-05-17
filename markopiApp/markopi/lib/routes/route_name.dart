@@ -14,6 +14,7 @@ abstract class RouteName {
   static const tokoKopi = '/toko_kopi';  
   static const resepKopi = '/resep_kopi'; 
   static const artikel = "/artikel"; 
+  static const laporan = "/laporan"; 
   
   
 }

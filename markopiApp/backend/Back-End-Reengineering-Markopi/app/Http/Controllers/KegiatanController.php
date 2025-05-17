@@ -61,59 +61,59 @@ class KegiatanController extends Controller
     }
 
     public function storeBudidaya(Request $request)
-{
-    $request->validate([
-        'jenis_kopi' => 'required|string',
-        'judul' => 'required|string|max:255',
-        'deskripsi' => 'required|string',
-        'url_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'nama_file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,zip|max:5120',
-        'nama_tahapan_existing' => 'nullable|string',
-        'nama_tahapan_baru' => 'nullable|string',
-    ]);
+    {
+        $request->validate([
+            'jenis_kopi' => 'required|string',
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'url_gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nama_file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,zip|max:5120',
+            'nama_tahapan_existing' => 'nullable|string',
+            'nama_tahapan_baru' => 'nullable|string',
+        ]);
 
-    // Validasi: hanya boleh pilih salah satu (tahapan baru atau existing)
-    if ($request->filled('nama_tahapan_existing') && $request->filled('nama_tahapan_baru')) {
-        return back()->withErrors(['nama_tahapan_baru' => 'Pilih salah satu: tahapan yang sudah ada atau masukkan tahapan baru.']);
+        // Validasi: hanya boleh pilih salah satu (tahapan baru atau existing)
+        if ($request->filled('nama_tahapan_existing') && $request->filled('nama_tahapan_baru')) {
+            return back()->withErrors(['nama_tahapan_baru' => 'Pilih salah satu: tahapan yang sudah ada atau masukkan tahapan baru.']);
+        }
+
+        // Tentukan nama tahapan
+        $namaTahapan = $request->nama_tahapan_baru ?: $request->nama_tahapan_existing;
+
+        if (!$namaTahapan) {
+            return back()->withErrors(['nama_tahapan' => 'Pilih atau masukkan nama tahapan.']);
+        }
+
+        // Ambil atau buat tahapan budidaya berdasarkan jenis kopi
+        $tahapan = TahapanKegiatan::firstOrCreate([
+            'nama_tahapan' => $namaTahapan,
+            'kegiatan' => 'budidaya',
+            'jenis_kopi' => $request->jenis_kopi,
+        ]);
+
+        // Data yang akan disimpan ke jenis_tahapan_kegiatan
+        $data = [
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+        ];
+
+        // Upload gambar jika ada
+        if ($request->hasFile('url_gambar')) {
+            $gambarPath = $request->file('url_gambar')->store('gambar_budidaya', 'public');
+            $data['url_gambar'] = $gambarPath;
+        }
+
+        // Upload file jika ada
+        if ($request->hasFile('nama_file')) {
+            $filePath = $request->file('nama_file')->store('file_budidaya', 'public');
+            $data['nama_file'] = $filePath;
+        }
+
+        // Simpan melalui relasi ke tahapan
+        $tahapan->jenisTahapanKegiatan()->create($data);
+
+        return redirect()->route('kegiatan.budidaya')->with('success', 'Informasi Budidaya berhasil ditambahkan.');
     }
-
-    // Tentukan nama tahapan
-    $namaTahapan = $request->nama_tahapan_baru ?: $request->nama_tahapan_existing;
-
-    if (!$namaTahapan) {
-        return back()->withErrors(['nama_tahapan' => 'Pilih atau masukkan nama tahapan.']);
-    }
-
-    // Ambil atau buat tahapan budidaya berdasarkan jenis kopi
-    $tahapan = TahapanKegiatan::firstOrCreate([
-        'nama_tahapan' => $namaTahapan,
-        'kegiatan' => 'budidaya',
-        'jenis_kopi' => $request->jenis_kopi,
-    ]);
-
-    // Data yang akan disimpan ke jenis_tahapan_kegiatan
-    $data = [
-        'judul' => $request->judul,
-        'deskripsi' => $request->deskripsi,
-    ];
-
-    // Upload gambar jika ada
-    if ($request->hasFile('url_gambar')) {
-        $gambarPath = $request->file('url_gambar')->store('gambar_budidaya', 'public');
-        $data['url_gambar'] = $gambarPath;
-    }
-
-    // Upload file jika ada
-    if ($request->hasFile('nama_file')) {
-        $filePath = $request->file('nama_file')->store('file_budidaya', 'public');
-        $data['nama_file'] = $filePath;
-    }
-
-    // Simpan melalui relasi ke tahapan
-    $tahapan->jenisTahapanKegiatan()->create($data);
-
-    return redirect()->route('kegiatan.budidaya')->with('success', 'Informasi Budidaya berhasil ditambahkan.');
-}
 
 
 
@@ -169,8 +169,8 @@ class KegiatanController extends Controller
             'jenis_kopi' => 'required|string',
             'judul' => 'required|string',
             'deskripsi' => 'required|string',
-            'url_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'nama_file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,zip|max:5120',
+            'url_gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nama_file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,zip|max:5120',
         ]);
 
         $namaTahapan = $request->nama_tahapan_baru ?: $request->nama_tahapan_existing;
@@ -262,7 +262,8 @@ class KegiatanController extends Controller
             'jenis_kopi' => 'required|string',
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
-            'url_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // validasi gambar opsional
+            'url_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nama_file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,zip|max:5120',
             'nama_tahapan_existing' => 'nullable|string',
             'nama_tahapan_baru' => 'nullable|string',
         ]);
@@ -271,7 +272,7 @@ class KegiatanController extends Controller
         $namaTahapan = $request->nama_tahapan_baru ?: $request->nama_tahapan_existing;
 
         if (!$namaTahapan) {
-            return back()->withErrors(['nama_tahapan' => 'Pilih atau masukkan nama tahapan.']);
+            return back()->withErrors(['nama_tahapan' => 'Pilih atau masukkan nama tahapan.'])->withInput();
         }
 
         // Ambil atau buat tahapan baru
@@ -281,23 +282,30 @@ class KegiatanController extends Controller
             'jenis_kopi' => $request->jenis_kopi,
         ]);
 
-        // Siapkan data untuk membuat detail kegiatan pasca panen (misal relasi ke tahapan)
+        // Siapkan data
         $data = [
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
         ];
 
-        // Upload gambar jika ada
+        // Upload gambar (opsional)
         if ($request->hasFile('url_gambar')) {
             $gambarPath = $request->file('url_gambar')->store('gambar_pascapanen', 'public');
             $data['url_gambar'] = $gambarPath;
         }
 
-        // Simpan data detailnya (asumsi ada relasi hasMany dari TahapanKegiatan ke detailnya)
+        // Upload dokumen
+        if ($request->hasFile('nama_file')) {
+            $filePath = $request->file('nama_file')->store('dokumen_pascapanen', 'public');
+            $data['nama_file'] = $filePath;
+        }
+
+        // Simpan ke relasi
         $tahapan->jenisTahapanKegiatan()->create($data);
 
         return redirect()->route('kegiatan.pascapanen')->with('success', 'Informasi Pasca Panen berhasil disimpan.');
     }
+
 
 
 
@@ -346,8 +354,8 @@ class KegiatanController extends Controller
         $request->validate([
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
-            'url_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'nama_file' => 'nullable|file|max:5120',
+            'url_gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nama_file' => 'required|file|max:5120',
         ]);
 
         // Cari data berdasarkan ID

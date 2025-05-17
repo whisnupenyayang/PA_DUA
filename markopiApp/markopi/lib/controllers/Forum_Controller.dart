@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:mime/mime.dart';
 import 'package:markopi/models/Forum_Model.dart';
 import 'package:markopi/models/Komentar_Forum_Model.dart';
 import 'package:markopi/providers/Forum_Provider.dart';
 import 'package:markopi/service/token_storage.dart';
+import 'package:http_parser/http_parser.dart';
 
 class ForumController extends GetxController {
   var forum = <Forum>[].obs;
@@ -10,7 +15,7 @@ class ForumController extends GetxController {
   var isLoading = false.obs;
   var hasMore = true;
   var komentarForum = <KomentarForum>[].obs;
-  var forumDetail = Rxn<Forum>(); // Untuk detail forum
+  var forumDetail = Rxn<Forum>();
 
   final forumProvider = ForumProvider();
 
@@ -28,11 +33,8 @@ class ForumController extends GetxController {
 
     final response = await forumProvider.getForum(page, token);
 
-    print('fetchForum status: ${response.statusCode}');
-    print('fetchForum body: ${response.body}');
-
     if (response.statusCode == 200) {
-      final data = response.body['data'];
+      final data = jsonDecode(response.body)['data'];
       if (data != null && data is List) {
         final fetchedForums = data.map((item) => Forum.fromJson(item)).toList();
 
@@ -54,16 +56,12 @@ class ForumController extends GetxController {
   Future<void> fetchKomentar(int id) async {
     final response = await forumProvider.getKomentar(id);
 
-    print('fetchKomentar status: ${response.statusCode}');
-    print('fetchKomentar body: ${response.body}');
-
     if (response.statusCode == 200) {
-      final data = response.body['data'];
+      final data = jsonDecode(response.body)['data'];
       if (data is List) {
         komentarForum.value = data.map((item) => KomentarForum.fromJson(item)).toList();
       } else {
         komentarForum.value = [];
-        print('Data komentar bukan list atau kosong');
       }
     } else {
       Get.snackbar('Error', 'Gagal mengambil komentar');
@@ -79,12 +77,9 @@ class ForumController extends GetxController {
     }
 
     final response = await forumProvider.postKomentar(komentar, token, forum_id);
-    print('buatKomentar status: ${response.statusCode}');
-    print('buatKomentar body: ${response.body}');
-
     if (response.statusCode == 200) {
       Get.snackbar('Berhasil', 'Komentar berhasil ditambahkan');
-      await fetchKomentar(forum_id); // Refresh komentar
+      await fetchKomentar(forum_id);
     } else {
       Get.snackbar('Gagal', 'Gagal menambahkan komentar');
     }
@@ -95,16 +90,12 @@ class ForumController extends GetxController {
 
     final response = await forumProvider.getForumDetail(id, token);
 
-    print('fetchForumDetail status: ${response.statusCode}');
-    print('fetchForumDetail body: ${response.body}');
-
     if (response.statusCode == 200) {
-      final data = response.body['data'];
+      final data = jsonDecode(response.body)['data'];
       if (data != null) {
         try {
           forumDetail.value = Forum.fromJson(data);
         } catch (e) {
-          print('Error parsing forum detail: $e');
           forumDetail.value = null;
           Get.snackbar('Error', 'Gagal memproses data forum');
         }
@@ -114,6 +105,50 @@ class ForumController extends GetxController {
       }
     } else {
       Get.snackbar('Error', 'Gagal mengambil detail forum');
+    }
+  }
+
+  Future<void> tambahForum({
+    required String judulForum,
+    required String deskripsiForum,
+    String? imagePath,
+  }) async {
+    final String url = 'http://192.168.150.244:8000/api/forum';
+    final String? token = await TokenStorage.getToken();
+
+    if (token == null) {
+      Get.snackbar('Error', 'Anda belum login');
+      return;
+    }
+
+    try {
+      var uri = Uri.parse(url);
+      var request = http.MultipartRequest('POST', uri);
+      request.headers['Authorization'] = 'Bearer $token';
+
+      request.fields['judulForum'] = judulForum;
+      request.fields['deskripsiForum'] = deskripsiForum;
+
+      if (imagePath != null && imagePath.isNotEmpty) {
+        final mimeType = lookupMimeType(imagePath) ?? 'application/octet-stream';
+        request.files.add(await http.MultipartFile.fromPath(
+          'image',
+          imagePath,
+          contentType: MediaType.parse(mimeType),
+        ));
+      }
+
+      final response = await request.send();
+      final resBody = await response.stream.bytesToString();
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        Get.back();
+        Get.snackbar('Berhasil', 'Pertanyaan berhasil dikirim');
+      } else {
+        Get.snackbar('Gagal', 'Terjadi kesalahan: ${response.statusCode}\n$resBody');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Terjadi kesalahan: $e');
     }
   }
 }

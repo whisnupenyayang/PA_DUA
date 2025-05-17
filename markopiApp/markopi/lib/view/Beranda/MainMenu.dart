@@ -14,6 +14,7 @@ class _MainMenuState extends State<MainMenu> {
     'assets/images/budidaya_baru.jpg',
     'assets/images/panen_baru.jpg',
     'assets/images/pascapanen_baru.jpg',
+    'assets/images/laporan_baru.jpg',
     'assets/images/toko_kopi.jpg',
     'assets/images/resepkopi.jpg',
   ];
@@ -22,6 +23,7 @@ class _MainMenuState extends State<MainMenu> {
     'Budidaya',
     'Panen',
     'Pasca_Panen',
+    'Laporan',
     'Toko_Kopi',
     'Resep_Kopi',
   ];
@@ -30,11 +32,12 @@ class _MainMenuState extends State<MainMenu> {
     'Budidaya',
     'Panen',
     'PascaPanen',
+    'Laporan',
     'Toko Kopi',
     'Resep Kopi',
   ];
 
-  List<bool> isPressed = List.generate(5, (_) => false);
+  List<bool> isPressed = List.generate(6, (_) => false);
 
   void _handleTap(int index) {
     setState(() {
@@ -46,6 +49,9 @@ class _MainMenuState extends State<MainMenu> {
       } else if (menuList[index] == 'Resep_Kopi') {
         print('Navigasi ke Resep Kopi');
         Get.toNamed(RouteName.resepKopi);
+      } else if (menuList[index] == 'Laporan') {
+        print('Navigasi ke Laporan');
+        Get.toNamed(RouteName.laporan); // pastikan route laporan ada
       } else {
         print('Navigasi ke kegiatan: ${RouteName.kegiatan}/${menuList[index]}');
         Get.toNamed('${RouteName.kegiatan}/${menuList[index]}');
@@ -106,13 +112,13 @@ class _MainMenuState extends State<MainMenu> {
             ],
           ),
           const SizedBox(height: 20),
-          // Baris 2 - 2 menu, rata tengah dengan spasi di antaranya
+          // Baris 2 - 3 menu
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               buildMenuItem(3),
-              const SizedBox(width: 30),
               buildMenuItem(4),
+              buildMenuItem(5),
             ],
           ),
         ],
