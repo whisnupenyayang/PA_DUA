@@ -21,8 +21,17 @@ class ForumResource extends JsonResource
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'images' => $this->images, // pastikan relasi images ada
-            'user' => $this->user,     // pastikan relasi user ada
+            // Mengambil gambar dan memastikan URL gambar dapat diakses
+            'images' => $this->images->map(function ($image) {
+                return asset('storage/' . $image->gambar);  // Menggunakan URL gambar yang benar
+            }),
+            // Mengambil data user yang terhubung
+            'user' => [
+                'id_users' => $this->user->id_users,
+                'nama_lengkap' => $this->user->nama_lengkap,
+                'username' => $this->user->username,
+                // Anda bisa menambahkan field lainnya dari relasi user jika diperlukan
+            ],
         ];
     }
 }

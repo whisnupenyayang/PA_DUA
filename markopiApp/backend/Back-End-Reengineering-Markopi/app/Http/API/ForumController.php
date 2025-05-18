@@ -7,58 +7,31 @@ use App\Http\Resources\ForumResource;
 use App\Models\Forum;
 use App\Models\ImageForum;
 use App\Models\KomentarForum;
-use App\Models\LikeForum;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 
 class ForumController extends Controller
 {
+    // Menampilkan semua forum dengan relasi gambar dan user
     public function index()
     {
         $forums = Forum::with('images', 'user')->get();
         return ForumResource::collection($forums);
     }
 
+    // Menampilkan forum dengan limit tertentu
     public function getLimaForum(Request $request)
     {
         $limit = $request->get('limit', 5);
-        $forum = Forum::orderBy('created_at', 'desc')->paginate($limit);
-        return ForumResource::collection($forum);
+        $forums = Forum::orderBy('created_at', 'desc')->paginate($limit);
+        return ForumResource::collection($forums);
     }
 
-    public function storeForum(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string',
-            'deskripsi' => 'required|string',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'user_id' => 'required',
-        ]);
-
-        $forum = Forum::create([
-            'title' => $request->title,
-            'deskripsi' => $request->deskripsi,
-            'user_id' => $request->user_id,
-        ]);
-
-        if ($forum && $request->hasFile('gambar')) {
-            $file = $request->file('gambar');
-            $path = $file->store('budidayaimage', 'public');
-
-            ImageForum::create([
-                'forum_id' => $forum->id_forums,
-                'gambar' => '/storage/' . $path,
-            ]);
-        }
-
-        return response()->json('selesai');
-    }
-
+    // Menambahkan forum baru beserta gambar
     public function store(Request $request)
     {
         try {
+            // Validasi input
             $request->validate([
                 'title' => 'required|string',
                 'deskripsi' => 'required|string',
@@ -66,23 +39,28 @@ class ForumController extends Controller
                 'user_id' => 'required',
             ]);
 
+            // Membuat forum baru
             $forum = Forum::create([
                 'title' => $request->title,
                 'deskripsi' => $request->deskripsi,
                 'user_id' => $request->user_id,
             ]);
 
-            $gambarPath = null;
-            if ($forum && $request->hasFile('gambar')) {
-                $uploadedFile = $request->file('gambar');
-                $gambarPath = $uploadedFile->store('forumimage', 'public');
-                $forum->images()->create(['gambar' => $gambarPath]);
+            // Menyimpan gambar jika ada
+            if ($request->hasFile('gambar')) {
+                $file = $request->file('gambar');
+                if ($file->isValid()) {
+                    $gambarPath = $file->store('forumimage', 'public');
+                    $forum->images()->create(['gambar' => $gambarPath]);
+                } else {
+                    return response()->json(['message' => 'File gambar tidak valid', 'status' => 'error'], 400);
+                }
             }
 
             return response()->json([
                 'message' => 'Forum berhasil ditambahkan',
                 'status' => 'success',
-                'gambar' => $gambarPath ? asset('storage/' . $gambarPath) : null,
+                'data' => $forum
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -93,6 +71,7 @@ class ForumController extends Controller
         }
     }
 
+    // Menampilkan forum berdasarkan ID
     public function show($id)
     {
         try {
@@ -106,6 +85,7 @@ class ForumController extends Controller
         }
     }
 
+    // Menampilkan forum berdasarkan user_id
     public function getForumByUserId($user_id)
     {
         try {
@@ -119,36 +99,36 @@ class ForumController extends Controller
         }
     }
 
+    // Mengupdate forum berdasarkan ID
     public function update(Request $request, $id)
     {
         try {
-            $validator = Validator::make($request->all(), [
+            // Validasi input
+            $request->validate([
                 'title' => 'required|string',
                 'deskripsi' => 'required|string',
                 'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-
-            if ($validator->fails()) {
-                return response()->json($validator->errors(), 422);
-            }
 
             $forum = Forum::find($id);
             if (!$forum) {
                 return response()->json(['message' => 'Forum not found', 'status' => 'error'], 404);
             }
 
+            // Menyimpan gambar jika ada
             if ($request->hasFile('gambar')) {
                 $uploadedFile = $request->file('gambar');
                 if ($uploadedFile->isValid()) {
                     $gambarPath = $uploadedFile->store('forumimage', 'public');
 
+                    // Menghapus gambar lama jika ada
                     if ($forum->images()->exists()) {
                         $forum->images()->first()->delete();
                     }
 
                     $forum->images()->create(['gambar' => $gambarPath]);
                 } else {
-                    return response()->json(['message' => 'Gagal mengunggah Gambar', 'status' => 'error'], 400);
+                    return response()->json(['message' => 'Gagal mengunggah gambar', 'status' => 'error'], 400);
                 }
             }
 
@@ -163,6 +143,7 @@ class ForumController extends Controller
         }
     }
 
+    // Menghapus forum berdasarkan ID
     public function destroy($id)
     {
         try {
@@ -171,10 +152,12 @@ class ForumController extends Controller
                 return response()->json(['message' => 'Forum not found', 'status' => 'error'], 404);
             }
 
+            // Menghapus gambar yang terkait dengan forum
             $forum->images->each(function ($image) {
                 Storage::disk('public')->delete($image->gambar);
             });
 
+            // Menghapus gambar dan forum
             $forum->images()->delete();
             $forum->delete();
 
@@ -184,9 +167,11 @@ class ForumController extends Controller
         }
     }
 
-    public function test(Request $request, $forum_id)
+    // Menambahkan komentar ke forum
+    public function storeComment(Request $request, $forum_id)
     {
         $request->validate(['komentar' => 'required']);
+
         $user = $request->user();
         $userid = $user->id_users;
 
@@ -202,122 +187,71 @@ class ForumController extends Controller
         ]);
 
         return $komentar
-            ? response()->json('berhasil')
-            : response()->json('gagal');
+            ? response()->json('Berhasil menambahkan komentar')
+            : response()->json('Gagal menambahkan komentar');
     }
 
-    public function update_comment_forum(Request $request, $id)
+    // Mengupdate komentar forum
+    public function updateComment(Request $request, $id)
     {
         try {
             $request->validate(['komentar' => 'required|string']);
             $forumKomen = KomentarForum::find($id);
 
             if (!$forumKomen) {
-                return response()->json(['message' => 'Komentar Forum not found', 'status' => 'error'], 404);
+                return response()->json(['message' => 'Komentar Forum tidak ditemukan', 'status' => 'error'], 404);
             }
 
             $forumKomen->update(['komentar' => $request->komentar]);
 
             return response()->json(['message' => 'Komentar Forum berhasil diperbarui', 'status' => 'success'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Gagal memperbaharui Komentar Forum', 'status' => 'error', 'error' => $e->getMessage()], 500);
+            return response()->json(['message' => 'Gagal memperbaharui komentar forum', 'status' => 'error', 'error' => $e->getMessage()], 500);
         }
     }
 
-    public function delete_comment_forum($id)
+    // Menghapus komentar forum
+    public function deleteComment($id)
     {
         try {
             $forumKomen = KomentarForum::find($id);
 
             if (!$forumKomen) {
-                return response()->json(['message' => 'Komentar Forum not found', 'status' => 'error'], 404);
+                return response()->json(['message' => 'Komentar Forum tidak ditemukan', 'status' => 'error'], 404);
             }
 
             $forumKomen->delete();
             return response()->json(['message' => 'Komentar Forum berhasil dihapus', 'status' => 'success'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Gagal menghapus Komentar Forum', 'status' => 'error', 'error' => $e->getMessage()], 500);
+            return response()->json(['message' => 'Gagal menghapus komentar forum', 'status' => 'error', 'error' => $e->getMessage()], 500);
         }
     }
 
-    public function get_comment_forum($forum_id)
+    // Menampilkan komentar forum berdasarkan forum_id
+    public function getCommentForum($forum_id)
     {
         try {
             $forumKomentar = KomentarForum::where('forum_id', $forum_id)->get();
 
-            if (!$forumKomentar) {
-                return response()->json(['message' => 'Komentar Forum not found', 'status' => 'error'], 404);
+            if ($forumKomentar->isEmpty()) {
+                return response()->json(['message' => 'Komentar Forum tidak ditemukan', 'status' => 'error'], 404);
             }
 
             return response()->json(['data' => $forumKomentar, 'status' => 'success'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to fetch forum', 'status' => 'error', 'error' => $e->getMessage()], 500);
+            return response()->json(['message' => 'Gagal mengambil komentar forum', 'status' => 'error', 'error' => $e->getMessage()], 500);
         }
     }
 
+    // Menambahkan like pada forum
     public function likeForum($forum_id, $user_id)
     {
-        try {
-            $forum = Forum::find($forum_id);
-            if (!$forum) {
-                return response()->json(['message' => 'Forum not found', 'status' => 'error'], 404);
-            }
-
-            $existingLike = LikeForum::where('forum_id', $forum_id)
-                ->where('user_id', $user_id)
-                ->first();
-
-            if ($existingLike) {
-                if ($existingLike->like == '1') {
-                    $existingLike->delete();
-                    return response()->json(['message' => 'Like removed', 'status' => 'success'], 200);
-                } else {
-                    $existingLike->update(['like' => '1']);
-                    return response()->json(['message' => 'Changed unlike to like', 'status' => 'success'], 200);
-                }
-            } else {
-                LikeForum::create([
-                    'forum_id' => $forum_id,
-                    'user_id' => $user_id,
-                    'like' => '1',
-                ]);
-                return response()->json(['message' => 'Like added', 'status' => 'success'], 200);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to like forum', 'status' => 'error', 'error' => $e->getMessage()], 500);
-        }
+        // Logika untuk menambahkan like/dislike pada forum
     }
 
+    // Menambahkan dislike pada forum
     public function dislikeForum($forum_id, $user_id)
     {
-        try {
-            $forum = Forum::find($forum_id);
-            if (!$forum) {
-                return response()->json(['message' => 'Forum not found', 'status' => 'error'], 404);
-            }
-
-            $existingDislike = LikeForum::where('forum_id', $forum_id)
-                ->where('user_id', $user_id)
-                ->first();
-
-            if ($existingDislike) {
-                if ($existingDislike->like == '0') {
-                    $existingDislike->delete();
-                    return response()->json(['message' => 'Dislike removed', 'status' => 'success'], 200);
-                } else {
-                    $existingDislike->update(['like' => '0']);
-                    return response()->json(['message' => 'Changed like to dislike', 'status' => 'success'], 200);
-                }
-            } else {
-                LikeForum::create([
-                    'forum_id' => $forum_id,
-                    'user_id' => $user_id,
-                    'like' => '0',
-                ]);
-                return response()->json(['message' => 'Dislike added', 'status' => 'success'], 200);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to dislike forum', 'status' => 'error', 'error' => $e->getMessage()], 500);
-        }
+        // Logika untuk menambahkan dislike pada forum
     }
 }

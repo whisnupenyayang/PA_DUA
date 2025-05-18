@@ -8,7 +8,7 @@ import 'package:markopi/view/Budidaya/Jenis_Tahap_Budidaya.dart';
 import 'package:markopi/view/Budidaya/Jenis_Tahap_Budidaya_Detail.dart';
 import 'package:markopi/view/Budidaya/Jenis_kopi.dart';
 import 'package:markopi/view/HargaKopi/ListPengepulFinal.dart';
-import 'package:markopi/view/Laporan/Laporan_Page.dart';
+import 'package:markopi/view/Laporan/LaporanPage.dart';
 import 'package:markopi/view/Login/login.dart';
 import 'package:markopi/view/Profile/Profile.dart';
 import 'package:markopi/view/component/MyBottomNavigation.dart';

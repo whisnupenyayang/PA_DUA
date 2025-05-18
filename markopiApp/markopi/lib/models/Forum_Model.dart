@@ -1,6 +1,5 @@
-import 'dart:convert';
+import 'package:markopi/models/User_Model.dart'; // Pastikan User diimpor
 import 'package:intl/intl.dart';
-import './User_Model.dart';
 
 class Forum {
   final int id;
@@ -31,8 +30,8 @@ class Forum {
 
     return Forum(
       id: json['id_forums'],
-      judulForum: json['title'].toString(),
-      deskripsiForum: json['deskripsi'].toString(),
+      judulForum: json['title'] ?? '',
+      deskripsiForum: json['deskripsi'] ?? '',
       tanggal: formattedDate,
       imageUrls: imageUrls,
       userId: json['user_id'],

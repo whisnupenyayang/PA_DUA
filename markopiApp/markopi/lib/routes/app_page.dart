@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:markopi/view/Artikel/List_artikel.dart';
-// import 'package:markopi/view/Admin/Beranda/Beranda.dart';
 import 'package:markopi/view/Beranda/Beranda.dart';
 import 'package:markopi/view/Budidaya/Jenis_Tahap_Budidaya.dart';
 import 'package:markopi/view/Budidaya/Jenis_Tahap_Budidaya_Detail.dart';
@@ -15,28 +14,27 @@ import 'package:markopi/view/Profile/Profile.dart';
 import 'package:markopi/view/DataPengepulUser/UserPengepu.dart';
 import 'package:markopi/view/forum/ForumKomentar.dart';
 import 'package:markopi/view/forum/ListForum.dart';
+import 'package:markopi/view/Laporan/LaporanPage.dart'; 
 import 'package:markopi/view/toko/toko_kopi_page.dart'; // Import halaman Toko Kopi
 import 'package:markopi/view/resep/resep_kopi_page.dart';
 import 'package:markopi/binding/Budidaya_Binding.dart';
+import 'package:markopi/view/Laporan/AddLaporanPage.dart';
 import './route_name.dart';
 
 class AppPages {
   static final pages = [
+    // Halaman utama
     GetPage(
       name: RouteName.beranda,
       page: () => Beranda(),
     ),
 
     /*================Forum=================== */
-
     GetPage(
-      name: RouteName.forum,
+      name: '/forum', // Tambahkan route forum
       page: () => ListForum(),
     ),
-    GetPage(
-      name: RouteName.forumkomen + '/:id',
-      page: () => ForumKomentar(),
-    ),
+
 
     /*================Budidaya=================== */
     GetPage(
@@ -49,8 +47,7 @@ class AppPages {
       page: () => BudidayaView(),
     ),
     GetPage(
-      name: RouteName.kegiatan +
-          '/:kegiatan/:jenis_kopi/jenistahapankegiatan/:id',
+      name: RouteName.kegiatan + '/:kegiatan/:jenis_kopi/jenistahapankegiatan/:id',
       page: () => JenisTahapBudidayaView(),
     ),
     GetPage(
@@ -59,13 +56,12 @@ class AppPages {
     ),
 
     /*================Autentikasi=================== */
-
     GetPage(
       name: RouteName.login,
       page: () => LoginView(),
     ),
-    /*================Autentikasi=================== */
 
+    /*================Profile=================== */
     GetPage(
       name: RouteName.profile,
       page: () => ProfileView(),
@@ -88,8 +84,6 @@ class AppPages {
       name: '/pengepul/detail/:role/:id',
       page: () => DetailPengepuldanPetani(),
     ),
-
-    /*================Profile========== */
     GetPage(
       name: RouteName.pengepul + '/detail/:role',
       page: () => DetailPengepuldanPetani(),
@@ -115,6 +109,18 @@ class AppPages {
     GetPage(
       name: RouteName.resepKopi,
       page: () => ResepKopiPage(), // Menambahkan halaman Resep Kopi
+    ),
+
+    /*================Laporan=================== */
+    GetPage(
+      name: RouteName.laporan,
+      page: () => const LaporanPage(),
+    ),
+    
+    // Halaman untuk menambahkan laporan
+    GetPage(
+      name: '/laporan/tambah', // Definisikan route untuk menambah laporan
+      page: () => const AddLaporanPage(), // Mengarahkan ke halaman AddLaporanPage
     ),
   ];
 }

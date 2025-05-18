@@ -1,21 +1,17 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:mime/mime.dart';
 import 'package:markopi/models/Forum_Model.dart';
 import 'package:markopi/models/Komentar_Forum_Model.dart';
 import 'package:markopi/providers/Forum_Provider.dart';
 import 'package:markopi/service/token_storage.dart';
-import 'package:http_parser/http_parser.dart';
 
 class ForumController extends GetxController {
   var forum = <Forum>[].obs;
   var page = 1;
   var isLoading = false.obs;
   var hasMore = true;
-  var komentarForum = <KomentarForum>[].obs;
-  var forumDetail = Rxn<Forum>();
+  var komentarForum = <KomentarForum>[].obs; // List of comments for a forum
+  var forumDetail = Rxn<Forum>(); // Detail of the specific forum
 
   final forumProvider = ForumProvider();
 
@@ -25,6 +21,7 @@ class ForumController extends GetxController {
     super.onClose();
   }
 
+  // Fetching forum list with pagination
   Future<void> fetchForum() async {
     if (isLoading.value || !hasMore) return;
 
@@ -53,6 +50,7 @@ class ForumController extends GetxController {
     isLoading.value = false;
   }
 
+  // Fetching comments for a specific forum based on forum_id
   Future<void> fetchKomentar(int id) async {
     final response = await forumProvider.getKomentar(id);
 
@@ -68,23 +66,7 @@ class ForumController extends GetxController {
     }
   }
 
-  Future<void> buatKomentar(String komentar, int forum_id) async {
-    final String? token = await TokenStorage.getToken();
-
-    if (token == null) {
-      Get.snackbar('Error', 'Anda belum login');
-      return;
-    }
-
-    final response = await forumProvider.postKomentar(komentar, token, forum_id);
-    if (response.statusCode == 200) {
-      Get.snackbar('Berhasil', 'Komentar berhasil ditambahkan');
-      await fetchKomentar(forum_id);
-    } else {
-      Get.snackbar('Gagal', 'Gagal menambahkan komentar');
-    }
-  }
-
+  // Fetching detailed information for a specific forum by id
   Future<void> fetchForumDetail(int id) async {
     final String? token = await TokenStorage.getToken();
 
@@ -108,12 +90,8 @@ class ForumController extends GetxController {
     }
   }
 
-  Future<void> tambahForum({
-    required String judulForum,
-    required String deskripsiForum,
-    String? imagePath,
-  }) async {
-    final String url = 'http://192.168.150.244:8000/api/forum';
+  // Adding a comment to a forum
+  Future<void> buatKomentar(String komentar, int forum_id) async {
     final String? token = await TokenStorage.getToken();
 
     if (token == null) {
@@ -121,34 +99,12 @@ class ForumController extends GetxController {
       return;
     }
 
-    try {
-      var uri = Uri.parse(url);
-      var request = http.MultipartRequest('POST', uri);
-      request.headers['Authorization'] = 'Bearer $token';
-
-      request.fields['judulForum'] = judulForum;
-      request.fields['deskripsiForum'] = deskripsiForum;
-
-      if (imagePath != null && imagePath.isNotEmpty) {
-        final mimeType = lookupMimeType(imagePath) ?? 'application/octet-stream';
-        request.files.add(await http.MultipartFile.fromPath(
-          'image',
-          imagePath,
-          contentType: MediaType.parse(mimeType),
-        ));
-      }
-
-      final response = await request.send();
-      final resBody = await response.stream.bytesToString();
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        Get.back();
-        Get.snackbar('Berhasil', 'Pertanyaan berhasil dikirim');
-      } else {
-        Get.snackbar('Gagal', 'Terjadi kesalahan: ${response.statusCode}\n$resBody');
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'Terjadi kesalahan: $e');
+    final response = await forumProvider.postKomentar(komentar, token, forum_id);
+    if (response.statusCode == 200) {
+      Get.snackbar('Berhasil', 'Komentar berhasil ditambahkan');
+      await fetchKomentar(forum_id);
+    } else {
+      Get.snackbar('Gagal', 'Gagal menambahkan komentar');
     }
   }
 }

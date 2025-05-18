@@ -14,10 +14,11 @@ use App\Http\API\ReplyKomentarController;
 use App\Http\API\ResetPasswordController;
 use App\Http\API\ForgotPasswordController;
 use App\Http\Api\IklanApiController;
+use App\Http\Api\LaporanApiController;
 use App\Http\API\PengepulApiController;
 use App\Http\Api\ResepApiController;
 use App\Http\API\TokoApiController;
-
+use App\Http\API\LaporanController;
 use App\Http\Controllers\BudidayaController;
 use App\Models\Pengepul;
 use GuzzleHttp\Middleware;
@@ -99,41 +100,67 @@ Route::delete('artikel/{id}', [ArtikelController::class, 'destroy']);
 Route::get('artikelByUser/{user_id}', [ArtikelController::class, 'articlesByUser']);
 
 
-//=============================================Forum====================================================================
-// Route::get('forum', [ForumController::class, 'index']);
-Route::get('/forum',[ForumController::class,'getLimaForum']);
-// Route::get('/forum',[ForumController::class,'getLimaForum'])->middleware(['auth:sanctum']);
+//=========================== Forum Routes ===========================
+
+// Menampilkan lima forum terbaru
+Route::get('/forum', [ForumController::class, 'getLimaForum']);
+
+// Menampilkan detail forum berdasarkan ID
 Route::get('forum/{id}', [ForumController::class, 'show']);
+
+// Menampilkan forum berdasarkan user_id
 Route::get('user/forum/{user_id}', [ForumController::class, 'getForumByUserId']);
-Route::post('/forum', [ForumController::class, 'storeForum']);
-// Route::post('forum/{id}', [ForumController::class, 'update']);
+
+// Menambahkan forum baru
+Route::post('/forum', [ForumController::class, 'store'])->middleware('auth:sanctum');
+
+// Menghapus forum berdasarkan ID
 Route::delete('forum/{id}', [ForumController::class, 'destroy']);
-Route::get('forumKomen/{forum_id}', [ForumController::class, 'get_comment_forum']);
 
-// ======================testing===================
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-Route::post('/user/{forum_id}', [ForumController::class, 'test'])->middleware('auth:sanctum');
-//======================
+// Menambahkan komentar pada forum
+Route::post('forum_comment/{forum_id}', [ForumController::class, 'storeComment'])->middleware('auth:sanctum');
 
-Route::post('/forum_comment/{forum_id}', [ForumController::class, 'comment_forum'])->middleware('auth:sanctum');
+// Mengambil komentar pada forum berdasarkan forum_id
+Route::get('forumKomen/{forum_id}', [ForumController::class, 'getCommentForum']);
 
-Route::put('forum_comment_update/{id}', [ForumController::class, 'update_comment_forum']);
-Route::delete('forum_comment_delete/{id}', [ForumController::class, 'delete_comment_forum']);
-Route::post('forum_comment/{forum_id}', [ForumController::class, 'comment_forum']);
+// Mengupdate komentar forum berdasarkan ID
+Route::put('forum_comment_update/{id}', [ForumController::class, 'updateComment']);
 
-Route::post('forum/{forum_id}/like/{user_id}', [ForumController::class, 'likeForum']);
-Route::post('forum/{forum_id}/dislike/{user_id}', [ForumController::class, 'dislikeForum']);
+// Menghapus komentar forum berdasarkan ID
+Route::delete('forum_comment_delete/{id}', [ForumController::class, 'deleteComment']);
 
+// Menambahkan like pada forum
+Route::post('forum/{forum_id}/like', [ForumController::class, 'likeForum'])->middleware('auth:sanctum');
+
+// Menambahkan dislike pada forum
+Route::post('forum/{forum_id}/dislike', [ForumController::class, 'dislikeForum'])->middleware('auth:sanctum');
+
+// Mengambil jumlah like pada forum
 Route::get('forum/{forum_id}/likes', [ForumController::class, 'getForumLikes']);
+
+// Mengambil jumlah dislike pada forum
 Route::get('forum/{forum_id}/dislikes', [ForumController::class, 'getForumDislikes']);
+
+// ============================ Reply Routes ===========================
+
+// Mengambil balasan berdasarkan komentar_id dan user_id
 Route::get('/komentar/{komentar_id}/user/{user_id}/replies', [ReplyKomentarController::class, 'getRepliesByUserId']);
-Route::post('/replies', [ReplyKomentarController::class, 'reply']);
+
+// Menambahkan balasan pada komentar
+Route::post('/replies', [ReplyKomentarController::class, 'reply'])->middleware('auth:sanctum');
+
+// Mengambil semua balasan komentar berdasarkan komentar_id
 Route::get('replies/{komentar_id}', [ReplyKomentarController::class, 'get_replies']);
+
+// Mengambil semua balasan
 Route::get('getAllReplies', [ReplyKomentarController::class, 'getAllReplies']);
+
+// Mengupdate balasan komentar oleh user_id
 Route::put('komentar/{komentar_id}/user/{user_id}/replies/{id}', [ReplyKomentarController::class, 'updateReplyByUserId']);
+
+// Menghapus balasan komentar oleh user_id
 Route::delete('komentar/{komentar_id}/user/{user_id}/replies/{id}', [ReplyKomentarController::class, 'deleteReplyByUserId']);
+
 
 // ----------------------------------------------------PENGEPUL----------------------------------------------------
 
@@ -182,3 +209,8 @@ Route::get('/reseps', [ResepApiController::class, 'index']);
 Route::get('/iklans', [IklanApiController::class, 'index']);
 Route::get('/iklans/{id}', [IklanApiController::class, 'show']);
 
+// laporan
+Route::middleware('auth:sanctum')->get('/laporans', [LaporanApiController::class, 'index']); // Menampilkan semua laporan
+Route::middleware('auth:sanctum')->get('/laporans/{id}', [LaporanApiController::class, 'show']); // Menampilkan laporan berdasarkan ID
+Route::middleware('auth:sanctum')->post('/laporans', [LaporanApiController::class, 'store']); // Menyimpan laporan baru
+Route::middleware('auth:sanctum')->delete('/laporans/{id}', [LaporanApiController::class, 'destroy']); // Menghapus laporan berdasarkan ID

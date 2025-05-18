@@ -18,24 +18,21 @@ class Forum extends Model
         'user_id',
     ];
 
-
+    // Relasi dengan ImageForum
     public function images()
     {
-        return $this->hasMany(ImageForum::class, 'forum_id')->select([
-            'id_image_forums',
-            'forum_id',
-            'gambar',
-                DB::raw("CONCAT('" . asset('storage/') . "','/', gambar) as url")
-        ]);
+        return $this->hasMany(ImageForum::class, 'forum_id');
     }
 
-    public function komentar(){
+    // Relasi dengan KomentarForum
+    public function komentar()
+    {
         return $this->hasMany(KomentarForum::class);
     }
 
-    public function user(){
-        return $this->belongsTo( User::class, 'user_id', 'id_users')->select(
-
-        );
+    // Relasi dengan User
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id_users');
     }
 }
