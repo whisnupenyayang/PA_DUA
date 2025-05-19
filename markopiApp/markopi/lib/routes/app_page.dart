@@ -14,11 +14,12 @@ import 'package:markopi/view/Profile/Profile.dart';
 import 'package:markopi/view/DataPengepulUser/UserPengepu.dart';
 import 'package:markopi/view/forum/ForumKomentar.dart';
 import 'package:markopi/view/forum/ListForum.dart';
-import 'package:markopi/view/Laporan/LaporanPage.dart'; 
+import 'package:markopi/view/Laporan/LaporanPage.dart';
 import 'package:markopi/view/toko/toko_kopi_page.dart'; // Import halaman Toko Kopi
 import 'package:markopi/view/resep/resep_kopi_page.dart';
 import 'package:markopi/binding/Budidaya_Binding.dart';
 import 'package:markopi/view/Laporan/AddLaporanPage.dart';
+import 'package:markopi/view/HargaKopi/TambahPengepulPage.dart';
 import './route_name.dart';
 
 class AppPages {
@@ -35,7 +36,6 @@ class AppPages {
       page: () => ListForum(),
     ),
 
-
     /*================Budidaya=================== */
     GetPage(
       name: RouteName.kegiatan + '/:kegiatan/:jenis_kopi',
@@ -47,7 +47,8 @@ class AppPages {
       page: () => BudidayaView(),
     ),
     GetPage(
-      name: RouteName.kegiatan + '/:kegiatan/:jenis_kopi/jenistahapankegiatan/:id',
+      name: RouteName.kegiatan +
+          '/:kegiatan/:jenis_kopi/jenistahapankegiatan/:id',
       page: () => JenisTahapBudidayaView(),
     ),
     GetPage(
@@ -89,10 +90,9 @@ class AppPages {
       page: () => DetailPengepuldanPetani(),
     ),
     GetPage(
-      name: RouteName.pengepul + '/tambahDataPengepul',
-      page: () => TambahPengepulView(),
+      name: RouteName.pengepul + '/tambah',
+      page: () => TambahPengepulPage(),
     ),
-
     /*================Artikel=================== */
     GetPage(
       name: RouteName.artikel,
@@ -116,11 +116,12 @@ class AppPages {
       name: RouteName.laporan,
       page: () => const LaporanPage(),
     ),
-    
+
     // Halaman untuk menambahkan laporan
     GetPage(
       name: '/laporan/tambah', // Definisikan route untuk menambah laporan
-      page: () => const AddLaporanPage(), // Mengarahkan ke halaman AddLaporanPage
+      page: () =>
+          const AddLaporanPage(), // Mengarahkan ke halaman AddLaporanPage
     ),
   ];
 }

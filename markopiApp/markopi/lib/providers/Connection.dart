@@ -11,7 +11,7 @@ class Connection {
   // /storage/pengepul/WqIimfqqENHGMrj5KIIb4RxVS3GXGQdmTCTBkTgx.jpg
 
   static const String imageUrl = 
-  // 'http://10.0.2.2:8000/';
+  // 'http://10.0.2.2:8000/'; 
   'http://192.168.150.244:8000/';
 
 

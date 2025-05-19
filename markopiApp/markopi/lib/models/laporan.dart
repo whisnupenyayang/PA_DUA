@@ -18,8 +18,9 @@ class Laporan {
       id: json['id'] ?? 0,
       judulLaporan: json['judul_laporan'] ?? '',
       isiLaporan: json['isi_laporan'] ?? '',
-      userId: json['id_users'] ?? 0, // Menggunakan id_users dari API
-      userName: json['user']['name'] ?? '', // Asumsikan ada field 'name' di dalam 'user'
+      userId: json['id_users'] ?? 0,
+      userName:
+          json['user'] != null ? json['user']['name'] ?? '' : '', // ✅ aman
     );
   }
 }

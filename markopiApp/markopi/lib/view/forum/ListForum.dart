@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markopi/controllers/Forum_Controller.dart';
-import 'package:markopi/models/Forum_Model.dart';
 
 class ListForum extends StatelessWidget {
   final forumController = Get.put(ForumController());
@@ -16,18 +15,30 @@ class ListForum extends StatelessWidget {
         }
 
         return ListView.builder(
-          itemCount: forumController.forum.length + (forumController.hasMore ? 1 : 0),
+          itemCount: forumController.forum.length + (forumController.hasMore.value ? 1 : 0),
           itemBuilder: (context, index) {
             if (index < forumController.forum.length) {
               final forum = forumController.forum[index];
-              return ListTile(
-                title: Text(forum.judulForum),
-                subtitle: Text(forum.deskripsiForum),
-                onTap: () {
-                  // Menavigasi ke halaman forum detail jika diperlukan
-                },
+              return Card(
+                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                child: ListTile(
+                  title: Text(forum.judulForum),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(forum.deskripsiForum),
+                      const SizedBox(height: 4),
+                      Text("Oleh: ${forum.user.namaLengkap}", style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic)),
+                      Text("Tanggal: ${forum.tanggal}", style: const TextStyle(fontSize: 12)),
+                    ],
+                  ),
+                  onTap: () {
+                    // Navigasi ke detail forum jika diinginkan
+                  },
+                ),
               );
             } else {
+              // Indikator loading saat ambil data halaman berikutnya (infinite scroll)
               return const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Center(child: CircularProgressIndicator()),
@@ -38,7 +49,7 @@ class ListForum extends StatelessWidget {
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Tambah forum atau lakukan navigasi
+          // Tambah forum atau navigasi ke form tambah
         },
         child: const Icon(Icons.add),
       ),

@@ -9,7 +9,7 @@ class ForumController extends GetxController {
   var forum = <Forum>[].obs;
   var page = 1;
   var isLoading = false.obs;
-  var hasMore = true;
+  RxBool hasMore = true.obs;
   var komentarForum = <KomentarForum>[].obs; // List of comments for a forum
   var forumDetail = Rxn<Forum>(); // Detail of the specific forum
 
@@ -22,33 +22,7 @@ class ForumController extends GetxController {
   }
 
   // Fetching forum list with pagination
-  Future<void> fetchForum() async {
-    if (isLoading.value || !hasMore) return;
-
-    isLoading.value = true;
-    final String? token = await TokenStorage.getToken();
-
-    final response = await forumProvider.getForum(page, token);
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body)['data'];
-      if (data != null && data is List) {
-        final fetchedForums = data.map((item) => Forum.fromJson(item)).toList();
-
-        if (fetchedForums.length < 5) {
-          hasMore = false;
-        } else {
-          page++;
-        }
-        forum.addAll(fetchedForums);
-      } else {
-        hasMore = false;
-      }
-    } else {
-      Get.snackbar('Error', 'Gagal mengambil data forum');
-    }
-    isLoading.value = false;
-  }
+  
 
   // Fetching comments for a specific forum based on forum_id
   Future<void> fetchKomentar(int id) async {

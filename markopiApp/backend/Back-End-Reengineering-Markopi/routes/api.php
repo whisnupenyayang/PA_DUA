@@ -75,8 +75,6 @@ Route::get('/komunitas', [BudidayaAPIController::class, 'getKomunitasData']);
 
 // ============================== Autentikasi ====================
 Route::post('/register', [AuthController::class, 'register']);
-
-
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('password/forgot',[ForgotPasswordController::class,'forgotPassword']);
 Route::post('password/reset',[ResetPasswordController::class,'resetPassword']);
@@ -214,3 +212,4 @@ Route::middleware('auth:sanctum')->get('/laporans', [LaporanApiController::class
 Route::middleware('auth:sanctum')->get('/laporans/{id}', [LaporanApiController::class, 'show']); // Menampilkan laporan berdasarkan ID
 Route::middleware('auth:sanctum')->post('/laporans', [LaporanApiController::class, 'store']); // Menyimpan laporan baru
 Route::middleware('auth:sanctum')->delete('/laporans/{id}', [LaporanApiController::class, 'destroy']); // Menghapus laporan berdasarkan ID
+    

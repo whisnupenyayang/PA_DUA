@@ -12,4 +12,5 @@ abstract class RouteName {
   static const resepKopi = '/resep_kopi';           // Halaman resep kopi
   static const artikel = "/artikel";                // Halaman artikel
   static const laporan = '/laporan';                // Halaman laporan
+  static const tambahPengepul = '/pengepul/tambah';
 }
