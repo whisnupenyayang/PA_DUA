@@ -57,7 +57,7 @@ class _KopiPageState extends State<KopiPage> {
                     final item = pengepulC.pengepul[index];
                     return GestureDetector(
                       onTap: () {
-                        Get.toNamed(RouteName.pengepul + '/detail/$role');
+                       Get.toNamed(RouteName.pengepul + '/detail/${item.id}');
                       },
                       child: Card(
                         elevation: 4,
@@ -108,12 +108,6 @@ class _KopiPageState extends State<KopiPage> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(height: 4),
-                                  Text(
-                                    isPengepul
-                                        ? 'Sudah dibeli: 45'
-                                        : 'Sudah dijual: 23',
-                                    style: TextStyle(fontSize: 12),
-                                  ),
                                 ],
                               ),
                             ),

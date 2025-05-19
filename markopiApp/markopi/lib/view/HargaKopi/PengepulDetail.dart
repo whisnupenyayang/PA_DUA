@@ -22,9 +22,12 @@ class _DetailPengepuldanPetaniState extends State<DetailPengepuldanPetani> {
   @override
   void initState() {
     super.initState();
-    role = Get.parameters['role'];
+    // Ambil id dari route parameter
+    final idStr = Get.parameters['id'];
+    final id =
+        int.tryParse(idStr ?? '') ?? 1; // default 1 jika null atau gagal parse
 
-    pengepulC.fetcPengepulDetail(1);
+    pengepulC.fetcPengepulDetail(id);
   }
 
   @override
@@ -62,15 +65,12 @@ class _DetailPengepuldanPetaniState extends State<DetailPengepuldanPetani> {
               ),
               Text(
                 'Rp. ${item.harga}/Kg',
-                style:
-                    TextStyle(
-                      fontSize: 20,color: Colors.green, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.green,
+                    fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 4),
-              Text(
-                'Klik disini untuk melihat riwayat pembelian',
-                style: TextStyle(color: Colors.blue),
-              ),
               SizedBox(height: 16),
               Card(
                 shape: RoundedRectangleBorder(
@@ -78,17 +78,7 @@ class _DetailPengepuldanPetaniState extends State<DetailPengepuldanPetani> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    children: [
-                      _buildInfoRow('Nama Pengepul', 'Elisabeth P.'),
-                      _buildInfoRow('Jenis Kopi', 'Arabika dan Robusta'),
-                      _buildInfoRow('Gabon (Biji Basah)', 'Rp. 6.500,00'),
-                      _buildInfoRow('Green Bean (Kotor)', 'Rp. 8.000,00'),
-                      _buildInfoRow('Green Bean (Bersih Kopi)', 'Rp. 9.000,00'),
-                      _buildInfoRow('Gabah (Biji Basah)', 'Rp. 5.000,00'),
-                      _buildInfoRow('Alamat', 'Pintubosi, Laguboti'),
-                    ],
-                  ),
+                  
                 ),
               ),
               SizedBox(height: 16),
@@ -114,7 +104,8 @@ class _DetailPengepuldanPetaniState extends State<DetailPengepuldanPetani> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Get.toNamed(RouteName.pengepul + '/pengajuan/role/${item.id}');
+                    Get.toNamed(
+                        RouteName.pengepul + '/pengajuan/role/${item.id}');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,

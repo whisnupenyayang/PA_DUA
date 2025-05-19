@@ -86,9 +86,10 @@ class AppPages {
       page: () => DetailPengepuldanPetani(),
     ),
     GetPage(
-      name: RouteName.pengepul + '/detail/:role',
+      name: RouteName.pengepul + '/detail/:id',
       page: () => DetailPengepuldanPetani(),
     ),
+
     GetPage(
       name: RouteName.pengepul + '/tambah',
       page: () => TambahPengepulPage(),
