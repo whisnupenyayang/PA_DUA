@@ -39,14 +39,14 @@ class LaporanApiController extends Controller
     // Menyimpan laporan baru
     public function store(Request $request)
     {
-        // Validasi input
+
         $request->validate([
             'judul_laporan' => 'required|string|max:255',
             'isi_laporan' => 'nullable|string',
             'id_users' => 'required|exists:users,id', // Validasi untuk memastikan id_users ada di tabel users
         ]);
 
-        // Menyimpan laporan
+
         $laporan = Laporan::create([
             'judul_laporan' => $request->judul_laporan,
             'isi_laporan' => $request->isi_laporan,
