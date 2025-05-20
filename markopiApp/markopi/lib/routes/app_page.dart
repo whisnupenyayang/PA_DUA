@@ -21,6 +21,7 @@ import 'package:markopi/binding/Budidaya_Binding.dart';
 import 'package:markopi/view/Laporan/AddLaporanPage.dart';
 import 'package:markopi/view/HargaKopi/TambahPengepulPage.dart';
 import './route_name.dart';
+import 'package:markopi/view/Register/register.dart';
 
 class AppPages {
   static final pages = [
@@ -60,6 +61,10 @@ class AppPages {
     GetPage(
       name: RouteName.login,
       page: () => LoginView(),
+    ),
+    GetPage(
+      name: RouteName.register,
+      page: () => RegisterPage(),
     ),
 
     /*================Profile=================== */

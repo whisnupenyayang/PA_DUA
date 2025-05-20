@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
+import 'package:markopi/models/register_request.dart';
 import 'package:markopi/providers/Autentikasi_Providers.dart';
+import 'package:markopi/routes/route_name.dart';
 import 'package:markopi/service/User_Storage.dart';
 import 'package:markopi/service/User_Storage_Service.dart';
 import 'package:markopi/service/token_storage.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class AutentikasiController extends GetxController {
   var token = RxnString();
@@ -50,6 +51,17 @@ class AutentikasiController extends GetxController {
     if (response.statusCode == 200) {
       await TokenStorage.clearToken();
       sukses.value = true;
+    }
+  }
+
+  Future<void> register(RegisterRequest request) async {
+    final response = await autentikasiProvider.register(request);
+    if (response.body['success'] == true) {
+      Get.snackbar(
+          'Berhasil Daftar', response.body['message'] ?? 'Daftar berhasil');
+      Get.toNamed(RouteName.login);
+    } else {
+      Get.snackbar('Gagal Daftar', response.body['message'] ?? 'Daftar gagal');
     }
   }
 }

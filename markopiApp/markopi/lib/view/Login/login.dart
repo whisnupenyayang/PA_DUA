@@ -74,13 +74,12 @@ class _LoginViewState extends State<LoginView> {
                 String password = _password.text;
                 print('username : $username \npassword : $password');
                 await autentikasiController.login(username, password);
-                if (autentikasiController.sukses.value){
+                if (autentikasiController.sukses.value) {
                   autentikasiController.sukses.value = false;
                   token = await TokenStorage.getToken();
                   Get.offAllNamed(RouteName.beranda);
                   print(token);
                 }
-                
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xff2696D6),
@@ -93,9 +92,7 @@ class _LoginViewState extends State<LoginView> {
             ),
             const SizedBox(height: 12),
             ElevatedButton(
-              onPressed: () {
-                // Aksi untuk tombol "Daftar"
-              },
+              onPressed: () => Get.toNamed(RouteName.register),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xff2696D6),
                 shape: RoundedRectangleBorder(

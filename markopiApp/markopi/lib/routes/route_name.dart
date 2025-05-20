@@ -13,4 +13,5 @@ abstract class RouteName {
   static const artikel = "/artikel";                // Halaman artikel
   static const laporan = '/laporan';                // Halaman laporan
   static const tambahPengepul = '/pengepul/tambah';
+  static const register = "/register";
 }
