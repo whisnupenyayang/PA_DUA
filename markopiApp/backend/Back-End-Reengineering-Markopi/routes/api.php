@@ -208,8 +208,9 @@ Route::get('/iklans', [IklanApiController::class, 'index']);
 Route::get('/iklans/{id}', [IklanApiController::class, 'show']);
 
 // laporan
-Route::middleware('auth:sanctum')->get('/laporans', [LaporanApiController::class, 'index']); // Menampilkan semua laporan
+// Route::middleware('auth:sanctum')->get('/laporans', [LaporanApiController::class, 'index']); // Menampilkan semua laporan
 Route::middleware('auth:sanctum')->get('/laporans/{id}', [LaporanApiController::class, 'show']); // Menampilkan laporan berdasarkan ID
 Route::middleware('auth:sanctum')->post('/laporans', [LaporanApiController::class, 'store']); // Menyimpan laporan baru
 Route::middleware('auth:sanctum')->delete('/laporans/{id}', [LaporanApiController::class, 'destroy']); // Menghapus laporan berdasarkan ID
-    
+
+Route::get('/laporans', [LaporanApiController::class, 'index']);

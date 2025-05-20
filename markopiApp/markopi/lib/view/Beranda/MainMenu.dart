@@ -32,7 +32,7 @@ class _MainMenuState extends State<MainMenu> {
     'Budidaya',
     'Panen',
     'PascaPanen',
-    'Laporan',
+    'Laporan Oke',
     'Toko Kopi',
     'Resep Kopi',
   ];

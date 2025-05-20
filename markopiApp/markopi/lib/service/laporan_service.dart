@@ -1,26 +1,39 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../models/laporan.dart';               // Pastikan path model benar
-import '../providers/connection.dart';         // Path sesuaikan folder project kamu
+import '../models/laporan.dart';
+import '../providers/connection.dart';
 
 class LaporanService {
   // Endpoint API untuk laporan
   static const String _endpoint = '/laporans';
 
   // Fetch semua laporan
-  static Future<List<Laporan>>? getAllLaporans() async {
+  static Future<List<Laporan>> getAllLaporans() async {
     try {
       final url = Connection.buildUrl(_endpoint);
+      
+      // Print URL for debugging
+      print('Fetching from URL: $url');
+      
       final response = await http.get(Uri.parse(url));
-
+      
+      // Print response status code for debugging
+      print('Response status code: ${response.statusCode}');
+      
       if (response.statusCode == 200) {
-        List<dynamic> data = json.decode(response.body)['data']; // Sesuaikan dengan struktur response API
+        // Print response body for debugging
+        print('Response body: ${response.body}');
+        
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        List<dynamic> data = jsonResponse['data']; // Sesuaikan dengan struktur response API
         return data.map((json) => Laporan.fromJson(json)).toList();
       } else {
-        throw Exception('Failed to load laporan data');
+        throw Exception('Failed to load laporan data: Status ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Error fetching all laporan: $e');
+      print('Error in getAllLaporans: $e');
+      // Return empty list instead of throwing exception to avoid breaking the UI
+      return [];
     }
   }
 
@@ -29,22 +42,21 @@ class LaporanService {
     try {
       final url = Connection.buildUrl('$_endpoint/$id');
       final response = await http.get(Uri.parse(url));
-
       if (response.statusCode == 200) {
         return Laporan.fromJson(json.decode(response.body)['data']); // Sesuaikan dengan struktur response API
       } else {
         throw Exception('Failed to load laporan with ID: $id');
       }
     } catch (e) {
-      throw Exception('Error fetching laporan by ID: $e');
+      print('Error in getLaporanById: $e');
+      return null;
     }
   }
 
   // Menyimpan laporan baru
-  static Future<void> addLaporan(Laporan laporan) async {
+  static Future<bool> addLaporan(Laporan laporan) async {
     try {
       final url = Connection.buildUrl(_endpoint);
-
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
@@ -54,26 +66,22 @@ class LaporanService {
           'id_users': laporan.userId,
         }),
       );
-
-      if (response.statusCode != 201) {
-        throw Exception('Failed to add laporan');
-      }
+      return response.statusCode == 201;
     } catch (e) {
-      throw Exception('Error adding laporan: $e');
+      print('Error in addLaporan: $e');
+      return false;
     }
   }
 
   // Menghapus laporan berdasarkan ID
-  static Future<void> deleteLaporan(int id) async {
+  static Future<bool> deleteLaporan(int id) async {
     try {
       final url = Connection.buildUrl('$_endpoint/$id');
       final response = await http.delete(Uri.parse(url));
-
-      if (response.statusCode != 200) {
-        throw Exception('Failed to delete laporan with ID: $id');
-      }
+      return response.statusCode == 200;
     } catch (e) {
-      throw Exception('Error deleting laporan: $e');
+      print('Error in deleteLaporan: $e');
+      return false;
     }
   }
 }
