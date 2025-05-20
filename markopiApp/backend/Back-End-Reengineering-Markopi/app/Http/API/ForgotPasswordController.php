@@ -10,11 +10,31 @@ use App\Http\Requests\auth\ForgotPasswordRequest;
 
 class ForgotPasswordController extends Controller
 {
-    public function forgotPassword(ForgotPasswordRequest $request){
-        $input=$request->only('email');
-        $user=User::where('email',$input)->first();
-        $user->notify(new ResetPasswordNotification());
-        $success['succees']=true;
-        return response()->json($success,200);
+    public function forgotPassword(Request $request)
+    {
+        try {
+            $email = $request->input('email');
+
+            $user = User::where('email', $email)->first();
+
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Email tidak ditemukan.'
+                ], 404);
+            }
+
+            $user->notify(new ResetPasswordNotification());
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Kode terkirim, silahkan cek email Anda.',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $th->getMessage(),
+            ], 500);
+        }
     }
 }

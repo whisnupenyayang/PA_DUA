@@ -77,7 +77,7 @@ class _LoginViewState extends State<LoginView> {
                 if (autentikasiController.sukses.value) {
                   autentikasiController.sukses.value = false;
                   token = await TokenStorage.getToken();
-                   
+
                   print(token);
                 }
               },
@@ -104,9 +104,10 @@ class _LoginViewState extends State<LoginView> {
                   const Text("Daftar", style: TextStyle(color: Colors.white)),
             ),
             const SizedBox(height: 16),
-            const Text(
-              "Lupa Password?",
-              style: TextStyle(color: Colors.grey),
+            TextButton(
+              style: TextButton.styleFrom(foregroundColor: Colors.grey),
+              onPressed: () => Get.toNamed(RouteName.forgotPassword),
+              child: Text("Lupa Password?"),
             ),
           ],
         ),

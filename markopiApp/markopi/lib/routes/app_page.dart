@@ -6,6 +6,7 @@ import 'package:markopi/view/Budidaya/Jenis_Tahap_Budidaya_Detail.dart';
 import 'package:markopi/view/Budidaya/Jenis_kopi.dart';
 import 'package:markopi/view/Budidaya/Tahap_Budidaya.dart';
 import 'package:markopi/view/DataPengepulUser/FormTambahDataPengepul.dart';
+import 'package:markopi/view/ForgotPassword/otp.dart';
 import 'package:markopi/view/HargaKopi/FormPengajuanDetail.dart';
 import 'package:markopi/view/HargaKopi/ListPengepulFinal.dart';
 import 'package:markopi/view/HargaKopi/PengepulDetail.dart';
@@ -22,6 +23,9 @@ import 'package:markopi/view/Laporan/AddLaporanPage.dart';
 import 'package:markopi/view/HargaKopi/TambahPengepulPage.dart';
 import './route_name.dart';
 import 'package:markopi/view/Register/register.dart';
+import 'package:markopi/view/ForgotPassword/forgot_password.dart';
+import 'package:markopi/binding/forgot_password.dart';
+import 'package:markopi/view/ForgotPassword/reset_password.dart';
 
 class AppPages {
   static final pages = [
@@ -65,6 +69,19 @@ class AppPages {
     GetPage(
       name: RouteName.register,
       page: () => RegisterPage(),
+    ),
+    GetPage(
+      name: RouteName.forgotPassword,
+      page: () => ForgotPassword(),
+      binding: ForgotPasswordBinding(),
+    ),
+    GetPage(
+      name: RouteName.otp,
+      page: () => OtpVerificationPage(),
+    ),
+    GetPage(
+      name: RouteName.resetPassword,
+      page: () => ResetPasswordPage(),
     ),
 
     /*================Profile=================== */
