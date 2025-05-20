@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,9 +14,12 @@ class _TambahPengepulPageState extends State<TambahPengepulPage> {
   final TextEditingController namaController = TextEditingController();
   final TextEditingController alamatController = TextEditingController();
   final TextEditingController hargaController = TextEditingController();
+  final TextEditingController teleponController = TextEditingController();
 
   final PengepulController pengepulC = Get.find();
   File? _image;
+
+  List<String> selectedJenisKopi = [];
 
   Future<void> _pickImage() async {
     final pickedFile =
@@ -37,12 +39,20 @@ class _TambahPengepulPageState extends State<TambahPengepulPage> {
         return;
       }
 
+      if (selectedJenisKopi.isEmpty) {
+        Get.snackbar('Gagal', 'Pilih minimal satu jenis kopi');
+        return;
+      }
+
       pengepulC.tambahPengepul(
         nama: namaController.text,
         alamat: alamatController.text,
         harga: hargaController.text,
         gambar: _image!,
+        telepon: teleponController.text,
+        jenisKopi: selectedJenisKopi.join(','), // contoh: "Arabika,Robusta"
       );
+
       Get.back(); // kembali ke halaman sebelumnya
     }
   }
@@ -85,11 +95,46 @@ class _TambahPengepulPageState extends State<TambahPengepulPage> {
               ),
               SizedBox(height: 16),
               TextFormField(
+                controller: teleponController,
+                decoration: InputDecoration(labelText: 'Nomor Telepon'),
+                validator: (value) =>
+                    value!.isEmpty ? 'Nomor telepon harus diisi' : null,
+              ),
+              SizedBox(height: 16),
+              TextFormField(
                 controller: hargaController,
                 decoration: InputDecoration(labelText: 'Harga'),
                 keyboardType: TextInputType.number,
                 validator: (value) =>
                     value!.isEmpty ? 'Harga harus diisi' : null,
+              ),
+              SizedBox(height: 24),
+              Text('Jenis Kopi', style: TextStyle(fontWeight: FontWeight.bold)),
+              CheckboxListTile(
+                title: Text('Arabika'),
+                value: selectedJenisKopi.contains('Arabika'),
+                onChanged: (value) {
+                  setState(() {
+                    if (value == true) {
+                      selectedJenisKopi.add('Arabika');
+                    } else {
+                      selectedJenisKopi.remove('Arabika');
+                    }
+                  });
+                },
+              ),
+              CheckboxListTile(
+                title: Text('Robusta'),
+                value: selectedJenisKopi.contains('Robusta'),
+                onChanged: (value) {
+                  setState(() {
+                    if (value == true) {
+                      selectedJenisKopi.add('Robusta');
+                    } else {
+                      selectedJenisKopi.remove('Robusta');
+                    }
+                  });
+                },
               ),
               SizedBox(height: 24),
               ElevatedButton(

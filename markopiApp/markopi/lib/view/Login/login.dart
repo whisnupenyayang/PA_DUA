@@ -77,7 +77,7 @@ class _LoginViewState extends State<LoginView> {
                 if (autentikasiController.sukses.value) {
                   autentikasiController.sukses.value = false;
                   token = await TokenStorage.getToken();
-                  Get.offAllNamed(RouteName.beranda);
+                   
                   print(token);
                 }
               },

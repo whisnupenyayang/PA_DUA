@@ -11,7 +11,8 @@
         android:label="markopi"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:usesCleartextTraffic="true"> <!-- Tambahkan ini -->
+        android:usesCleartextTraffic="true"
+        android:enableOnBackInvokedCallback="true">
 
         <activity
             android:name=".MainActivity"
