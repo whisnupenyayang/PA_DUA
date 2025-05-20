@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import './Connection.dart';
 import 'dart:convert';
+import 'package:markopi/models/register_request.dart';
 
 class AutentikasiProvider extends GetConnect {
   Future<Response> login(String username, String password) {
@@ -13,5 +14,11 @@ class AutentikasiProvider extends GetConnect {
     return get(Connection.buildUrl('/logout'), headers: {
       'Authorization': 'Bearer $token',
     });
+  }
+
+  Future<Response> register(RegisterRequest request) {
+    final body = jsonEncode(request.toJson());
+
+    return post(Connection.buildUrl('/register'), body);
   }
 }

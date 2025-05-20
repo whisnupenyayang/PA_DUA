@@ -12,10 +12,11 @@ class CreateLaporanTable extends Migration
             $table->increments('id');
             $table->string('judul_laporan');
             $table->text('isi_laporan')->nullable();
-            $table->unsignedInteger('id_users'); // tipe ini harus cocok dengan increments()
+            $table->unsignedInteger('user_id');
             $table->timestamps();
 
-            $table->foreign('id_users')->references('id_users')->on('users')->onDelete('cascade');
+            // jika ingin relasi ke tabel users
+            $table->foreign('user_id')->references('id_users')->on('users')->onDelete('cascade');
         });
     }
 
