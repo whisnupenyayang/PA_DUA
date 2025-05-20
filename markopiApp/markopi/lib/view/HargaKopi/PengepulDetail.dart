@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:markopi/controllers/PengajuanTransaksi_Controller.dart';
-
+import 'package:url_launcher/url_launcher.dart';
+import 'package:markopi/providers/Connection.dart';
 import 'package:get/get.dart';
 import 'package:markopi/controllers/Pengepul_Controller.dart';
 import 'package:markopi/routes/route_name.dart';
@@ -22,10 +23,8 @@ class _DetailPengepuldanPetaniState extends State<DetailPengepuldanPetani> {
   @override
   void initState() {
     super.initState();
-    // Ambil id dari route parameter
     final idStr = Get.parameters['id'];
-    final id =
-        int.tryParse(idStr ?? '') ?? 1; // default 1 jika null atau gagal parse
+    final id = int.tryParse(idStr ?? '') ?? 1;
 
     pengepulC.fetcPengepulDetail(id);
   }
@@ -45,24 +44,51 @@ class _DetailPengepuldanPetaniState extends State<DetailPengepuldanPetani> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ClipRRect(
-              //   borderRadius: BorderRadius.circular(12),
-              //   child: CachedNetworkImage(
-              //     imageUrl:
-              //         'http://10.0.2.2:8000/storage/budidayaimage/OjPcIQh71iVEIq6A2wk3Z1AuZh73KgFTX9JQOWtP.png',
-              //     // bikin tinggi gambar sedikit acak
-              //     width: double.infinity,
-              //     fit: BoxFit.cover,
-              //     placeholder: (context, url) =>
-              //         Center(child: CircularProgressIndicator()),
-              //     errorWidget: (context, url, error) => Icon(Icons.error),
-              //   ),
-              // ),
-              SizedBox(height: 12),
-              Text(
-                item.nama_toko,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              // Gambar Pengepul dengan AspectRatio dan BoxFit.contain
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: item.nama_gambar != null && item.nama_gambar.isNotEmpty
+                    ? AspectRatio(
+                        aspectRatio: 16 / 9, // sesuaikan rasio sesuai kebutuhan
+                        child: CachedNetworkImage(
+                          imageUrl: Connection.buildImageUrl(item.url_gambar),
+                          width: double.infinity,
+                          fit: BoxFit.contain, // agar gambar tidak terpotong
+                          placeholder: (context, url) =>
+                              Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) => Container(
+                            color: Colors.grey[300],
+                            child: Icon(Icons.image_not_supported,
+                                size: 50, color: Colors.grey[600]),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        height: 200,
+                        width: double.infinity,
+                        color: Colors.grey[300],
+                        child: Icon(Icons.store, size: 50, color: Colors.grey[600]),
+                      ),
               ),
+              SizedBox(height: 16),
+
+              // Nama Toko & Harga
+              Text(
+                item.nama_toko ?? 'Nama Toko',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.coffee, color: Colors.brown),
+                  SizedBox(width: 8),
+                  Text(
+                    '${item.jenis_kopi ?? 'Jenis Kopi Tidak Tersedia'}',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
               Text(
                 'Rp. ${item.harga}/Kg',
                 style: TextStyle(
@@ -70,50 +96,98 @@ class _DetailPengepuldanPetaniState extends State<DetailPengepuldanPetani> {
                     color: Colors.green,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 4),
+
               SizedBox(height: 16),
+
+              // Informasi Detail
               Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Informasi Detail',
+                        style:
+                            TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 12),
+                      _buildInfoRow(
+                          'Alamat', item.alamat ?? 'Alamat tidak tersedia'),
+                      Divider(),
+                      _buildInfoRow('Nomor Telepon',
+                          item.nomor_telepon ?? 'Nomor tidak tersedia'),
+                      Divider(),
+                      _buildInfoRow('Jenis Kopi', item.jenis_kopi ?? 'Tidak tersedia'),
+                    ],
+                  ),
                 ),
               ),
+
               SizedBox(height: 16),
+
+              // Hubungi
               Text(
                 'Hubungi',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8),
-              Text('📞 0812-3456-7890'),
-              SizedBox(height: 8),
+              SizedBox(height: 12),
               ElevatedButton.icon(
                 icon: Icon(Icons.chat),
                 label: Text("Buka WhatsApp"),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 ),
-                onPressed: () {
-                  // Bisa tambahkan open WhatsApp intent atau deep link
+                onPressed: () async {
+                  String phoneNumber = item.nomor_telepon ?? '';
+                  phoneNumber = phoneNumber.replaceAll(RegExp(r'[^\d]'), '');
+                  if (phoneNumber.startsWith('0')) {
+                    phoneNumber = '62${phoneNumber.substring(1)}';
+                  } else if (!phoneNumber.startsWith('62')) {
+                    phoneNumber = '62$phoneNumber';
+                  }
+                  final Uri whatsappUrl = Uri.parse('https://wa.me/$phoneNumber');
+                  try {
+                    if (await canLaunchUrl(whatsappUrl)) {
+                      await launchUrl(whatsappUrl,
+                          mode: LaunchMode.externalApplication);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('WhatsApp tidak tersedia di perangkat ini')));
+                    }
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Terjadi kesalahan: $e')));
+                  }
                 },
               ),
-              SizedBox(height: 12),
+
+              SizedBox(height: 24),
+
+              // Tombol Jual Kopi
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Get.toNamed(
-                        RouteName.pengepul + '/pengajuan/role/${item.id}');
+                    Get.toNamed(RouteName.pengepul + '/pengajuan/role/${item.id}');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                     foregroundColor: Colors.white,
+                    padding:
+                        EdgeInsets.symmetric(vertical: 14, horizontal: 32),
+                    textStyle:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   child: Text("Jual Kopi"),
                 ),
-              )
+              ),
+              SizedBox(height: 16),
             ],
           );
         }),
@@ -123,15 +197,28 @@ class _DetailPengepuldanPetaniState extends State<DetailPengepuldanPetani> {
 
   Widget _buildInfoRow(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(child: Text(label)),
           Expanded(
+            flex: 2,
+            child: Text(
+              label,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[700],
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
             child: Text(
               value,
               textAlign: TextAlign.right,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],

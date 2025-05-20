@@ -13,7 +13,6 @@ class KopiPage extends StatefulWidget {
 
 class _KopiPageState extends State<KopiPage> {
   bool isPengepul = true;
-
   final PengepulController pengepulC = Get.put(PengepulController());
 
   @override
@@ -23,13 +22,11 @@ class _KopiPageState extends State<KopiPage> {
   }
 
   Future<void> _refreshData() async {
-    await pengepulC.fetchPengepul(); // Pastikan fungsi ini async di controller
+    await pengepulC.fetchPengepul();
   }
 
   @override
   Widget build(BuildContext context) {
-    String role = isPengepul ? 'pengepul' : 'petani';
-
     return Scaffold(
       appBar: AppBar(
         title: Text(isPengepul ? 'Pengepul' : 'Petani'),
@@ -38,88 +35,17 @@ class _KopiPageState extends State<KopiPage> {
       body: RefreshIndicator(
         onRefresh: _refreshData,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(12.0),
-          physics: AlwaysScrollableScrollPhysics(), // wajib agar RefreshIndicator aktif
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Ayo!! Temukan harga terbaik untuk Kopi Anda.',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              Obx(() {
-                return MasonryGridView.count(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                  itemCount: pengepulC.pengepul.length,
-                  itemBuilder: (context, index) {
-                    final item = pengepulC.pengepul[index];
-                    return GestureDetector(
-                      onTap: () {
-                       Get.toNamed(RouteName.pengepul + '/detail/${item.id}');
-                      },
-                      child: Card(
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(12)),
-                              child: CachedNetworkImage(
-                                imageUrl: Connection.buildImageUrl(item.url_gambar),
-                                height: 150 + (index % 2) * 30,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) =>
-                                    Center(child: CircularProgressIndicator()),
-                                errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(item.nama_toko ?? '',
-                                      style: TextStyle(fontWeight: FontWeight.bold)),
-                                  SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.location_on,
-                                          size: 16, color: Colors.grey),
-                                      SizedBox(width: 4),
-                                      Expanded(
-                                        child: Text(item.alamat ?? '',
-                                            style: TextStyle(fontSize: 12)),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 4),
-                                  Text(
-                                    '${item.harga}',
-                                    style: TextStyle(
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(height: 4),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                );
-              }),
+              const SizedBox(height: 16),
+              _buildPengepulGrid(),
             ],
           ),
         ),
@@ -129,8 +55,122 @@ class _KopiPageState extends State<KopiPage> {
           Get.toNamed(RouteName.pengepul + '/tambah');
         },
         backgroundColor: Colors.brown,
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
+    );
+  }
+
+  Widget _buildPengepulGrid() {
+    return Obx(() {
+      if (pengepulC.pengepul.isEmpty) {
+        return const Center(
+          child: Text("Tidak ada data pengepul", 
+              style: TextStyle(fontSize: 16)),
+        );
+      }
+      
+      return GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 0.55, // Memperbesar rasio aspek untuk mengakomodasi gambar lebih tinggi
+        ),
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: pengepulC.pengepul.length,
+        itemBuilder: (context, index) {
+          final item = pengepulC.pengepul[index];
+          return _buildPengepulCard(item);
+        },
+      );
+    });
+  }
+
+  Widget _buildPengepulCard(dynamic item) {
+    return GestureDetector(
+      onTap: () {
+        Get.toNamed(RouteName.pengepul + '/detail/${item.id}');
+      },
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image dengan ukuran seragam
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              child: SizedBox(
+                height: 140, // Memperpanjang tinggi gambar
+                width: double.infinity,
+                child: CachedNetworkImage(
+                  imageUrl: Connection.buildImageUrl(item.url_gambar),
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.brown,
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => const Icon(
+                    Icons.error,
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+            ),
+            // Konten dengan padding seragam
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildInfoRow('Nama Toko:', item.nama_toko ?? '-', isBold: true),
+                  _buildInfoRow('Lokasi:', item.alamat ?? '-'),
+                  _buildInfoRow(
+                    'Harga Beli:',
+                    'Rp ${item.harga.toString()}',
+                    textColor: Colors.green,
+                    isBold: true,
+                  ),
+                  if (item.jenis_kopi != null && item.jenis_kopi!.isNotEmpty)
+                    _buildInfoRow('Jenis Kopi:', item.jenis_kopi!),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value, {bool isBold = false, Color? textColor}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.w600,
+            color: Colors.grey,
+          ),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+            color: textColor,
+            overflow: TextOverflow.ellipsis,
+          ),
+          maxLines: 1,
+        ),
+      ],
     );
   }
 }
