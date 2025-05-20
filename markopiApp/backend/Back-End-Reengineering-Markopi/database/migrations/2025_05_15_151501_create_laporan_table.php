@@ -11,11 +11,11 @@ class CreateLaporanTable extends Migration
             $table->id();
             $table->string('judul_laporan');
             $table->text('isi_laporan')->nullable();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedInteger('user_id');
             $table->timestamps();
 
             // jika ingin relasi ke tabel users
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id_users')->on('users')->onDelete('cascade');
         });
     }
 
