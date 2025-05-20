@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markopi/controllers/Autentikasi_Controller.dart';
 import 'package:markopi/models/register_request.dart';
+import 'package:markopi/routes/route_name.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -78,7 +79,7 @@ class _RegisterPageState extends State<RegisterPage> {
               backgroundColor: const Color(0xff2696D6),
               shape: StadiumBorder(),
             ),
-            onPressed: () {},
+            onPressed: () => Get.toNamed(RouteName.login),
             child: Text(
               'Masuk',
               style: TextStyle(color: Colors.white),
