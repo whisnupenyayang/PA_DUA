@@ -4,6 +4,7 @@ import 'package:markopi/models/laporan_kebun.dart';
 import 'package:markopi/service/laporan_service.dart';
 import 'package:markopi/routes/route_name.dart';
 import 'package:intl/intl.dart';
+import 'package:markopi/view/Laporan/income_expance.dart';
 import 'package:markopi/view/Laporan/tambah_kebun.dart';
 
 class LaporanPage extends StatefulWidget {
@@ -112,7 +113,13 @@ class _LaporanPageState extends State<LaporanPage> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Get.to(IncomeExpensePage(
+                                      kebunId: laporan.id.toString(),
+                                      namaKebun: laporan.namaKebun,
+                                      bulan: "2025-05",
+                                    ));
+                                  },
                                   child: Row(
                                     spacing: 2,
                                     children: [

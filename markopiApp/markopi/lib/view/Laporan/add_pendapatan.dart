@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:markopi/controllers/add_income_controller.dart';
+import 'package:markopi/controllers/income_controller.dart';
 class IncomeExpenseForm extends StatefulWidget {
   @override
-  _IncomeExpenseFormState createState() => _IncomeExpenseFormState();
+  final String kebun_id;
+
+  const IncomeExpenseForm({
+    super.key,
+    required this.kebun_id
+  });
+
+  _IncomeExpenseFormState createState() => _IncomeExpenseFormState(
+
+  );
 }
 
 class _IncomeExpenseFormState extends State<IncomeExpenseForm> {
@@ -13,7 +21,7 @@ class _IncomeExpenseFormState extends State<IncomeExpenseForm> {
   // Pendapatan Controllers
   final TextEditingController jenisKopiController = TextEditingController();
   final TextEditingController tempatJualController = TextEditingController();
-  final TextEditingController tanggalJualController = TextEditingController();
+  final TextEditingController tanggalPanen = TextEditingController();
   final TextEditingController banyakKopiController = TextEditingController();
   final TextEditingController hargaKopiController = TextEditingController();
 
@@ -57,7 +65,7 @@ class _IncomeExpenseFormState extends State<IncomeExpenseForm> {
                   Get.snackbar("Peringatan", "Tempat Penjualan wajib diisi");
                   return;
                   }
-                  if (tanggalJualController.text.isEmpty) {
+                  if (tanggalPanen.text.isEmpty) {
                   Get.snackbar("Peringatan", "Tanggal Penjualan wajib diisi");
                   return;
                   }
@@ -83,14 +91,16 @@ class _IncomeExpenseFormState extends State<IncomeExpenseForm> {
                 bool response = false;
                 if (isPendapatan) {
                   response = await IncomeController.kirimPendapatan(
+                  kebun_id: widget.kebun_id,
                   jenisKopi: jenisKopiController.text,
                   tempatJual: tempatJualController.text,
-                  tanggal: tanggalJualController.text,
+                  tanggal: tanggalPanen.text,
                   banyakKopi: banyakKopiController.text,
                   hargaKopi: hargaKopiController.text,
                   );
                 } else {
                   response = await IncomeController.kirimPengeluaran(
+                  kebun_id: widget.kebun_id,
                   jenisPengeluaran: jenisPengeluaranController.text,
                   jumlah: jumlahPengeluaranController.text,
                   );
@@ -148,7 +158,7 @@ class _IncomeExpenseFormState extends State<IncomeExpenseForm> {
     return [
       _buildTextField(jenisKopiController, 'Jenis Kopi', 'Isi jenis kopi'),
       _buildTextField(tempatJualController, 'Tempat Penjualan', 'Isi tempat jual'),
-      _buildTextField(tanggalJualController, 'Tanggal Penjualan', 'Isi tanggal dengan format tahun-bulan-tanggal'),
+      _buildTextField(tanggalPanen, 'Tanggal Panen', 'Isi tanggal dengan format tahun-bulan-tanggal'),
       _buildTextField(banyakKopiController, 'Banyak Kopi', 'Isi banyak kopi dalam kg'),
       _buildTextField(hargaKopiController, 'Harga Kopi Per Kg', 'Isi harga kopi'),
     ];
