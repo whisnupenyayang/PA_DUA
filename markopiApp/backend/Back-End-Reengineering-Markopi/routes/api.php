@@ -194,6 +194,8 @@ Route::get('/pengajuan/detail/{id}', [TransaksiApiController::class, 'pengajuanD
 
 Route::get('/pengajuandalamdata', [TransaksiApiController::class, 'getPengajuanbyData'])->middleware(['auth:sanctum']);
 
+Route::delete('/pengepul/{id}', [PengepulApiController::class, 'deletePengepul'])->middleware('auth:sanctum');
+
 
 
 //toko

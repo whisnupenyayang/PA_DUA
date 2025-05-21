@@ -170,21 +170,21 @@ class _DetailPengepuldanPetaniState extends State<DetailPengepuldanPetani> {
 
               SizedBox(height: 24),
 
-              // Tombol Jual Kopi
+              // Tombol Hapus
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Get.toNamed(RouteName.pengepul + '/pengajuan/role/${item.id}');
+                    _deletePengepul(item.id);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
                     padding:
                         EdgeInsets.symmetric(vertical: 14, horizontal: 32),
                     textStyle:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  child: Text("Jual Kopi"),
+                  child: Text("Hapus Toko"),
                 ),
               ),
               SizedBox(height: 16),
@@ -223,6 +223,35 @@ class _DetailPengepuldanPetaniState extends State<DetailPengepuldanPetani> {
           ),
         ],
       ),
+    );
+  }
+
+  // Method untuk menghapus pengepul
+  void _deletePengepul(int id) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Hapus Pengepul"),
+          content: Text("Apakah Anda yakin ingin menghapus pengepul ini?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back(); // Menutup dialog
+              },
+              child: Text("Batal"),
+            ),
+            TextButton(
+              onPressed: () {
+                pengepulC.deletePengepul(id); // Panggil deletePengepul
+                Get.back(); // Menutup dialog setelah berhasil
+                Get.back(); // Kembali ke halaman sebelumnya
+              },
+              child: Text("Hapus"),
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:markopi/controllers/Pengepul_Controller.dart';
 import 'package:markopi/providers/Connection.dart';
 import 'package:markopi/routes/route_name.dart';
 import 'package:get/get.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class KopiPage extends StatefulWidget {
   @override
@@ -12,24 +11,29 @@ class KopiPage extends StatefulWidget {
 }
 
 class _KopiPageState extends State<KopiPage> {
-  bool isPengepul = true;
+  bool isMyShop = false;  // Initially show all stores (not just my shop)
   final PengepulController pengepulC = Get.put(PengepulController());
 
   @override
   void initState() {
     super.initState();
-    pengepulC.fetchPengepul();
+    pengepulC.fetchPengepul();  // Fetch all stores initially
+    pengepulC.fetchPengepulByUser();  // Fetch user's stores as well
   }
 
   Future<void> _refreshData() async {
-    await pengepulC.fetchPengepul();
+    if (isMyShop) {
+      await pengepulC.fetchPengepulByUser();  // Refresh user's store data
+    } else {
+      await pengepulC.fetchPengepul();  // Refresh all store data
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(isPengepul ? 'Pengepul' : 'Petani'),
+        title: Text(isMyShop ? 'Toko Milik Saya' : 'Semua Toko Pengepul'),
         centerTitle: true,
       ),
       body: RefreshIndicator(
@@ -43,6 +47,39 @@ class _KopiPageState extends State<KopiPage> {
               const Text(
                 'Ayo!! Temukan harga terbaik untuk Kopi Anda.',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              // Toggle buttons for "Toko Milik Saya" and "Semua Toko"
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        isMyShop = true;
+                      });
+                    },
+                    child: Text(
+                      'Toko Milik Saya',
+                      style: TextStyle(
+                        color: isMyShop ? Colors.brown : Colors.grey,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        isMyShop = false;
+                      });
+                    },
+                    child: Text(
+                      'Semua Toko',
+                      style: TextStyle(
+                        color: isMyShop ? Colors.grey : Colors.brown,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 16),
               _buildPengepulGrid(),
@@ -60,27 +97,29 @@ class _KopiPageState extends State<KopiPage> {
     );
   }
 
+  // Build the grid of stores
   Widget _buildPengepulGrid() {
     return Obx(() {
-      if (pengepulC.pengepul.isEmpty) {
+      final pengepulList = isMyShop ? pengepulC.pengepulByUser : pengepulC.pengepul;
+
+      if (pengepulList.isEmpty) {
         return const Center(
-          child: Text("Tidak ada data pengepul", 
-              style: TextStyle(fontSize: 16)),
+          child: Text("Tidak ada data pengepul", style: TextStyle(fontSize: 16)),
         );
       }
-      
+
       return GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
-          childAspectRatio: 0.55, // Memperbesar rasio aspek untuk mengakomodasi gambar lebih tinggi
+          childAspectRatio: 0.65,
         ),
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: pengepulC.pengepul.length,
+        itemCount: pengepulList.length,
         itemBuilder: (context, index) {
-          final item = pengepulC.pengepul[index];
+          final item = pengepulList[index];
           return _buildPengepulCard(item);
         },
       );
@@ -100,11 +139,10 @@ class _KopiPageState extends State<KopiPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image dengan ukuran seragam
             ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
               child: SizedBox(
-                height: 140, // Memperpanjang tinggi gambar
+                height: 100,
                 width: double.infinity,
                 child: CachedNetworkImage(
                   imageUrl: Connection.buildImageUrl(item.url_gambar),
@@ -121,7 +159,6 @@ class _KopiPageState extends State<KopiPage> {
                 ),
               ),
             ),
-            // Konten dengan padding seragam
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:markopi/controllers/Pengepul_Controller.dart';
+import 'package:markopi/controllers/utils/constants.dart';
+
 
 class TambahPengepulPage extends StatefulWidget {
   @override
@@ -32,6 +34,16 @@ class _TambahPengepulPageState extends State<TambahPengepulPage> {
     }
   }
 
+  Future<void> _pickImageFromCamera() async {
+  final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+
+  if (pickedFile != null) {
+    setState(() {
+      _image = File(pickedFile.path);
+    });
+  }
+}
+
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       if (_image == null) {
@@ -57,6 +69,39 @@ class _TambahPengepulPageState extends State<TambahPengepulPage> {
     }
   }
 
+   void _showImagePicker() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading:
+                    Icon(Icons.photo_camera, color: Constants.primaryColor),
+                title: Text('Ambil Foto'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImageFromCamera();
+                },
+              ),
+              ListTile(
+                leading:
+                    Icon(Icons.photo_library, color: Constants.primaryColor),
+                title: Text('Pilih dari Galeri'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +115,7 @@ class _TambahPengepulPageState extends State<TambahPengepulPage> {
           child: ListView(
             children: [
               GestureDetector(
-                onTap: _pickImage,
+                onTap: _showImagePicker,
                 child: Container(
                   height: 150,
                   color: Colors.grey[300],
@@ -97,6 +142,7 @@ class _TambahPengepulPageState extends State<TambahPengepulPage> {
               TextFormField(
                 controller: teleponController,
                 decoration: InputDecoration(labelText: 'Nomor Telepon'),
+                keyboardType: TextInputType.number,
                 validator: (value) =>
                     value!.isEmpty ? 'Nomor telepon harus diisi' : null,
               ),
