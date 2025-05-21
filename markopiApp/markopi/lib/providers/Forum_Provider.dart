@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:markopi/models/user_model.dart';
+import 'package:markopi/service/User_Storage.dart';
+import 'package:markopi/service/User_Storage_Service.dart';
 import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:get/get.dart';
@@ -26,6 +29,7 @@ class ForumProvider extends GetConnect {
     // Add text fields
     request.fields['title'] = judulForum;
     request.fields['deskripsi'] = deskripsiForum;
+
     
     // Add image file if provided
     if (imagePath != null && imagePath.isNotEmpty) {
@@ -116,18 +120,18 @@ class ForumProvider extends GetConnect {
   // Fetch forum detail by ID
   Future<Response> getForumDetail(int id, String? token) async {
     final String apiUrl = Connection.buildUrl('$url/$id');
-    debugPrint('ForumProvider: Getting forum detail with URL: $apiUrl');
     
     try {
-      Map<String, String> headers = {};
+      Map<String, String> headers = {
+        "Content-type" : "application/json",
+        "Accept" : "application/json"
+      };
       if (token != null) {
         headers['Authorization'] = 'Bearer $token';
-        debugPrint('ForumProvider: Using authorization token for detail');
       } else {
         debugPrint('ForumProvider: No token provided for getForumDetail');
       }
-      
-      debugPrint('ForumProvider: Sending GET request for forum detail');
+  
       final response = await get(apiUrl, headers: headers);
       
       debugPrint('ForumProvider: Forum detail response status: ${response.statusCode}');
@@ -180,6 +184,7 @@ class ForumProvider extends GetConnect {
       
       Map<String, String> headers = {
         'Content-Type': 'application/json',
+        'Accept' : 'application/json',
       };
       
       if (token != null) {
@@ -189,7 +194,6 @@ class ForumProvider extends GetConnect {
         debugPrint('ForumProvider: No token provided for postKomentar!');
       }
       
-      debugPrint('ForumProvider: Sending POST request for comment');
       final response = await post(apiUrl, body, headers: headers);
       
       debugPrint('ForumProvider: Comment response status: ${response.statusCode}');

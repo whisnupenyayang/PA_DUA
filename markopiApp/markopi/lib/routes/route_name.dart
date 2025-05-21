@@ -3,7 +3,7 @@ abstract class RouteName {
   static const kegiatan = "/kegiatan";              // Halaman kegiatan
   static const pengepul = "/pengepul";              // Halaman pengepul
   static const tokoKoppi = "/tokokopi";             // Halaman toko kopi
-  static const forum = "/forum";                    // Halaman forum
+  static const forum = "/forum";               // Halaman forum
   static const forumKomentar = "/forum/komentar";   // Halaman forum komentar (lebih deskriptif)
   static const budidaya = "/budidaya";              // Halaman budidaya
   static const login = "/login";                    // Halaman login

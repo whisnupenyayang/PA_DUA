@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:markopi/models/Komentar_Forum_Model.dart';
 import 'package:markopi/view/Artikel/List_artikel.dart';
 import 'package:markopi/view/Beranda/Beranda.dart';
 import 'package:markopi/view/Budidaya/Jenis_Tahap_Budidaya.dart';
@@ -15,6 +16,7 @@ import 'package:markopi/view/DataPengepulUser/UserPengepu.dart';
 import 'package:markopi/view/forum/ForumKomentar.dart';
 import 'package:markopi/view/forum/ListForum.dart';
 import 'package:markopi/view/Laporan/LaporanPage.dart';
+import 'package:markopi/view/forum/TambahPertanyaan.dart';
 import 'package:markopi/view/toko/toko_kopi_page.dart'; // Import halaman Toko Kopi
 import 'package:markopi/view/resep/resep_kopi_page.dart';
 import 'package:markopi/binding/Budidaya_Binding.dart';
@@ -37,6 +39,12 @@ class AppPages {
       page: () => ListForum(),
     ),
 
+    GetPage(
+      name: '/forum-detail/:id', // Tambahkan route forum
+      page: () => ForumKomentar(),
+    ),
+
+    GetPage(name: "/add-forum", page: () => TambahPertanyaan()),
     /*================Budidaya=================== */
     GetPage(
       name: RouteName.kegiatan + '/:kegiatan/:jenis_kopi',

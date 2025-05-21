@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:markopi/models/Forum_Model.dart';
 import 'package:markopi/models/Komentar_Forum_Model.dart';
@@ -70,21 +72,16 @@ class ForumController extends GetxController {
               debugPrint('ForumController: Processed ${newForums.length} new forums');
               
               if (page.value == 1) {
-                debugPrint('ForumController: First page, clearing existing forums');
+          
                 forum.clear(); // Clear only on first page
               }
               
               forum.addAll(newForums);
-              debugPrint('ForumController: Total forums after update: ${forum.length}');
               page.value++; // Increment page for next fetch
-              debugPrint('ForumController: Next page will be: ${page.value}');
+            
               
-              // Check if there are more pages to fetch
-              hasMore.value = newForums.length >= 5; // Assuming limit is 5 per page
-              debugPrint('ForumController: Has more pages: ${hasMore.value}');
-            } catch (e, stackTrace) {
-              debugPrint('ForumController: Error processing forum items: $e');
-              debugPrint('ForumController: Stack trace: $stackTrace');
+              hasMore.value = newForums.length >= 5; 
+            } catch (e) {
               Get.snackbar('Error', 'Gagal memproses data forum: $e');
             }
           } else {
@@ -181,6 +178,30 @@ class ForumController extends GetxController {
     }
   }
 
+  Future<void> tambahForum(String judul, String description, File image) async {  
+    final String? token = await TokenStorage.getToken();
+    try {
+      if (token == null) {
+        Get.snackbar('Error', 'Token tidak tersedia');
+        return;
+      }
+      final response = await forumProvider.postForum(
+        token: token,
+        judulForum: judul,
+        deskripsiForum: description,
+        imagePath: image.path,
+      );
+     
+     if (response.statusCode == 200) {
+       Get.snackbar("Berhasil", "Pertanyaan Berhasil Di Publish");
+     } else {
+       Get.snackbar('Error', 'Gagal menambah forum');
+     }
+    } catch (e) {
+      Get.snackbar('Error', 'Gagal menambah forum: $e');
+    }
+  }
+
   // Fetching detailed information for a specific forum by id
   Future<void> fetchForumDetail(int id) async {
     debugPrint('ForumController: fetchForumDetail called for forum ID $id');
@@ -261,5 +282,21 @@ class ForumController extends GetxController {
       debugPrint('ForumController: Stack trace: $stackTrace');
       Get.snackbar('Error', 'Terjadi kesalahan saat menambahkan komentar: $e');
     }
+  }
+
+  // Search forums by title or description
+  void searchForum(String value) {
+    if (value.isEmpty) {
+      // If search is empty, reload the original forum list
+      refreshForum();
+      return;
+    }
+    final query = value.toLowerCase();
+    final filtered = forum.where((f) =>
+      (f.judulForum?.toLowerCase().contains(query) ?? false) ||
+      (f.deskripsiForum?.toLowerCase().contains(query) ?? false)
+    ).toList();
+    forum.value = filtered;
+    hasMore.value = false; // Disable load more when searching
   }
 }
