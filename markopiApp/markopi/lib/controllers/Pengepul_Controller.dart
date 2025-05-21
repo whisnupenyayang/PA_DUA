@@ -8,29 +8,14 @@ import 'package:markopi/providers/Pengepul_Providers.dart';
 import 'package:markopi/service/token_storage.dart';
 
 class PengepulController extends GetxController {
-  final pengepulProvider = PengepulProviders();
-
-  var pengepul = <Pengepul>[].obs;
+  var pengepul = <Pengepul>[].obs;  // Semua pengepul
+  var pengepulByUser = <Pengepul>[].obs;  // Pengepul milik pengguna
   var rataRataHargaKopi = <RataRataHargakopi>[].obs;
   var detailPengepul = Pengepul.empty().obs;
 
-  // Tambahan properti agar bisa dipakai di tampilan
-  var pengepulByUser = <Pengepul>[].obs;
-  var allPengepul = <Pengepul>[].obs;
+  final pengepulProvider = PengepulProviders();
 
-  Future<void> fetchRataRataHarga(String jenis_kopi, String tahun) async {
-    final response =
-        await pengepulProvider.getHargaRataRataKopi(jenis_kopi, tahun);
-
-    if (response.statusCode == 200) {
-      final List<dynamic> data = response.body['data'];
-      rataRataHargaKopi.value =
-          data.map((e) => RataRataHargakopi.fromJson(e)).toList();
-    } else {
-      Get.snackbar('Error', 'Gagal mengambil data rata-rata harga kopi');
-    }
-  }
-
+  // Ambil data semua pengepul
   Future<void> fetchPengepul() async {
     final response = await pengepulProvider.getPengepul();
     if (response.statusCode == 200) {
@@ -41,7 +26,8 @@ class PengepulController extends GetxController {
     }
   }
 
-  Future<void> fetchPengepulByUser([int? userId]) async {
+  // Ambil data pengepul milik pengguna
+  Future<void> fetchPengepulByUser() async {
     final String? token = await TokenStorage.getToken();
     if (token == null) {
       Get.snackbar('Error', 'Anda belum login');
@@ -54,46 +40,11 @@ class PengepulController extends GetxController {
       final List<dynamic> data = response.body;
       pengepulByUser.value = data.map((e) => Pengepul.fromJson(e)).toList();
     } else {
-      Get.snackbar('Error', 'Gagal mengambil data pengepul user');
+      Get.snackbar('Error', 'Gagal mengambil data pengepul milik pengguna');
     }
   }
 
-  Future<void> fetchAllPengepul() async {
-    final response = await pengepulProvider.getPengepul();
-    if (response.statusCode == 200) {
-      final List<dynamic> data = response.body;
-      allPengepul.value = data.map((e) => Pengepul.fromJson(e)).toList();
-    } else {
-      Get.snackbar('Error', 'Gagal mengambil semua pengepul');
-    }
-  }
-
-  Future<void> tambahDataPengepul(
-    String nama_toko,
-    String jenis_kopi,
-    int harga,
-    String nomor_telepon,
-    String alamat,
-    File nama_gambar,
-  ) async {
-    final String? token = await TokenStorage.getToken();
-
-    if (token == null) {
-      return print("Token kosong");
-    }
-
-    final response = await pengepulProvider.postPengepul(
-        nama_toko, jenis_kopi, harga, nomor_telepon, alamat, nama_gambar, token);
-
-    if (response.statusCode == 200) {
-      final responseBody = jsonDecode(response.body);
-      Get.snackbar('Berhasil', responseBody['message'] ?? 'Upload berhasil');
-    } else {
-      final errorBody = jsonDecode(response.body);
-      Get.snackbar('Error', errorBody['message'] ?? 'Upload gagal');
-    }
-  }
-
+  // Ambil detail pengepul
   Future<void> fetcPengepulDetail(int id) async {
     final response = await pengepulProvider.getPengepulDetail(id);
 
@@ -101,10 +52,11 @@ class PengepulController extends GetxController {
       Map<String, dynamic> data = response.body;
       detailPengepul.value = Pengepul.fromJson(data);
     } else {
-      Get.snackbar('Gagal', 'Gagal mengambil detail pengepul');
+      Get.snackbar('Error', 'Gagal mengambil detail pengepul');
     }
   }
 
+  // Tambah data pengepul
   Future<void> tambahPengepul({
     required String nama,
     required String alamat,
@@ -121,10 +73,10 @@ class PengepulController extends GetxController {
     }
 
     final response = await pengepulProvider.postPengepul(
-      nama, // nama_toko
-      jenisKopi, // jenis_kopi
+      nama,          // nama_toko
+      jenisKopi,     // jenis_kopi
       int.parse(harga),
-      telepon, // nomor_telepon
+      telepon,       // nomor_telepon
       alamat,
       gambar,
       token,
@@ -133,11 +85,84 @@ class PengepulController extends GetxController {
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
       Get.snackbar('Berhasil', responseBody['message'] ?? 'Upload berhasil');
-      fetchPengepulByUser(); // refresh data user pengepul
-      fetchAllPengepul();    // refresh semua pengepul
+      fetchPengepul(); // Update daftar pengepul
+      fetchPengepulByUser(); // Update daftar pengepul milik pengguna
     } else {
       final errorBody = jsonDecode(response.body);
       Get.snackbar('Gagal', errorBody['message'] ?? 'Upload gagal');
+    }
+  }
+
+  // Edit data pengepul
+  Future<void> editPengepul({
+    required int id,
+    required String nama,
+    required String alamat,
+    required String harga,
+    required String telepon,
+    required String jenisKopi,
+  }) async {
+    final String? token = await TokenStorage.getToken();
+
+    if (token == null) {
+      Get.snackbar("Error", "Token tidak ditemukan");
+      return;
+    }
+
+    final response = await pengepulProvider.editPengepul(
+      id,
+      nama,
+      jenisKopi,
+      int.parse(harga),
+      telepon,
+      alamat,
+      token,
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+      Get.snackbar('Berhasil', responseBody['message'] ?? 'Edit berhasil');
+      fetchPengepul(); // Update daftar pengepul
+      fetchPengepulByUser(); // Update daftar pengepul milik pengguna
+    } else {
+      final errorBody = jsonDecode(response.body);
+      Get.snackbar('Gagal', errorBody['message'] ?? 'Edit gagal');
+    }
+  }
+
+  // Hapus data pengepul
+  Future<void> deletePengepul(int id) async {
+    final String? token = await TokenStorage.getToken();
+
+    if (token == null) {
+      Get.snackbar("Error", "Token tidak ditemukan");
+      return;
+    }
+
+    final response = await pengepulProvider.deletePengepul(id, token);
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+      Get.snackbar('Berhasil', responseBody['message'] ?? 'Hapus berhasil');
+      fetchPengepul(); // Update daftar pengepul
+      fetchPengepulByUser(); // Update daftar pengepul milik pengguna
+    } else {
+      final errorBody = jsonDecode(response.body);
+      Get.snackbar('Gagal', errorBody['message'] ?? 'Hapus gagal');
+    }
+  }
+
+  // Fetch rata-rata harga kopi
+  Future<void> fetchRataRataHarga(String jenis_kopi, String tahun) async {
+    final response =
+        await pengepulProvider.getHargaRataRataKopi(jenis_kopi, tahun);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = response.body['data'];
+      rataRataHargaKopi.value =
+          data.map((e) => RataRataHargakopi.fromJson(e)).toList();
+    } else {
+      Get.snackbar('Error', 'Gagal mengambil data');
     }
   }
 }

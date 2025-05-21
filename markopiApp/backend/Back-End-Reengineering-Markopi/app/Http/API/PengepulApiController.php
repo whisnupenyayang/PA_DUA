@@ -204,4 +204,44 @@ class PengepulApiController extends Controller
         return response()->json(['data' => $hargaRataRata]);
 
     }
+
+    public function deletePengepul($id)
+{
+    try {
+        // Attempt to find the pengepul by id
+        $pengepul = Pengepul::findOrFail($id);
+
+        // Check if the logged-in user is the owner of the pengepul
+        $user = request()->user();
+        if ($pengepul->user_id !== $user->id_users) {
+            return response()->json(['message' => 'Anda tidak memiliki akses untuk menghapus pengepul ini'], 403);
+        }
+
+        // Delete the pengepul record
+        $pengepul->delete();
+
+        // Delete related average coffee price data based on jenis_kopi, current month, and year
+        RataRataHergaKopi::where('jenis_kopi', $pengepul->jenis_kopi)
+            ->where('tahun', Carbon::now()->format('Y'))
+            ->where('bulan', Carbon::now()->format('m'))
+            ->delete();
+
+        // Return success message
+        return response()->json(['message' => 'Pengepul berhasil dihapus'], 200);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        // If the pengepul with the given id is not found
+        return response()->json([
+            'message' => 'Pengepul tidak ditemukan',
+            'error' => $e->getMessage()
+        ], 404);
+    } catch (\Exception $e) {
+        // Catch other exceptions and log the error
+        return response()->json([
+            'message' => 'Terjadi kesalahan saat menghapus pengepul',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
+
 }
