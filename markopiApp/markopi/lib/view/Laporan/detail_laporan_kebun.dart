@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:markopi/service/laporan_service.dart';
 import 'package:markopi/models/laporan_kebun.dart';
+import './income_expance.dart';
+import 'package:get/get.dart';
 
 class LaporanDetailPage extends StatefulWidget {
   final int idKebun;
@@ -33,7 +35,7 @@ class _LaporanDetailPageState extends State<LaporanDetailPage> {
   String convertBulanToYearMonth(String bulan) {
     try {
       DateTime date = DateFormat("MMMM yyyy", "en_US").parse(bulan);
-      
+
       return DateFormat("yyyy-MM").format(date);
     } catch (e) {
       return bulan;
@@ -44,6 +46,8 @@ class _LaporanDetailPageState extends State<LaporanDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
         title: Text(widget.title),
         centerTitle: true,
       ),
@@ -87,14 +91,42 @@ class _LaporanDetailPageState extends State<LaporanDetailPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            convertBulanToYearMonth(laporan.bulan),
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                convertBulanToYearMonth(laporan.bulan),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () => Get.to(() => IncomeExpensePage(
+                                      kebunId: widget.idKebun.toString(),
+                                      namaKebun: widget.title,
+                                      bulan: convertBulanToYearMonth(
+                                          laporan.bulan),
+                                    )),
+                                child: Row(
+                                  spacing: 2,
+                                  children: [
+                                    Text(
+                                      'Detail',
+                                      style: TextStyle(
+                                        color: Colors.blue.shade700,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.chevron_right_rounded,
+                                      color: Colors.blue.shade700,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 20),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:markopi/models/laporan_kebun.dart';
 import 'package:markopi/service/laporan_service.dart';
 import 'package:intl/intl.dart';
+import 'package:markopi/view/Laporan/income_expance.dart';
 import 'package:markopi/view/Laporan/tambah_kebun.dart';
 import 'package:markopi/view/Laporan/detail_laporan_kebun.dart';
 
@@ -32,6 +33,8 @@ class _LaporanPageState extends State<LaporanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
         title: const Text('Laporan Kebun'),
         centerTitle: true,
         actions: [
