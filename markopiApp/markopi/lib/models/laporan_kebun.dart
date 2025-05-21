@@ -48,3 +48,51 @@ class LaporanKebunModel {
     );
   }
 }
+
+class LaporanDetailKebunModel {
+  final int idKebun;
+  final String namaKebun;
+  final List<LaporanDetailItem> laporanDetail;
+
+  LaporanDetailKebunModel({
+    required this.idKebun,
+    required this.namaKebun,
+    required this.laporanDetail,
+  });
+
+  factory LaporanDetailKebunModel.fromJson(Map<String, dynamic> json) {
+    final data = json['data'] ?? {};
+    final detailList = data['laporanDetail'] ?? [];
+
+    return LaporanDetailKebunModel(
+      idKebun: data['id_kebun'] ?? 0,
+      namaKebun: data['namaKebun'] ?? '',
+      laporanDetail: (detailList as List)
+          .map((item) => LaporanDetailItem.fromJson(item))
+          .toList(),
+    );
+  }
+}
+
+class LaporanDetailItem {
+  final String bulan;
+  final int pendapatan;
+  final int pengeluaran;
+  final int hasilProduktivitas;
+
+  LaporanDetailItem({
+    required this.bulan,
+    required this.pendapatan,
+    required this.pengeluaran,
+    required this.hasilProduktivitas,
+  });
+
+  factory LaporanDetailItem.fromJson(Map<String, dynamic> json) {
+    return LaporanDetailItem(
+      bulan: json['bulan'] ?? '',
+      pendapatan: json['pendapatan'] ?? 0,
+      pengeluaran: json['pengeluaran'] ?? 0,
+      hasilProduktivitas: json['hasil_produktivitas'] ?? 0,
+    );
+  }
+}

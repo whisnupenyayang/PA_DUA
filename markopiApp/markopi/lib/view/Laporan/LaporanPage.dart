@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markopi/models/laporan_kebun.dart';
 import 'package:markopi/service/laporan_service.dart';
-import 'package:markopi/routes/route_name.dart';
 import 'package:intl/intl.dart';
 import 'package:markopi/view/Laporan/tambah_kebun.dart';
+import 'package:markopi/view/Laporan/detail_laporan_kebun.dart';
 
 class LaporanPage extends StatefulWidget {
   const LaporanPage({Key? key}) : super(key: key);
@@ -112,7 +112,12 @@ class _LaporanPageState extends State<LaporanPage> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 GestureDetector(
-                                  onTap: () {},
+                                  onTap: () => Get.to(
+                                    () => LaporanDetailPage(
+                                      idKebun: laporan.id,
+                                      title: laporan.namaKebun,
+                                    ),
+                                  ),
                                   child: Row(
                                     spacing: 2,
                                     children: [

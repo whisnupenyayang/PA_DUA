@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markopi/routes/route_name.dart';
+import 'package:markopi/service/token_storage.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({super.key});
@@ -10,6 +11,19 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
+
+  late String? token;
+
+  @override
+  void initState() {
+    super.initState();
+    getStorage();
+  }
+
+  void getStorage() async {
+    token = await TokenStorage.getToken();
+  }
+
   final List<String> imageList = [
     'assets/images/budidaya_baru.jpg',
     'assets/images/panen_baru.jpg',
@@ -51,7 +65,11 @@ class _MainMenuState extends State<MainMenu> {
         Get.toNamed(RouteName.resepKopi);
       } else if (menuList[index] == 'Laporan') {
         print('Navigasi ke Laporan');
-        Get.toNamed(RouteName.laporan); // pastikan route laporan ada
+        if (token != null) {
+        Get.toNamed(RouteName.laporan);
+        } else {
+          Get.offAllNamed(RouteName.login);
+        }
       } else {
         print('Navigasi ke kegiatan: ${RouteName.kegiatan}/${menuList[index]}');
         Get.toNamed('${RouteName.kegiatan}/${menuList[index]}');
