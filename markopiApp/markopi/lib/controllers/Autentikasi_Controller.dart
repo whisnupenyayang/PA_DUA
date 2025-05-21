@@ -32,6 +32,8 @@ class AutentikasiController extends GetxController {
         final UserModel user = UserModel.fromJson(body['user']);
         await userService.openBox();
         await userService.saveUser(user);
+
+        Get.offAndToNamed(RouteName.beranda);
       } else {
         Get.snackbar('Error', body['message'] ?? 'Login gagal');
       }

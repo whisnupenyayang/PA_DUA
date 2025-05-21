@@ -40,8 +40,7 @@ class _LoginViewState extends State<LoginView> {
             TextField(
               controller: _username,
               decoration: InputDecoration(
-                labelText: "Email address",
-                hintText: "Your email address",
+                labelText: "Username",
               ),
             ),
             const SizedBox(height: 16),
