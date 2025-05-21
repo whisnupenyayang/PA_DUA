@@ -12,6 +12,7 @@ class AutentikasiController extends GetxController {
   var sukses = false.obs;
 
   final autentikasiProvider = AutentikasiProvider();
+  final userStorage = UserStorage();
   var idUser = 0.obs;
   var role = ''.obs;
 
@@ -33,7 +34,7 @@ class AutentikasiController extends GetxController {
         await userService.openBox();
         await userService.saveUser(user);
 
-        Get.offAndToNamed(RouteName.beranda);
+        Get.offAllNamed(RouteName.beranda);
       } else {
         Get.snackbar('Error', body['message'] ?? 'Login gagal');
       }
@@ -44,6 +45,7 @@ class AutentikasiController extends GetxController {
 
   Future<void> logout() async {
     final String? token = await TokenStorage.getToken();
+    final box = await userStorage.openBox();
     if (token == null) {
       Get.snackbar("gagal", "Anda Belum Login");
       return;
@@ -51,6 +53,7 @@ class AutentikasiController extends GetxController {
     final response = await autentikasiProvider.logout(token);
 
     if (response.statusCode == 200) {
+      await userStorage.deleteUser();
       await TokenStorage.clearToken();
       sukses.value = true;
     }

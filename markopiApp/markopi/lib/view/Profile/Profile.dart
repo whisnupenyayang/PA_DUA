@@ -233,7 +233,7 @@ class _ProfileViewState extends State<ProfileView> {
               onTap: () async {
                 await autentikasiC.logout();
                 if (autentikasiC.sukses.value) {
-                  Get.offAllNamed(RouteName.beranda);
+                  Get.offAllNamed(RouteName.login);
                 }
               },
               child: Container(
