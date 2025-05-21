@@ -41,7 +41,7 @@ class LaporanKebunModel {
       id: json['id'],
       namaKebun: json['nama_kebun'],
       lokasi: json['lokasi'],
-      luasKebun: json['luas_kebun'],
+      luasKebun: double.parse(json['luas_kebun'].toString()),
       totalPendapatan: json['total_pendapatan'],
       totalPengeluaran: json['total_pengeluaran'],
       hasilProduktifitas: json['hasil_produktifitas'],
