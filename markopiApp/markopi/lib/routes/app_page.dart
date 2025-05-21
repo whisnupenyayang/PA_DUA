@@ -149,10 +149,10 @@ class AppPages {
     ),
 
     // Halaman untuk menambahkan laporan
-    GetPage(
-      name: '/laporan/tambah', // Definisikan route untuk menambah laporan
-      page: () =>
-          const AddLaporanPage(), // Mengarahkan ke halaman AddLaporanPage
-    ),
+    // GetPage(
+    //   name: '/laporan/tambah', // Definisikan route untuk menambah laporan
+    //   page: () =>
+    //       const AddLaporanPage(), // Mengarahkan ke halaman AddLaporanPage
+    // ),
   ];
 }

@@ -1,311 +1,185 @@
 import 'package:flutter/material.dart';
-import 'package:markopi/service/laporan_service.dart';
-import 'package:markopi/models/laporan.dart';
 import 'package:get/get.dart';
-import 'package:markopi/view/laporan/AddLaporanPage.dart';
+import 'package:markopi/models/laporan_kebun.dart';
+import 'package:markopi/service/laporan_service.dart';
+import 'package:markopi/routes/route_name.dart';
+import 'package:intl/intl.dart';
+import 'package:markopi/view/Laporan/tambah_kebun.dart';
 
 class LaporanPage extends StatefulWidget {
-  const LaporanPage({super.key});
-  
+  const LaporanPage({Key? key}) : super(key: key);
+
   @override
   State<LaporanPage> createState() => _LaporanPageState();
 }
 
 class _LaporanPageState extends State<LaporanPage> {
-  late Future<List<Laporan>> _laporanListFuture;
-  
+  late Future<LaporanResponse> _laporanFuture;
+
   @override
   void initState() {
     super.initState();
-    _refreshLaporanList();
+    _laporanFuture = LaporanService.getAllLaporans();
   }
-  
-  void _refreshLaporanList() {
-    setState(() {
-      _laporanListFuture = LaporanService.getAllLaporans();
-    });
+
+  String formatCurrency(num value) {
+    final formatter =
+        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0);
+    return formatter.format(value);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Daftar Laporan'),
+        title: const Text('Laporan Kebun'),
+        centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _refreshLaporanList,
-            tooltip: 'Refresh laporan',
-          ),
+              onPressed: () {
+                setState(() {
+                  _laporanFuture = LaporanService.getAllLaporans();
+                });
+              },
+              icon: Icon(Icons.refresh))
         ],
       ),
-      body: FutureBuilder<List<Laporan>>(
-        future: _laporanListFuture,
+      body: FutureBuilder<LaporanResponse>(
+        future: _laporanFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.laporan.isEmpty) {
+            return const Center(child: Text('Tidak ada data laporan.'));
           }
-          
-          if (snapshot.hasError) {
-            return Center(
+
+          final laporanData = snapshot.data!;
+          final laporans = laporanData.laporan;
+
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'Terjadi kesalahan:',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  Text('${snapshot.error}'),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _refreshLaporanList,
-                    child: const Text('Coba Lagi'),
-                  ),
-                ],
-              ),
-            );
-          }
-          
-          final laporanList = snapshot.data ?? [];
-          
-          if (laporanList.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.inbox_outlined,
-                    size: 80,
-                    color: Colors.grey,
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Belum ada laporan',
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      Get.to(() => const AddLaporanPage())?.then((_) => _refreshLaporanList());
-                    },
-                    child: const Text('Buat Laporan Baru'),
-                  ),
-                ],
-              ),
-            );
-          }
-          
-          return ListView.builder(
-            padding: const EdgeInsets.all(12),
-            itemCount: laporanList.length,
-            itemBuilder: (context, index) {
-              final laporan = laporanList[index];
-              return Card(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: InkWell(
-                  onTap: () {
-                    // Show laporan detail
-                    _showLaporanDetail(laporan);
-                  },
-                  borderRadius: BorderRadius.circular(15),
-                  child: Padding(
+                  Container(
+                    width: double.infinity,
                     padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade50,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.blue.shade100),
+                    ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                laporan.judulLaporan,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            const Icon(
-                              Icons.description,
-                              size: 24,
-                              color: Colors.blueGrey,
-                            ),
-                          ],
+                        const Text(
+                          'Total Pendapatan',
+                          style: TextStyle(fontSize: 16, color: Colors.black87),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 4),
                         Text(
-                          laporan.isiLaporan ?? '-',
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
+                          formatCurrency(laporans.fold(0,
+                              (total, item) => total + item.totalPendapatan)),
                           style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.black87,
+                            fontSize: 20,
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
                   ),
-                ),
-              );
-            },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.to(() => const AddLaporanPage())?.then((_) => _refreshLaporanList());
-        },
-        child: const Icon(Icons.add),
-        tooltip: 'Tambah Laporan',
-      ),
-    );
-  }
-  
-  void _showLaporanDetail(Laporan laporan) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.6,
-        minChildSize: 0.3,
-        maxChildSize: 0.9,
-        expand: false,
-        builder: (context, scrollController) {
-          return SingleChildScrollView(
-            controller: scrollController,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Container(
-                      width: 40,
-                      height: 5,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    laporan.judulLaporan,
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
                   const SizedBox(height: 16),
-                  const Divider(),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Isi Laporan:',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueGrey,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    laporan.isiLaporan ?? '-',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      height: 1.5,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          // Confirm before delete
-                          _confirmDeleteLaporan(laporan);
-                        },
-                        child: const Text('Hapus'),
-                        style: TextButton.styleFrom(foregroundColor: Colors.red),
+                  ...laporans.map((laporan) {
+                    return Card(
+                      elevation: 2,
+                      margin: const EdgeInsets.only(bottom: 12),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  laporan.namaKebun,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: Row(
+                                    spacing: 2,
+                                    children: [
+                                      Text(
+                                        'Detail',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.blue.shade700,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right_rounded,
+                                        color: Colors.blue.shade700,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              laporan.lokasi,
+                              style: const TextStyle(color: Colors.grey),
+                            ),
+                            const SizedBox(height: 12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Hasil Produktivitas'),
+                                Text(
+                                  formatCurrency(laporan.hasilProduktifitas),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 6),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Total pendapatan'),
+                                Text(formatCurrency(laporan.totalPendapatan)),
+                              ],
+                            ),
+                            const SizedBox(height: 6),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Total pengeluaran'),
+                                Text(formatCurrency(laporan.totalPengeluaran)),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
+                    );
+                  }).toList(),
                 ],
               ),
             ),
           );
         },
       ),
-    );
-  }
-  
-  void _confirmDeleteLaporan(Laporan laporan) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Konfirmasi'),
-          content: Text('Apakah Anda yakin ingin menghapus laporan "${laporan.judulLaporan}"?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Batal'),
-            ),
-            TextButton(
-              onPressed: () async {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop(); // Close bottom sheet
-                
-                // Show loading indicator
-                final loadingContext = context;
-                showDialog(
-                  context: loadingContext,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return const AlertDialog(
-                      content: Row(
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(width: 16),
-                          Text("Menghapus laporan..."),
-                        ],
-                      ),
-                    );
-                  },
-                );
-                
-                // Delete laporan
-                final success = await LaporanService.deleteLaporan(laporan.id!);
-                
-                // Close loading dialog
-                Navigator.of(loadingContext).pop();
-                
-                // Show result and refresh
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      success ? 'Laporan berhasil dihapus' : 'Gagal menghapus laporan',
-                    ),
-                    backgroundColor: success ? Colors.green : Colors.red,
-                  ),
-                );
-                
-                if (success) {
-                  _refreshLaporanList();
-                }
-              },
-              child: const Text('Hapus'),
-              style: TextButton.styleFrom(foregroundColor: Colors.red),
-            ),
-          ],
-        );
-      },
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Get.to(() => TambahKebunPage()),
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
