@@ -89,8 +89,7 @@ class _TambahPertanyaanState extends State<TambahPertanyaan> {
                 decoration: const InputDecoration(
                     labelText: 'isi Pertanyaan anda...',
                     border: OutlineInputBorder(),
-                    fillColor: Colors.blueGrey),
-                style: TextStyle(backgroundColor: Colors.blueGrey.shade100),
+                ),
                 validator: (value) =>
                     value == null || value.isEmpty ? 'Judul wajib diisi' : null,
               ),

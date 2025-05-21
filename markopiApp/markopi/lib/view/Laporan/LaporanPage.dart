@@ -109,7 +109,7 @@ class _LaporanPageState extends State<LaporanPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  laporan.namaKebun,
+                                  laporan.namaKebun ?? '',
                                   style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
@@ -184,9 +184,10 @@ class _LaporanPageState extends State<LaporanPage> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: ElevatedButton(
         onPressed: () => Get.to(() => TambahKebunPage()),
-        child: Icon(Icons.add),
+        child: Text("Tambah data kebun", style: TextStyle(color: Colors.white),),
+        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue.shade600)),
       ),
     );
   }

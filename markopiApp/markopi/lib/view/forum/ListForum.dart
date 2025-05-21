@@ -175,42 +175,6 @@ class ListForum extends StatelessWidget {
                                         forum.deskripsiForum,
                                         style: const TextStyle(fontSize: 14),
                                       ),
-
-                                      const SizedBox(height: 12),
-
-                                      // Icon interaksi
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              const Icon(Icons.thumb_up_off_alt,
-                                                  size: 18),
-                                              const SizedBox(width: 4),
-                                              Text('12'),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Icon(
-                                                  Icons.chat_bubble_outline,
-                                                  size: 18),
-                                              const SizedBox(width: 4),
-                                              Text('12'),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Icon(
-                                                  Icons.remove_red_eye_outlined,
-                                                  size: 18),
-                                              const SizedBox(width: 4),
-                                              Text('12'),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
                                     ],
                                   ),
                                 ),

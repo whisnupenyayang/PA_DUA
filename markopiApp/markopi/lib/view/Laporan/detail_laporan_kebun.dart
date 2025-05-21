@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:markopi/service/laporan_service.dart';
 import 'package:markopi/models/laporan_kebun.dart';
+import 'package:markopi/view/Laporan/add_pendapatan.dart';
 import './income_expance.dart';
 import 'package:get/get.dart';
 
@@ -165,6 +166,16 @@ class _LaporanDetailPageState extends State<LaporanDetailPage> {
           );
         },
       ),
+      floatingActionButton: ElevatedButton(
+          style:
+              ElevatedButton.styleFrom(backgroundColor: Colors.blue.shade600),
+          onPressed: () {
+            Get.to(IncomeExpenseForm(kebun_id: widget.idKebun.toString()));
+          },
+          child: const Text(
+            "Tambah data",
+            style: TextStyle(color: Colors.white),
+          )),
     );
   }
 }

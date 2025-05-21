@@ -91,6 +91,7 @@ class IncomeController extends GetxController {
       final responseData = json.decode(response.body);
       final status = responseData['status'];
 
+      debugPrint(response.body);
       if (status == "success") {
         Get.off(LaporanPage());
         return true;
