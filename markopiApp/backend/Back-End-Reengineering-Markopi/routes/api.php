@@ -43,7 +43,7 @@ Route::get('/kegiatan/{kegiatan}/{jenisKopi}', [BudidayaAPIController::class, 'g
 
 Route::get('/jenistahapankegiatan/{id}', [BudidayaAPIController::class, 'getJenisTahapanKegiatan']);
 
-Route::get('/jenistahapankegiatan/detail/{id}', [BudidayaAPIController::class,'getJenisTahapanKegiatanDetail']);
+Route::get('/jenistahapankegiatan/detail/{id}', [BudidayaAPIController::class, 'getJenisTahapanKegiatanDetail']);
 Route::post('/jenistahapkegiatandetail', [BudidayaAPIController::class, 'storeJenisTahapanKegiatanDetail']);
 
 
@@ -77,8 +77,8 @@ Route::get('/komunitas', [BudidayaAPIController::class, 'getKomunitasData']);
 // ============================== Autentikasi ====================
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('password/forgot',[ForgotPasswordController::class,'forgotPassword']);
-Route::post('password/reset',[ResetPasswordController::class,'resetPassword']);
+Route::post('/password/forgot', [ForgotPasswordController::class, 'forgotPassword']);
+Route::post('/password/reset', [ResetPasswordController::class, 'resetPassword']);
 // Route::middleware('auth:sanctum')->group(function () {
 Route::get('/logout', [AuthController::class, 'logout'])->middleware(['auth:sanctum']);
 
@@ -163,19 +163,19 @@ Route::delete('komentar/{komentar_id}/user/{user_id}/replies/{id}', [ReplyKoment
 
 // ----------------------------------------------------PENGEPUL----------------------------------------------------
 
-Route::get('/pengepul',[PengepulApiController::class, 'getPengepul']);
-Route::post('/pengepul',[PengepulApiController::class, 'storePengepul'])->middleware(['auth:sanctum']);
+Route::get('/pengepul', [PengepulApiController::class, 'getPengepul']);
+Route::post('/pengepul', [PengepulApiController::class, 'storePengepul'])->middleware(['auth:sanctum']);
 Route::put('/pengepul/{id}', [PengepulApiController::class, 'updatePengepul'])->middleware(['auth:sanctum']);
-Route::get('/pengepulByuser',[PengepulApiController::class, 'getPengepulByUser'])->middleware(['auth:sanctum']);
+Route::get('/pengepulByuser', [PengepulApiController::class, 'getPengepulByUser'])->middleware(['auth:sanctum']);
 
-Route::get('/pengepul/detail/{id}',[PengepulApiController::class, 'getPengepulDetail']);
+Route::get('/pengepul/detail/{id}', [PengepulApiController::class, 'getPengepulDetail']);
 
 Route::get('/hargaratarata/{jenis_kopi}/{tahun}', [PengepulApiController::class, 'getHargaRataRata']);
 
 //=======================================PengajuanTransaksi============================
-Route::post('/buatpengajuan',[TransaksiApiController::class, 'createPengajuanTransaksi'])->middleware(['auth:sanctum']);
+Route::post('/buatpengajuan', [TransaksiApiController::class, 'createPengajuanTransaksi'])->middleware(['auth:sanctum']);
 
-Route::put('/updateKeterangan/{id}',[TransaksiApiController::class, 'updateKeterangan'])->middleware(['auth:sanctum']);
+Route::put('/updateKeterangan/{id}', [TransaksiApiController::class, 'updateKeterangan'])->middleware(['auth:sanctum']);
 
 
 Route::get('/pengajuanbelikopi', [TransaksiApiController::class, 'mengajukanBeliKopi'])->middleware(['auth:sanctum']);
@@ -208,4 +208,18 @@ Route::get('/reseps', [ResepApiController::class, 'index']);
 Route::get('/iklans', [IklanApiController::class, 'index']);
 Route::get('/iklans/{id}', [IklanApiController::class, 'show']);
 
-// Laporan Api
+
+Route::middleware('auth:sanctum')->prefix('laporan')->group(function(){
+    Route::get('/', [ApiLaporanController::class, 'getlaporan'])->name('api.laporan');
+    Route::get('/{id}', [ApiLaporanController::class, 'getlaporanById'])->name('api.laporan.id');
+    Route::post('/store', [ApiLaporanController::class, 'createlaporan'])->name('api.laporan.store');
+    Route::get('/bulanan', [ApiLaporanController::class, 'getLaporanPerBulan']); // belum done
+});
+
+Route::middleware('auth:sanctum')->prefix('pendapatan')->group(function(){
+    Route::post('/store/{id}', [ApiLaporanController::class, 'createPendapatan'])->name('api.laporan.store');
+});
+Route::middleware('auth:sanctum')->prefix('pengeluaran')->group(function(){
+    Route::post('/store/{id}', [ApiLaporanController::class, 'createPengeluaran'])->name('api.laporan.store');
+});
+

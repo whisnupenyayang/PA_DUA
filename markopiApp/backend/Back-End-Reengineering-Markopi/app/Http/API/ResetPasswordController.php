@@ -11,25 +11,27 @@ use App\Http\Requests\auth\ResetPasswordRequest;
 
 class ResetPasswordController extends Controller
 {
-    private $otp;
-    public function __construct()
+    public function resetPassword(Request $request)
     {
-        $this->otp = new Otp();
-    }
-    public function resetPassword(ResetPasswordRequest $request)
-    {
-        $otp2 = $this->otp->validate($request->email, $request->otp);
-        if (!$otp2->status) {
-            return response()->json(['error' => $otp2], 401);
+        $otp = (new Otp)->validate($request->email, $request->otp);
+
+        if (!$otp->status) {
+            return response()->json(['error' => $otp], 401);
         }
+
         $user = User::where('email', $request->email)->first();
+
         $user->update(
             [
                 'password' => Hash::make($request->password)
             ]
         );
+
         $user->tokens()->delete();
-        $success['succees'] = true;
-        return response()->json($success, 200);
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Password telah diganti'
+        ], 200);
     }
 }

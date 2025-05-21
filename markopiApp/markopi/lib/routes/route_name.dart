@@ -14,4 +14,7 @@ abstract class RouteName {
   static const laporan = '/laporan';                // Halaman laporan
   static const tambahPengepul = '/pengepul/tambah';
   static const register = "/register";
+  static const forgotPassword = "/forgot-password";
+  static const otp = "/otp";
+  static const resetPassword = "/reset-password";
 }
