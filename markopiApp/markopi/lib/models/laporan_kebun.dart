@@ -21,7 +21,7 @@ class LaporanKebunModel {
   final int id;
   final String namaKebun;
   final String lokasi;
-  final int luasKebun;
+  final double luasKebun;
   final int totalPendapatan;
   final int totalPengeluaran;
   final int hasilProduktifitas;
