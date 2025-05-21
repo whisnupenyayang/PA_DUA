@@ -21,7 +21,6 @@ import 'package:markopi/view/forum/TambahPertanyaan.dart';
 import 'package:markopi/view/toko/toko_kopi_page.dart'; // Import halaman Toko Kopi
 import 'package:markopi/view/resep/resep_kopi_page.dart';
 import 'package:markopi/binding/Budidaya_Binding.dart';
-import 'package:markopi/view/Laporan/AddLaporanPage.dart';
 import 'package:markopi/view/HargaKopi/TambahPengepulPage.dart';
 import './route_name.dart';
 import 'package:markopi/view/Register/register.dart';

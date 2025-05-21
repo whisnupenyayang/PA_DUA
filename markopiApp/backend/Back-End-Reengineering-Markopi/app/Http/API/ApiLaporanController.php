@@ -24,7 +24,7 @@ class ApiLaporanController extends Controller
             ->map(function ($kebun) {
                 $total_pendapatan = $kebun->pendapatan->sum('total_pendapatan');
                 $total_pengeluaran = $kebun->pengeluaran->sum('nominal');
-                $berat_total = $kebun->pendapatan->sum('berat_kg');
+                $kebun->pendapatan->sum('berat_kg');
 
                 $hasil_produktifitas = $total_pendapatan - $total_pengeluaran;
 
@@ -35,7 +35,7 @@ class ApiLaporanController extends Controller
                     'luas_kebun' => $kebun->luas_kebun,
                     'total_pendapatan' => $total_pendapatan,
                     'total_pengeluaran' => $total_pengeluaran,
-                    'hasil_produktifitas' => $hasil_produktifitas, // kg / hektar
+                    'hasil_produktifitas' => $hasil_produktifitas,
                 ];
             });
 
