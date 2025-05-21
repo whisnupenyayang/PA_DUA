@@ -42,7 +42,7 @@ class ApiLaporanController extends Controller
         if ($data->isEmpty()) {
             return response()->json([
                 'message' => 'Gagal Mengambil data',
-                'data' => null,
+                'data' => [],
                 'status' => 'error',
                 'code' => 404,
             ]);
@@ -82,7 +82,7 @@ class ApiLaporanController extends Controller
             if (!$id) {
                 return response()->json([
                     'message' => 'id is not defined',
-                    'data' => null,
+                    'data' => [],
                     'status' => 'error',
                     'code' => 422,
                 ]);
@@ -93,7 +93,7 @@ class ApiLaporanController extends Controller
             if (!$kebun) {
                 return response()->json([
                     'message' => 'Kebun tidak ditemukan',
-                    'data' => null,
+                    'data' => [],
                     'status' => 'error',
                     'code' => 404,
                 ]);
