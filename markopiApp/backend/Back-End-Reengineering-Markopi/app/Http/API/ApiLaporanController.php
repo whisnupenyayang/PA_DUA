@@ -128,6 +128,7 @@ class ApiLaporanController extends Controller
             return response()->json([
                 'message' => 'Data laporan berhasil diambil',
                 'data' => [
+                    'id_kebun' => $kebun->id,
                     'namaKebun' => $kebun->nama_kebun,
                     'laporanDetail' => $hasil
                 ],
@@ -177,12 +178,10 @@ class ApiLaporanController extends Controller
 
     public function getLaporanPerBulan(Request $request)
     {
-        dd($request);
         try {
             $bulan = $request->query('bulan');
-            $id_kebun = $request->query('id_kebun');
+            $id_kebun = $request->query('id');
 
-           dd($id_kebun);
             if (!$bulan || !preg_match('/^\d{4}-\d{2}$/', $bulan)) {
                 return response()->json([
                     'message' => 'Format bulan tidak valid. Gunakan format YYYY-MM.',
