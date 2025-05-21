@@ -211,9 +211,9 @@ Route::get('/iklans/{id}', [IklanApiController::class, 'show']);
 
 Route::middleware('auth:sanctum')->prefix('laporan')->group(function(){
     Route::get('/', [ApiLaporanController::class, 'getlaporan'])->name('api.laporan');
-    Route::get('/{id}', [ApiLaporanController::class, 'getlaporanById'])->name('api.laporan.id');
+    Route::get('detail/{id}', [ApiLaporanController::class, 'getlaporanById'])->name('api.laporan.id');
     Route::post('/store', [ApiLaporanController::class, 'createlaporan'])->name('api.laporan.store');
-    Route::get('/bulanan', [ApiLaporanController::class, 'getLaporanPerBulan']); // belum done
+    Route::get('/bulanan/income-expance', [ApiLaporanController::class, 'getLaporanPerBulan']); // belum done
 });
 
 Route::middleware('auth:sanctum')->prefix('pendapatan')->group(function(){

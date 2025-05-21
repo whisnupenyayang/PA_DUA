@@ -56,6 +56,8 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('alex1'),
         ]);
 
+
+
         $this->call(laporanSeeder::class);
     }
 }
