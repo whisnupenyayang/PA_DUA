@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\API\ApiLaporanController;
 use App\Http\API\TransaksiApiController;
 use Illuminate\Http\Request;
 use App\Http\API\AuthController;
@@ -116,7 +117,7 @@ Route::post('/forum', [ForumController::class, 'store'])->middleware('auth:sanct
 Route::delete('forum/{id}', [ForumController::class, 'destroy']);
 
 // Menambahkan komentar pada forum
-Route::post('forum_comment/{forum_id}', [ForumController::class, 'storeComment'])->middleware('auth:sanctum');
+Route::post('forum/{forum_id}/komentar', [ForumController::class, 'storeComment'])->middleware('auth:sanctum');
 
 // Mengambil komentar pada forum berdasarkan forum_id
 Route::get('forumKomen/{forum_id}', [ForumController::class, 'getCommentForum']);
@@ -207,10 +208,4 @@ Route::get('/reseps', [ResepApiController::class, 'index']);
 Route::get('/iklans', [IklanApiController::class, 'index']);
 Route::get('/iklans/{id}', [IklanApiController::class, 'show']);
 
-// laporan
-// Route::middleware('auth:sanctum')->get('/laporans', [LaporanApiController::class, 'index']); // Menampilkan semua laporan
-Route::middleware('auth:sanctum')->get('/laporans/{id}', [LaporanApiController::class, 'show']); // Menampilkan laporan berdasarkan ID
-Route::middleware('auth:sanctum')->post('/laporans', [LaporanApiController::class, 'store']); // Menyimpan laporan baru
-Route::middleware('auth:sanctum')->delete('/laporans/{id}', [LaporanApiController::class, 'destroy']); // Menghapus laporan berdasarkan ID
-
-Route::get('/laporans', [LaporanApiController::class, 'index']);
+// Laporan Api

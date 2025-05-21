@@ -21,10 +21,7 @@ class ForumResource extends JsonResource
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            // Mengambil gambar dan memastikan URL gambar dapat diakses
-            'images' => $this->images->map(function ($image) {
-                return asset('storage/' . $image->gambar);  // Menggunakan URL gambar yang benar
-            }),
+            'images' => $this->images,
             // Mengambil data user yang terhubung
             'user' => [
                 'id_users' => $this->user->id_users,

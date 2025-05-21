@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -54,5 +55,7 @@ class DatabaseSeeder extends Seeder
             'no_telp' => '0809876234567',
             'password' => Hash::make('alex1'),
         ]);
+
+        $this->call(laporanSeeder::class);
     }
 }

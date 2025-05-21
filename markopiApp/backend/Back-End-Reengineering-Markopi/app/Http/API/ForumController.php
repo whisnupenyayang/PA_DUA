@@ -36,14 +36,15 @@ class ForumController extends Controller
                 'title' => 'required|string',
                 'deskripsi' => 'required|string',
                 'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-                'user_id' => 'required',
             ]);
+
+            $id = $request->user()->id_users;
 
             // Membuat forum baru
             $forum = Forum::create([
                 'title' => $request->title,
                 'deskripsi' => $request->deskripsi,
-                'user_id' => $request->user_id,
+                'user_id' => $id,
             ]);
 
             // Menyimpan gambar jika ada
@@ -75,11 +76,28 @@ class ForumController extends Controller
     public function show($id)
     {
         try {
-            $forum = Forum::with('images')->find($id);
+            $forum = Forum::with('images', 'user')->find($id);
             if (!$forum) {
                 return response()->json(['message' => 'Forum not found', 'status' => 'error'], 404);
             }
-            return response()->json(['data' => $forum, 'status' => 'success'], 200);
+
+            $data = [
+                'id_forums' => $forum->id_forums,
+                'title' => $forum->title,
+                'deskripsi' => $forum->deskripsi,
+                'user_id' => $forum->user_id,
+                'user' => [
+                    'id_users' => $forum->user->id_users,
+                    'nama_lengkap' => $forum->user->nama_lengkap,
+                    'username' => $forum->user->username,
+                    // Anda bisa menambahkan field lainnya dari relasi user jika diperlukan
+                ],
+                'created_at' => $forum->created_at,
+                'updated_at' => $forum->updated_at,
+                'images' => $forum->images,
+            ];
+
+            return response()->json(['data' => $data, 'status' => 'success'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to fetch forum', 'status' => 'error', 'error' => $e->getMessage()], 500);
         }
@@ -103,7 +121,6 @@ class ForumController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            // Validasi input
             $request->validate([
                 'title' => 'required|string',
                 'deskripsi' => 'required|string',
@@ -231,13 +248,35 @@ class ForumController extends Controller
     public function getCommentForum($forum_id)
     {
         try {
-            $forumKomentar = KomentarForum::where('forum_id', $forum_id)->get();
+            $forumKomentar = KomentarForum::where('forum_id', $forum_id)->with('user')->get();
 
             if ($forumKomentar->isEmpty()) {
-                return response()->json(['message' => 'Komentar Forum tidak ditemukan', 'status' => 'error'], 404);
+                return response()->json([
+                    'message' => 'Komentar Forum tidak ditemukan',
+                    'status' => 'error'
+                ], 404);
             }
 
-            return response()->json(['data' => $forumKomentar, 'status' => 'success'], 200);
+            $data = $forumKomentar->map(function ($komentar) {
+                return [
+                    'id_forum_komentars' => $komentar->id_forum_komentars,
+                    'user_id' => $komentar->user_id,
+                    'forum_id' => $komentar->forum_id,
+                    'komentar' => $komentar->komentar,
+                    'created_at' => $komentar->created_at,
+                    'updated_at' => $komentar->updated_at,
+                    'user' => $komentar->user ? [
+                        'id_users' => $komentar->user->id_users,
+                        'nama_lengkap' => $komentar->user->nama_lengkap,
+                        'username' => $komentar->user->username,
+                    ] : null,
+                ];
+            });
+
+            return response()->json([
+                'data' => $data,
+                'status' => 'success'
+            ], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Gagal mengambil komentar forum', 'status' => 'error', 'error' => $e->getMessage()], 500);
         }
