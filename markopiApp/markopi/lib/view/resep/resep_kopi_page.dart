@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:markopi/service/resep_service.dart';
 import 'package:markopi/models/resep.dart';
-import 'package:markopi/view/resep/ResepKopiPage.dart'; 
+import 'package:markopi/view/resep/ResepKopiPage.dart';
 
 class ResepKopiPage extends StatelessWidget {
   const ResepKopiPage({super.key});
@@ -48,7 +48,6 @@ class ResepKopiPage extends StatelessWidget {
                       );
                     },
                     child: Container(
-                      height: 110, // lebih tinggi dari default
                       padding: const EdgeInsets.all(12),
                       child: Row(
                         children: [
@@ -68,7 +67,7 @@ class ResepKopiPage extends StatelessWidget {
                                 )
                               : const Icon(Icons.image_not_supported, size: 60),
                           const SizedBox(width: 16),
-                          // Text dengan font lebih besar
+                          // Text dengan font lebih besar dan ekspansi
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

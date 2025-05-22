@@ -6,11 +6,15 @@ import 'package:url_launcher/url_launcher.dart'; // Package untuk membuka URL
 class TokoKopiPage extends StatelessWidget {
   const TokoKopiPage({super.key});
 
+  // Fungsi untuk membuka URL peta
   Future<void> _launchMapsUrl(String locationUrl) async {
-    if (await canLaunch(locationUrl)) {
-      await launch(locationUrl);
+    // Membuat URL Google Maps dari alamat toko
+    final url = 'https://www.google.com/maps?q=${Uri.encodeComponent(locationUrl)}';
+
+    if (await canLaunch(url)) {
+      await launch(url); // Membuka URL peta di browser atau aplikasi peta
     } else {
-      throw 'Could not launch $locationUrl';
+      throw 'Could not launch $url'; // Jika gagal membuka URL
     }
   }
 
@@ -20,7 +24,7 @@ class TokoKopiPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Lokasi Toko Kopi'),
       ),
-      body: FutureBuilder<List<Toko>?>(
+      body: FutureBuilder<List<Toko>?>( // Mengambil data toko
         future: TokoService.getAllTokos(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -40,7 +44,7 @@ class TokoKopiPage extends StatelessWidget {
 
                 return GestureDetector(
                   onTap: () {
-                    _launchMapsUrl(toko.lokasi);
+                    _launchMapsUrl(toko.lokasi); // Menangani tap untuk membuka peta
                   },
                   child: Card(
                     margin: const EdgeInsets.symmetric(vertical: 10),

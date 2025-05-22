@@ -58,7 +58,7 @@
     </div>
 
     <div class="form-group">
-        <label for="url_gambar">Upload Gambar (Opsional)</label>
+        <label for="url_gambar">Upload Gambar</label>
         <input type="file" name="url_gambar" class="form-control-file @error('url_gambar') is-invalid @enderror" accept="image/*">
         @error('url_gambar')
             <div class="invalid-feedback d-block">{{ $message }}</div>

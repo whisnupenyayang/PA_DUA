@@ -66,12 +66,12 @@
                                         </div>
 
                                         <div class="mb-2">
-                                            <label>Gambar (opsional)</label>
+                                            <label>Gambar</label>
                                             <input type="file" name="url_gambar" class="form-control">
                                         </div>
 
                                         <div class="mb-2">
-                                            <label>File (opsional)</label>
+                                            <label>File</label>
                                             <input type="file" name="nama_file" class="form-control">
                                         </div>
 
