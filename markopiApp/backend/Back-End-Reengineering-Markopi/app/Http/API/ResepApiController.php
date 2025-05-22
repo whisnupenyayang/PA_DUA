@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Api;
+namespace App\Http\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Resep;

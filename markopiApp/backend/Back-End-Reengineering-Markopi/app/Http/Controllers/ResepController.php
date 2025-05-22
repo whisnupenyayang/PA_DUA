@@ -7,29 +7,29 @@ use Illuminate\Http\Request;
 
 class ResepController extends Controller
 {
-    // Method for displaying all stores
+    // Method for displaying all recipes
     public function index()
     {
+        $title = 'Daftar Resep';  // Set the title
         $resep = Resep::all();
-        return view('admin.resep.resep', compact('resep'));
+        return view('admin.resep.resep', compact('resep', 'title'));  // Pass $title and $resep to the view
     }
 
-    // Method to show form for creating new store
+    // Method to show form for creating new recipe
     public function create()
     {
-
-        return view('admin.resep.tambah_resep');
+        $title = 'Tambah Resep';  // Set the title
+        return view('admin.resep.tambah_resep', compact('title'));  // Pass $title to the view
     }
 
-
-    // Method for storing a new store
+    // Method for storing a new recipe
     public function store(Request $request)
     {
         // Validate the incoming request data
         $validatedData = $request->validate([
-            'nama_resep' => 'required|string|max:100', // Max length for nama_resep
-            'deskripsi_resep' => 'required|string',    // Deskripsi is required
-            'gambar_resep' => 'nullable|image|max:255', // Allow file upload for gambar_resep, optional
+            'nama_resep' => 'required|string|max:100',
+            'deskripsi_resep' => 'required|string',
+            'gambar_resep' => 'nullable|image|max:255',
         ]);
 
         // Create a new instance of the Resep model
@@ -40,26 +40,26 @@ class ResepController extends Controller
         // Handle file upload for gambar_resep
         if ($request->hasFile('gambar_resep')) {
             $file = $request->file('gambar_resep');
-            $filename = time() . '.' . $file->getClientOriginalExtension();  // Generate a unique filename
-            $file->move(public_path('images'), $filename);  // Move the file to the public/images directory
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images'), $filename);
             $resep->gambar_resep = $filename;
         }
 
         // Save the recipe data to the database
         $resep->save();
 
-        // Redirect back with success message
         return redirect()->route('admin.resep')->with('success', 'Resep berhasil ditambahkan');
     }
 
-
-    // Method to show the details of a store
+    // Method to show the details of a recipe
     public function detailResep($id)
     {
-        $resep = Resep::findOrFail($id);  // Fetch the store by id
-        return view('admin.resep.detail_resep', compact('resep'));  // Pass the store to the view
+        $title = 'Detail Resep';  // Set the title
+        $resep = Resep::findOrFail($id);
+        return view('admin.resep.detail_resep', compact('resep', 'title'));  // Pass $title and $resep to the view
     }
 
+    // Method to delete a recipe
     public function destroy($id)
     {
         $resep = Resep::findOrFail($id);
@@ -68,50 +68,41 @@ class ResepController extends Controller
         return redirect()->route('admin.resep')->with('success', 'Resep berhasil dihapus');
     }
 
-    // Menampilkan halaman edit
+    // Method to show the edit form
     public function edit($id)
     {
+        $title = 'Edit Resep';  // Set the title
         $resep = Resep::findOrFail($id);
-        return view('resep.edit', compact('resep')); // Pastikan view 'resep.edit' ada
+        return view('admin.resep.edit_resep', compact('resep', 'title'));  // Pass $title and $resep to the view
     }
 
-
-    // Menangani pembaruan data resep
+    // Method to update a recipe
     public function update(Request $request, $id)
-{
-    $resep = Resep::findOrFail($id);
+    {
+        $resep = Resep::findOrFail($id);
 
-    // Update nama dan deskripsi jika ada
-    if ($request->has('name')) {
-        $resep->nama_resep = $request->name;
+        // Update nama and deskripsi if provided
+        if ($request->has('name')) {
+            $resep->nama_resep = $request->name;
+        }
+
+        if ($request->has('desc')) {
+            $resep->deskripsi_resep = $request->desc;
+        }
+
+        // Process image if exists
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $filename);
+            $resep->gambar_resep = $filename;
+        }
+
+        $resep->save();
+
+        return response()->json([
+            'success' => true,
+            'imageUrl' => asset('images/' . $resep->gambar_resep)  // Return the URL of the new image
+        ]);
     }
-
-    if ($request->has('desc')) {
-        $resep->deskripsi_resep = $request->desc;
-    }
-
-    // Proses gambar jika ada
-    if ($request->hasFile('image')) {
-        // Menyimpan gambar di folder public/images
-        $image = $request->file('image');
-        $filename = time() . '.' . $image->getClientOriginalExtension();  // Generate a unique filename
-        $image->move(public_path('images'), $filename);  // Simpan di folder public/images
-
-        // Simpan path gambar di database
-        $resep->gambar_resep = $filename;
-    }
-
-    $resep->save();
-
-    // Mengembalikan URL gambar yang baru agar bisa ditampilkan di frontend
-    return response()->json([
-        'success' => true,
-        'imageUrl' => asset('images/' . $resep->gambar_resep)  // Mengembalikan URL gambar yang dapat diakses
-    ]);
-}
-
-    
-
-
-
 }
