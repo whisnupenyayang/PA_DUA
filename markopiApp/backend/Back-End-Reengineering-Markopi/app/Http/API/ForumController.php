@@ -7,6 +7,7 @@ use App\Http\Resources\ForumResource;
 use App\Models\Forum;
 use App\Models\ImageForum;
 use App\Models\KomentarForum;
+use App\Models\LikeForum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -283,14 +284,74 @@ class ForumController extends Controller
     }
 
     // Menambahkan like pada forum
-    public function likeForum($forum_id, $user_id)
+    public function likeForum(Request $request, $forum_id)
     {
-        // Logika untuk menambahkan like/dislike pada forum
+        try {
+            $existingLike = LikeForum::where('forum_id', $forum_id)
+                ->where('user_id', $request->user()->id)
+                ->first();
+
+            if ($existingLike) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Kamu sudah memberi like pada forum ini.',
+                    'data' => $existingLike,
+                ], 400);
+            }
+
+            $forumLike = LikeForum::create([
+                'forum_id' => $forum_id,
+                'user_id' => $request->user()->id,
+                'like' => 1,
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Forum berhasil di like',
+                'data' => $forumLike,
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan',
+                'status' => 'error',
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
 
     // Menambahkan dislike pada forum
-    public function dislikeForum($forum_id, $user_id)
+    public function dislikeForum(Request $request, $forum_id)
     {
-        // Logika untuk menambahkan dislike pada forum
+        try {
+            $existingLike = LikeForum::where('forum_id', $forum_id)
+                ->where('user_id', $request->user()->id)
+                ->first();
+
+            if ($existingLike) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Kamu sudah dislike pada forum ini.',
+                    'data' => $existingLike,
+                ], 400);
+            }
+
+            $forumLike = LikeForum::create([
+                'forum_id' => $forum_id,
+                'user_id' => $request->user()->id,
+                'like' => 2,
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Forum berhasil di dislike',
+                'data' => $forumLike,
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan',
+                'status' => 'error',
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
 }
