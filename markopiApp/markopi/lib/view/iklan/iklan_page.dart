@@ -20,12 +20,12 @@ class _IklanPageState extends State<IklanPage> {
     _iklanList = IklanService.getAllIklan();
   }
 
+  // Fungsi untuk membuka URL
   Future<void> _launchURL(String url) async {
     if (url.isEmpty) return;
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      // bisa ganti dengan snackbar kalau mau user friendly
       throw 'Could not launch $url';
     }
   }
@@ -65,7 +65,7 @@ class _IklanPageState extends State<IklanPage> {
                           )
                         : const Icon(Icons.image_not_supported),
                     title: Text(iklan.judulIklan),
-                    onTap: () => _launchURL(iklan.link),
+                    onTap: () => _launchURL(iklan.link), // Menjalankan link saat di-tap
                   ),
                 );
               },

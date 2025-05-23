@@ -10,14 +10,16 @@ class TokoController extends Controller
     // Method for displaying all stores
     public function index()
     {
+        $title = 'Data Toko';  // Set the title
         $toko = Toko::all();
-        return view('admin.toko.toko', compact('toko'));
+        return view('admin.toko.toko', compact('toko', 'title'));  // Pass $title and $toko to the view
     }
 
     // Method to show form for creating new store
     public function create()
     {
-        return view('admin.toko.tambah_toko');
+        $title = 'Tambah Toko';  // Set the title
+        return view('admin.toko.tambah_toko', compact('title'));  // Pass $title to the view
     }
 
     // Method for storing a new store
@@ -51,19 +53,20 @@ class TokoController extends Controller
         return redirect()->route('admin.toko')->with('success', 'Toko berhasil ditambahkan!');
     }
 
-
     // Method to show the details of a store
     public function detailToko($id)
     {
+        $title = 'Detail Toko';  // Set the title
         $toko = Toko::findOrFail($id);  // Fetch the store by id
-        return view('admin.toko.detail_toko', compact('toko'));  // Pass the store to the view
+        return view('admin.toko.detail_toko', compact('toko', 'title'));  // Pass $title and $toko to the view
     }
 
     // Method to show the edit form
     public function edit($id)
     {
+        $title = 'Edit Toko';  // Set the title
         $toko = Toko::findOrFail($id);
-        return view('admin.toko.edit_toko', compact('toko')); // Show edit form for store
+        return view('admin.toko.edit_toko', compact('toko', 'title'));  // Pass $title and $toko to the view
     }
 
     // Method for updating the store data
@@ -99,10 +102,6 @@ class TokoController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Data toko berhasil diperbarui!']);
     }
-
-
-
-
 
     // Method to delete a store
     public function destroy($id)

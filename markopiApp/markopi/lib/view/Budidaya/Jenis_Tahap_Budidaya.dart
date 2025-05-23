@@ -80,7 +80,7 @@ class _JenisTahapBudidayaViewState extends State<JenisTahapBudidayaView> {
                           borderRadius: BorderRadius.circular(8),
                           child: CachedNetworkImage(
                             imageUrl:
-                                'http://192.168.150.244:8000/storage/${item.url_gambar}',
+                                'https://markopi.d4trpl-itdel.id/storage/${item.url_gambar}', // Gantilah dengan URL hosting Anda
                             fit: BoxFit.cover,
                             placeholder: (context, url) =>
                                 Center(child: CircularProgressIndicator()),
