@@ -287,29 +287,47 @@ class ForumController extends Controller
     public function likeForum(Request $request, $forum_id)
     {
         try {
+            $userId = $request->user()->id_users;
+
             $existingLike = LikeForum::where('forum_id', $forum_id)
-                ->where('user_id', $request->user()->id)
+                ->where('user_id', $userId)
                 ->first();
 
-            if ($existingLike) {
+            if ($existingLike && $existingLike->like == '1') {
+                $existingLike->update([
+                    'like' => '0',
+                ]);
+
                 return response()->json([
-                    'status' => 'failed',
-                    'message' => 'Kamu sudah memberi like pada forum ini.',
+                    'status' => 'success',
+                    'message' => 'Mengganti ke nilai like default',
                     'data' => $existingLike,
-                ], 400);
+                ]);
             }
 
-            $forumLike = LikeForum::create([
-                'forum_id' => $forum_id,
-                'user_id' => $request->user()->id,
-                'like' => 1,
-            ]);
+            if ($existingLike) {
+                $existingLike->update([
+                    'like' => '1',
+                ]);
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Forum berhasil di like',
-                'data' => $forumLike,
-            ]);
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Status like forum diperbarui.',
+                    'data' => $existingLike,
+                ]);
+            } else {
+                $forumLike = LikeForum::create([
+                    'forum_id' => $forum_id,
+                    'user_id' => $userId,
+                    'like' => '1',
+                ]);
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Forum berhasil di like.',
+                    'data' => $forumLike,
+                ]);
+            }
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan',
@@ -319,33 +337,52 @@ class ForumController extends Controller
         }
     }
 
+
     // Menambahkan dislike pada forum
     public function dislikeForum(Request $request, $forum_id)
     {
         try {
+            $userId = $request->user()->id_users;
+
             $existingLike = LikeForum::where('forum_id', $forum_id)
-                ->where('user_id', $request->user()->id)
+                ->where('user_id', $userId)
                 ->first();
 
-            if ($existingLike) {
+            if ($existingLike && $existingLike->like == '2') {
+                $existingLike->update([
+                    'like' => '0',
+                ]);
+
                 return response()->json([
-                    'status' => 'failed',
-                    'message' => 'Kamu sudah dislike pada forum ini.',
+                    'status' => 'success',
+                    'message' => 'Mengganti ke nilai like default',
                     'data' => $existingLike,
-                ], 400);
+                ]);
             }
 
-            $forumLike = LikeForum::create([
-                'forum_id' => $forum_id,
-                'user_id' => $request->user()->id,
-                'like' => 2,
-            ]);
+            if ($existingLike) {
+                $existingLike->update([
+                    'like' => '2',
+                ]);
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Forum berhasil di dislike',
-                'data' => $forumLike,
-            ]);
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Status like forum diperbarui.',
+                    'data' => $existingLike,
+                ]);
+            } else {
+                $forumLike = LikeForum::create([
+                    'forum_id' => $forum_id,
+                    'user_id' => $userId,
+                    'like' => '2',
+                ]);
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Forum berhasil di like.',
+                    'data' => $forumLike,
+                ]);
+            }
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan',
@@ -353,5 +390,58 @@ class ForumController extends Controller
                 'error' => $th->getMessage()
             ], 500);
         }
+    }
+
+    // get all likes
+    public function countLikes(Request $request, $forum_id)
+    {
+        try {
+            $forum = Forum::withCount([
+                'likes as like_count' => function ($query) {
+                    $query->where('like', '1');
+                },
+                'likes as dislike_count' => function ($query) {
+                    $query->where('like', '2');
+                }
+            ])->find($forum_id);
+
+            if (!$forum) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Forum tidak ditemukan',
+                    'data' => null,
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Berhasil mengambil jumlah like dan dislike',
+                'data' => [
+                    'forum_id' => $forum->id_forums,
+                    'like_count' => $forum->like_count,
+                    'dislike_count' => $forum->dislike_count,
+                ],
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan',
+                'error' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function isLiked(Request $request, $forum_id)
+    {
+        $user_id = $request->user()->id_users;
+
+        $like = LikeForum::where('forum_id', $forum_id)
+            ->where('user_id', $user_id)
+            ->first();
+
+        return response()->json([
+            'status' => 'success',
+            'like_status' => $like ? (int) $like->like : 0, // 0: belum vote, 1: like, 2: dislike
+        ]);
     }
 }

@@ -128,6 +128,9 @@ Route::put('forum_comment_update/{id}', [ForumController::class, 'updateComment'
 // Menghapus komentar forum berdasarkan ID
 Route::delete('forum_comment_delete/{id}', [ForumController::class, 'deleteComment']);
 
+// apakah user sudah like?
+Route::get('/forum/{forum_id}/is-liked', [ForumController::class, 'isLiked'])->middleware('auth:sanctum');
+
 // Menambahkan like pada forum
 Route::post('forum/{forum_id}/like', [ForumController::class, 'likeForum'])->middleware('auth:sanctum');
 
@@ -139,6 +142,9 @@ Route::get('forum/{forum_id}/likes', [ForumController::class, 'getForumLikes']);
 
 // Mengambil jumlah dislike pada forum
 Route::get('forum/{forum_id}/dislikes', [ForumController::class, 'getForumDislikes']);
+
+Route::get('forum/{forum_id}/likes/count', [ForumController::class, 'countLikes']);
+
 
 // ============================ Reply Routes ===========================
 
