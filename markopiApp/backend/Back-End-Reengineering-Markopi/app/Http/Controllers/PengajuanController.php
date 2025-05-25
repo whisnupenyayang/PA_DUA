@@ -19,9 +19,9 @@ class PengajuanController extends Controller
     {
         $pengajuans = Pengajuan::join('users', 'pengajuans.user_id', '=', 'users.id_users')
             ->where('pengajuans.status', '0')
-            ->select('pengajuans.*', 'users.username') // Change 'nama' with the actual column name in the users table that stores the name
+            ->select('pengajuans.*', 'users.username')
             ->get();
-        // dd($pengajuans);
+
         return view('admin.komunitas.pengajuan', compact('pengajuans'), [
             'title' => 'Data Pengajuan'
         ]);

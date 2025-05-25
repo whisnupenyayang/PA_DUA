@@ -21,6 +21,7 @@ use App\Http\Api\ResepApiController;
 use App\Http\API\TokoApiController;
 use App\Http\API\LaporanController;
 use App\Http\Controllers\BudidayaController;
+use App\Models\Pengajuan;
 use App\Models\Pengepul;
 use GuzzleHttp\Middleware;
 
@@ -61,12 +62,6 @@ Route::post('/upload', [BudidayaApiController::class, 'storeTahapanBudidaya']);
 
 //======================KEDAI================================
 Route::get('/minuman', [BudidayaAPIController::class, 'getMinumanData']);
-
-//PENGAJUAN
-Route::get('/pengajuan', [PengajuanController::class, 'getPengajuanData']);
-Route::get('/pengajuanById/{id}', [PengajuanController::class, 'getPengajuanDataByUserId']);
-Route::get('/pengajuan_status/{id}', [PengajuanController::class, 'getPengajuanStatusData']);
-Route::post('/pengajuantambah', [PengajuanController::class, 'tambahData']);
 
 //KOMUNITAS
 Route::get('/komunitas', [BudidayaAPIController::class, 'getKomunitasData']);
@@ -231,3 +226,8 @@ Route::middleware('auth:sanctum')->prefix('pengeluaran')->group(function(){
     Route::post('/store/{id}', [ApiLaporanController::class, 'createPengeluaran'])->name('api.laporan.store');
 });
 
+//PENGAJUAN
+Route::middleware('auth:sanctum')->prefix('pengajuan')->group(function(){
+    Route::get('', [PengajuanController::class, 'getDataByAuth']);
+    Route::post('/add', [PengajuanController::class, 'tambahData']);
+});

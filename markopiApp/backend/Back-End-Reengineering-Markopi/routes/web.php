@@ -152,8 +152,6 @@ Route::get('penjualan', [BudidayaController::class, 'penjualan_index'])->name('p
 
 // Pengajuan
 Route::get('/pengajuan', [PengajuanController::class, 'index'])->name('pengajuan.index');
-Route::post('/pengajuan/accept/{id}', [PengajuanController::class, 'accept'])->name('pengajuan.accept');
-Route::post('/pengajuan/reject/{id}', [PengajuanController::class, 'reject'])->name('pengajuan.reject');
 
 // Manajemen User
 Route::get('data_user', [PengajuanController::class, 'get_data_user'])->name('getDataUser');

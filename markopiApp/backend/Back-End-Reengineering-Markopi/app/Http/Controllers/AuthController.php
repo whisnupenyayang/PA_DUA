@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pengepul;
 use App\Models\Iklan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,24 +18,26 @@ class AuthController extends Controller
 
     public function proseslogin(Request $request)
     {
-        $request->validate([
+        $credentials = $request->validate([
             'username' => 'required',
             'password' => 'required'
         ]);
 
-        $username = $request->username;
-        $password = $request->password;
+        if (Auth::attempt($credentials)) {
+            $user = User::where('username', $request->username)->first();
 
-        if (Auth::attempt(['username' => $username, 'password' => $password, 'role' => 'admin'])) {
-            session([
-                'user_id' => auth()->user()->id,
-                'user_role' => auth()->user()->role,
-                'username' => auth()->user()->username
-            ]);
-
-            return redirect()->route('dashboard.admin');
+            if ($user->role != 'admin') {
+                return redirect()->back();
+            } else {
+                session([
+                    'id_users' => $user->id_users,
+                    'username' => $user->username,
+                    'role' => $user->role
+                ]);
+                return redirect()->route('dashboard.admin');
+            }
         } else {
-            return back()->withErrors(['Hanya admin dengan username dan password yang benar yang diizinkan masuk.']);
+              return redirect()->back()->with('error', 'Credentials tidak valid');
         }
     }
 

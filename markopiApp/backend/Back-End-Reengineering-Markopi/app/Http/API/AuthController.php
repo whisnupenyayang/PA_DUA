@@ -70,8 +70,6 @@ class AuthController extends Controller
             'username' => 'required',
             'password' => 'required'
         ]);
-        // return response()->json('maksdjka');
-        // return response()->json('Auth::user()');
         $user = User::where('username', $request->username)->first();
         $userData = $user->toArray();
         unset($userData['username'], $userData['id_users']);
@@ -103,11 +101,6 @@ class AuthController extends Controller
         }
 
     }
-
-    // public function me()
-    // {
-    //     return response()->json(auth()->user());
-    // }
 
     public function logout(Request $request)
     {

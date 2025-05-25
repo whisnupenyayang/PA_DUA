@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('pengajuans', function (Blueprint $table) {
             $table->increments('id_pengajuans');
             $table->unsignedInteger('user_id');
-            $table->string('foto_ktp');
-            $table->string('foto_selfie');
+            $table->string('foto_ktp')->nullable();
+            $table->string('foto_selfie')->nullable();
             $table->text('deskripsi_pengalaman');
-            $table->string('foto_sertifikat');
+            $table->string('foto_sertifikat')->nullable();
             $table->enum('tipe_penganjuan', ['fasilitator', 'pengepul']);
             $table->enum('status', [0, 1, 2])->default(0);
             $table->timestamps();

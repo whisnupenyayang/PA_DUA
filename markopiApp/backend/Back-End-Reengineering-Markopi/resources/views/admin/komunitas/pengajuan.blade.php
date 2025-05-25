@@ -95,13 +95,10 @@
                                                             </button>
                                                         </form>
                                                     </td>
-
-
-
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="4">Data User Tidak ada</td>
+                                                    <td colspan="7">Data User Tidak ada</td>
                                                 </tr>
                                             @endforelse
                                         </tbody>
