@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('foto_selfie')->nullable();
             $table->text('deskripsi_pengalaman');
             $table->string('foto_sertifikat')->nullable();
-            $table->enum('tipe_penganjuan', ['fasilitator', 'pengepul']);
+            $table->enum('tipe_pengajuan', ['fasilitator', 'pengepul']);
             $table->enum('status', [0, 1, 2])->default(0);
             $table->timestamps();
 

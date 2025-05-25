@@ -49,6 +49,7 @@
                                         <thead class="text-center">
                                             <tr class="text-center">
                                                 <th class="text-center">No</th>
+                                                <th class="text-center">Jenis Pengajuan</th>
                                                 <th class="text-center">Nama</th>
                                                 <th class="text-center">Deskripsi Pengalaman</th>
                                                 <th class="text-center">Foto Profil</th>
@@ -61,6 +62,7 @@
                                             @forelse ($pengajuans as $item)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $item->tipe_pengajuan }}</td>
                                                     <td>{{ $item->username }}</td>
                                                     <td>{{ $item->deskripsi_pengalaman }}</td>
                                                     <td><img style="width: 200px"

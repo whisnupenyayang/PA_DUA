@@ -64,7 +64,7 @@ class PengajuanController extends Controller
                 'deskripsi_pengalaman' => $request->deskripsi_pengalaman,
                 'foto_sertifikat' => $fotoSertifikatPath,
                 'user_id' => $request->user()->id_users,
-                'tipe_pengajuan' => $request->type_pengajuan,
+                'tipe_pengajuan' => $request->type_pengajuan
             ]);
 
             if ($pengajuan) {
