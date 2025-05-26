@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markopi/controllers/Forum_Controller.dart';
+import 'package:markopi/controllers/like_forum.dart';
 import 'package:markopi/providers/Connection.dart';
 
 class ForumKomentar extends StatefulWidget {
@@ -15,6 +16,8 @@ class _ForumKomentarState extends State<ForumKomentar> {
 
   final ForumController forumC = Get.put(ForumController());
   final TextEditingController _komentar = TextEditingController();
+  final LikeForumController _likeForumController =
+      Get.put(LikeForumController(int.parse(Get.parameters['id']!)));
 
   int? id;
 
@@ -144,6 +147,73 @@ class _ForumKomentarState extends State<ForumKomentar> {
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey.shade600,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Obx(() => Row(
+                                              children: [
+                                                IconButton(
+                                                  icon: Icon(
+                                                    _likeForumController
+                                                                .likeStatus
+                                                                .value ==
+                                                            1
+                                                        ? Icons
+                                                            .thumb_up_alt_rounded
+                                                        : Icons
+                                                            .thumb_up_outlined,
+                                                    color: _likeForumController
+                                                                .likeStatus
+                                                                .value ==
+                                                            1
+                                                        ? Colors.blue
+                                                        : null,
+                                                  ),
+                                                  onPressed: () async {
+                                                    await _likeForumController
+                                                        .likeForum(id!);
+                                                  },
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(
+                                                    _likeForumController
+                                                                .likeStatus
+                                                                .value ==
+                                                            2
+                                                        ? Icons
+                                                            .thumb_down_alt_rounded
+                                                        : Icons
+                                                            .thumb_down_outlined,
+                                                    color: _likeForumController
+                                                                .likeStatus
+                                                                .value ==
+                                                            2
+                                                        ? Colors.red
+                                                        : null,
+                                                  ),
+                                                  onPressed: () async {
+                                                    await _likeForumController
+                                                        .dislikeForum(id!);
+                                                  },
+                                                ),
+                                              ],
+                                            )),
+                                        Obx(() => Row(
+                                              children: [
+                                                Text(
+                                                    "${_likeForumController.likeCount.value} Suka"),
+                                                SizedBox(width: 10),
+                                                Text(
+                                                    "${_likeForumController.dislikeCount.value} Tidak Suka"),
+                                              ],
+                                            )),
+                                      ],
                                     ),
                                   ),
                                 ],

@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             'kabupaten' => '-',
             'no_telp' => '081234567890',
             'password' => Hash::make('ahmad1'),
+            'role' => 'petani',
         ]);
 
         DB::table('users')->insert([
@@ -41,6 +42,7 @@ class DatabaseSeeder extends Seeder
             'kabupaten' => '-',
             'no_telp' => '080987654321',
             'password' => Hash::make('admin01'),
+            'role' => 'admin',
         ]);
 
         DB::table('users')->insert([
@@ -54,6 +56,7 @@ class DatabaseSeeder extends Seeder
             'kabupaten' => '-',
             'no_telp' => '0809876234567',
             'password' => Hash::make('alex1'),
+            'role' => 'petani',
         ]);
 
 

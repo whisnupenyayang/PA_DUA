@@ -47,6 +47,7 @@ class AuthController extends Controller
             'provinsi'       => $input['provinsi'],
             'kabupaten'      => $input['kabupaten'],
             'no_telp'        => $input['no_telp'],
+            'role'           => 'petani', // Default role
         ]);
 
         // $token = $user->createToken('auth_token')->plainTextToken;
@@ -69,13 +70,11 @@ class AuthController extends Controller
             'username' => 'required',
             'password' => 'required'
         ]);
-        // return response()->json('maksdjka');
-        // return response()->json('Auth::user()');
         $user = User::where('username', $request->username)->first();
         $userData = $user->toArray();
         unset($userData['username'], $userData['id_users']);
 
-        if ($user->status === null) {
+        if ($user->role != 'admin' && $user->status == 0) {
             if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
                 $auth = Auth::user();
                 $user->nama_lengkap;
@@ -85,9 +84,6 @@ class AuthController extends Controller
                     'user' => $userData,
                     'token' => $user->generateToken(),
                 ]);
-
-
-
 
             } else {
                 return response()->json([
@@ -105,11 +101,6 @@ class AuthController extends Controller
         }
 
     }
-
-    // public function me()
-    // {
-    //     return response()->json(auth()->user());
-    // }
 
     public function logout(Request $request)
     {

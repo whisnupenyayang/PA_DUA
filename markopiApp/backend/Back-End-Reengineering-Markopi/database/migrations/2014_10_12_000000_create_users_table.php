@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('kabupaten');
             $table->string('no_telp', 13);
             $table->boolean('status')->nullable();
+            $table->enum('role', ['admin', 'fasilitator', 'pengepul', 'petani'])->default('petani');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

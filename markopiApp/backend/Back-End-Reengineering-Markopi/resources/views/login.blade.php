@@ -35,12 +35,10 @@
                         <div class="card card-md">
                             <div class="card-body">
                                 <h2 class="h2 text-center mb-4">Login</h2>
-                                @if ($errors->any())
+                                @if (session('error'))
                                     <div class="alert alert-danger">
                                         <ul class="mb-0">
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
+                                         <li>{{ session('error') }}</li>
                                         </ul>
                                     </div>
                                 @endif

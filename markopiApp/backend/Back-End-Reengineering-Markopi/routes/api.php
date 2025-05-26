@@ -21,6 +21,7 @@ use App\Http\Api\ResepApiController;
 use App\Http\API\TokoApiController;
 use App\Http\API\LaporanController;
 use App\Http\Controllers\BudidayaController;
+use App\Models\Pengajuan;
 use App\Models\Pengepul;
 use GuzzleHttp\Middleware;
 
@@ -61,12 +62,6 @@ Route::post('/upload', [BudidayaApiController::class, 'storeTahapanBudidaya']);
 
 //======================KEDAI================================
 Route::get('/minuman', [BudidayaAPIController::class, 'getMinumanData']);
-
-//PENGAJUAN
-Route::get('/pengajuan', [PengajuanController::class, 'getPengajuanData']);
-Route::get('/pengajuanById/{id}', [PengajuanController::class, 'getPengajuanDataByUserId']);
-Route::get('/pengajuan_status/{id}', [PengajuanController::class, 'getPengajuanStatusData']);
-Route::post('/pengajuantambah', [PengajuanController::class, 'tambahData']);
 
 //KOMUNITAS
 Route::get('/komunitas', [BudidayaAPIController::class, 'getKomunitasData']);
@@ -128,6 +123,9 @@ Route::put('forum_comment_update/{id}', [ForumController::class, 'updateComment'
 // Menghapus komentar forum berdasarkan ID
 Route::delete('forum_comment_delete/{id}', [ForumController::class, 'deleteComment']);
 
+// apakah user sudah like?
+Route::get('/forum/{forum_id}/is-liked', [ForumController::class, 'isLiked'])->middleware('auth:sanctum');
+
 // Menambahkan like pada forum
 Route::post('forum/{forum_id}/like', [ForumController::class, 'likeForum'])->middleware('auth:sanctum');
 
@@ -139,6 +137,9 @@ Route::get('forum/{forum_id}/likes', [ForumController::class, 'getForumLikes']);
 
 // Mengambil jumlah dislike pada forum
 Route::get('forum/{forum_id}/dislikes', [ForumController::class, 'getForumDislikes']);
+
+Route::get('forum/{forum_id}/likes/count', [ForumController::class, 'countLikes']);
+
 
 // ============================ Reply Routes ===========================
 
@@ -225,3 +226,8 @@ Route::middleware('auth:sanctum')->prefix('pengeluaran')->group(function(){
     Route::post('/store/{id}', [ApiLaporanController::class, 'createPengeluaran'])->name('api.laporan.store');
 });
 
+//PENGAJUAN
+Route::middleware('auth:sanctum')->prefix('pengajuan')->group(function(){
+    Route::get('', [PengajuanController::class, 'getDataByAuth']);
+    Route::post('/add', [PengajuanController::class, 'tambahData']);
+});

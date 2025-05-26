@@ -19,5 +19,6 @@ class Pengajuan extends Model
         'foto_sertifikat',
         'status',
         'user_id',
+        'tipe_pengajuan'
     ];
 }

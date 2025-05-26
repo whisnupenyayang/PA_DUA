@@ -15,7 +15,10 @@ class ListForum extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Forum Komunitas', style: TextStyle(color: Colors.white),),
+        title: const Text(
+          'Forum Komunitas',
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         backgroundColor: Colors.blue.shade500,
       ),
@@ -75,16 +78,13 @@ class ListForum extends StatelessWidget {
                         ),
                       );
                     }
-                       
+
                     return NotificationListener<ScrollNotification>(
                       onNotification: (ScrollNotification scrollInfo) {
                         if (scrollInfo.metrics.pixels ==
                             scrollInfo.metrics.maxScrollExtent) {
-  
-
                           if (forumController.hasMore.value &&
                               !forumController.isLoading.value) {
-                          
                             forumController.loadMore();
                             return true;
                           }
@@ -148,15 +148,19 @@ class ListForum extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 12),
                                       // Gambar forum
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Image.network(
-                                          Connection.buildImageUrl("storage/${forum.imageUrls.first}"), 
-                                          height: 160,
-                                          width: double.infinity,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
+                                      forum.imageUrls.isNotEmpty
+                                          ? ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              child: Image.network(
+                                                Connection.buildImageUrl(
+                                                    "storage/${forum.imageUrls.first}"),
+                                                height: 160,
+                                                width: double.infinity,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            )
+                                          : SizedBox.shrink(),
                                       const SizedBox(height: 12),
 
                                       // Judul forum

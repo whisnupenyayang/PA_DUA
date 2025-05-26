@@ -82,7 +82,7 @@ class _JenisTahapBudidayDetailViewState
                   color: Colors.grey,
                   child: CachedNetworkImage(
                     imageUrl:
-                        'http://192.168.150.244:8000/storage/${item.url_gambar}',
+                        'https://markopi.d4trpl-itdel.id/storage/${item.url_gambar}',
                     placeholder: (context, url) =>
                         Center(child: CircularProgressIndicator()),
                     errorWidget: (context, url, error) => Icon(Icons.error),
