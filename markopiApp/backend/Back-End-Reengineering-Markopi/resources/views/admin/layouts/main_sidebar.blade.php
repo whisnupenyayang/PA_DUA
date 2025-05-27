@@ -94,7 +94,7 @@
                     </p>
                 </a>
             </li>
-            
+
              -->
 
             <!-- menu sebelumnya -->
@@ -123,11 +123,11 @@
                         <img src="{{ asset('Icon/lectern-white.png') }}" alt="Budidaya" width="24" height="24">
                     </i>
                     <p>
-                        Pengajuan Fasilitator
+                        Pengajuan Role
                     </p>
                 </a>
             </li>
-            <!-- <li i class="nav-item">
+            <li i class="nav-item">
                 <a href="/data_user" class="nav-link {{ \Route::is('getDataUser') ? 'active' : '' }}">
                     <i class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
@@ -147,7 +147,7 @@
                         Data User
                     </p>
                 </a>
-            </li> -->
+            </li>
 
             <li class="nav-item">
                 <a href="{{ route('artikel.index') }}" class="nav-link {{ \Route::is('artikel.index') ? 'active' : '' }}">

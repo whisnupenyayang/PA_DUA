@@ -13,6 +13,8 @@ use App\Http\Controllers\PengepulController;
 use App\Http\Controllers\ResepController;
 use App\Http\Controllers\TokoController;
 use App\Http\Controllers\KegiatanController;
+use App\Http\Controllers\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -156,7 +158,8 @@ Route::post('/pengajuan/accept/{id}', [PengajuanController::class, 'accept'])->n
 Route::post('/pengajuan/reject/{id}', [PengajuanController::class, 'reject'])->name('pengajuan.reject');
 
 // Manajemen User
-Route::get('data_user', [PengajuanController::class, 'get_data_user'])->name('getDataUser');
+Route::get('data_user', [UserController::class, 'index'])->name('getDataUser');
+Route::post('user/store', [UserController::class, 'store'])->name('user.store');
 Route::put('/user/{id}/deactivate', [PengajuanController::class, 'deactivate'])->name('user.deactivate');
 Route::delete('/user/{id}', [PengajuanController::class, 'delete'])->name('user.destroy');
 Route::put('/user/{id}/activate', [PengajuanController::class, 'activate'])->name('user.activate');

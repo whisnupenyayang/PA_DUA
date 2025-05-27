@@ -17,9 +17,9 @@ class PengajuanController extends Controller
         try {
             $request->validate([
                 'deskripsi_pengalaman' => 'required|string',
-                'foto_ktp' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'foto_selfie' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'foto_sertifikat' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'foto_ktp' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+                'foto_selfie' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+                'foto_sertifikat' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
                 'type_pengajuan' => 'required'
             ]);
 
